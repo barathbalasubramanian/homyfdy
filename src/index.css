@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -6,6 +7,12 @@
 body {
   background-color: var(--bg);
   color: var(--white);
+}
+
+*{
+  font-family: "Poppins", sans-serif;
+  font-weight: 400;
+  font-style: normal;
 }
 
 :root {
@@ -34,9 +41,9 @@ body {
 }
 
 .options-con {
-  width: 18em;
-  min-width: 18em;
-  max-width: 18em;
+  width: 20em;
+  min-width: 20em;
+  max-width: 20em;
   height: 12em;
   text-align: start;
   display: flex;
@@ -48,4 +55,82 @@ body {
   border-radius: 12px;
   color: black;
   padding-right: 2.2em;
+}
+
+.prop-con,.prop-con-pro{
+  width: 25em;
+  min-width: 25em;
+  max-width: 25em;
+  text-align: start;
+  display: flex;
+  justify-content: start;
+  flex-direction: column;
+  gap: 10px;
+  border-radius: 12px;
+  border:1px solid #262626;
+  padding: 1.5em;
+} 
+
+.prop-con-pro{
+  flex-direction: row;
+  gap: 2em;
+  width: 100%;
+  min-width: 100%;
+  max-width: 100%;
+  background-color: #F3F3F3;
+  border: none;
+}
+
+.spon-div {
+  width: 10em;
+  min-width: 10em;
+  max-width: 10em;
+  height: 8em;
+  background-color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.input-div,.input-div-con{
+  background-color: white;
+  border: none;
+  outline:none;
+  border-radius: 5px;
+  width: 80%;
+  padding: 4px 10px;
+  color: #6E6E6E;
+  font-size: 14px;
+  margin: 6px 0 0 0;
+}
+
+.input-div-con{
+  width: 100%;
+  background-color: #F0F0F0;
+}
+
+.input-div::placeholder {
+  color: grey;
+  opacity: 1; 
+}
+
+.login-con{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+.otp-box input {
+  width: 2em !important;
+  height: 2em !important;
+  text-align: center;
+  font-size: 1.2em;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin-right: 0.5em;
+  outline: none;
+  color: green;
 }
