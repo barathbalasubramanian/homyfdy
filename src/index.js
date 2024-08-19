@@ -6,7 +6,11 @@ import {
 } from "react-router-dom";
 import Home from "./pages/Home/home";
 import './index.css';
-import Contacts from "./pages/Contact/contact";
+import Profile from "./pages/Contact/contact";
+import PropertiesPage from "./pages/properties/propertiesPage";
+import About from "./pages/aboutus/About";
+import ComparePage from "./pages/compare/ComparePage";
+import Connect from "./pages/Contect.js/Connect";
 
 const router = createBrowserRouter([
   {
@@ -16,9 +20,33 @@ const router = createBrowserRouter([
     ),
   },
   {
-    path: "/contact",
+    path: "/profile",
     element: (
-      <Contacts/>
+      <Profile/>
+    ),
+  },
+  {
+    path: "/properties",
+    element: (
+      <PropertiesPage/>
+    ),
+  },
+  {
+    path: "/about",
+    element: (
+      <About/>
+    ),
+  },
+  {
+    path: "/compare",
+    element: (
+      <ComparePage/>
+    ),
+  },
+  {
+    path: "/connect",
+    element: (
+      <Connect/>
     ),
   },
 ]);

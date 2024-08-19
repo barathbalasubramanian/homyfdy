@@ -159,7 +159,39 @@ function MainContainer() {
                 {
                     selected === 'Dashboard' ? (
                         <div className="w-full overflow-scroll text-black flex flex-col gap-4 bg-white" style={{ borderRadius: "10px" }}>
-                            
+                            <div className="text-3xl mb-2" style={{ color: "#1FC827" }}>
+                                My Homyfyd journey
+                            </div>
+                            <div className="flex gap-4 mt-8 items-center">
+                                <div className="p-6 px-8 text-center"> 
+                                    <div><img src="/assets/viewed.svg" alt="Viewed" /></div>
+                                    <div className="pt-2" style={{fontSize:"14px"}}>
+                                        <div>Viewed</div>
+                                        <div>0 Properties</div>
+                                    </div>
+                                </div>
+                                <div className="p-6 px-8 text-center"> 
+                                    <div><img src="/assets/fav.svg" alt="Viewed" /></div>
+                                    <div className="pt-2" style={{fontSize:"14px"}}>
+                                        <div>Favourite</div>
+                                        <div>0 Properties</div>
+                                    </div>
+                                </div>
+                                <div className="p-6 px-8 text-center"> 
+                                    <div><img src="/assets/public.svg" alt="Viewed" /></div>
+                                    <div className="pt-2" style={{fontSize:"14px"}}>
+                                        <div>Site Visits</div>
+                                        <div>0 Properties</div>
+                                    </div>
+                                </div>
+                                <div className="p-6 px-8 text-center"> 
+                                    <div><img src="/assets/click.svg" alt="Viewed" /></div>
+                                    <div className="pt-2" style={{fontSize:"14px"}}>
+                                        <div>Bookings</div>
+                                        <div>0 Properties</div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     ) : <></>
                 }

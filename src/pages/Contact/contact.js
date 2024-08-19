@@ -5,7 +5,7 @@ import React from 'react'
 import CommonContact from './components/CommonContact'
 import MainContainer from './components/MainContainer'
 
-function Contacts() {
+function Profile() {
   return (
     <div>
       <Header/>
@@ -17,4 +17,4 @@ function Contacts() {
   )
 }
 
-export default Contacts
+export default Profile
