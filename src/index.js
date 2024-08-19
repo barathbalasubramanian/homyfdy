@@ -11,6 +11,7 @@ import PropertiesPage from "./pages/properties/propertiesPage";
 import About from "./pages/aboutus/About";
 import ComparePage from "./pages/compare/ComparePage";
 import Connect from "./pages/Contect.js/Connect";
+import PropertyDetails from "./pages/propertydetails/PropertyDetails";
 
 const router = createBrowserRouter([
   {
@@ -49,6 +50,12 @@ const router = createBrowserRouter([
       <Connect/>
     ),
   },
+  {
+    path: "/propertydetails",
+    element: (
+      <PropertyDetails/>
+    ),
+  }
 ]);
 
 createRoot(document.getElementById("root")).render(

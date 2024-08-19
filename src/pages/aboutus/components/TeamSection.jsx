@@ -3,10 +3,10 @@ import TeamMemberCard from './TeamMemberCard';
 
 function TeamSection() {
   const teamMembers = [
-    { name: 'Max Mitchell', role: 'Founder', image: 'https://cdn.builder.io/api/v1/image/assets/TEMP/41ad197f7f957f5e54dd5e764e2f7a7698e68f6eb6f9923b5fa901ada9684d77?placeholderIfAbsent=true&apiKey=0b1df858a5da45e9baf46b5c3506e757' },
-    { name: 'Sarah Johnson', role: 'Chief Real Estate Officer', image: 'https://cdn.builder.io/api/v1/image/assets/TEMP/742e87b6169383150e36c5e7e744fd950efb43e815ed13b41ef1f795c1cb7a21?placeholderIfAbsent=true&apiKey=0b1df858a5da45e9baf46b5c3506e757' },
-    { name: 'David Brown', role: 'Head of Property Management', image: 'https://cdn.builder.io/api/v1/image/assets/TEMP/8f8671d49e6ebed9e0085ed43a6ee29005de72864df39d5925ca53f6a00c8c48?placeholderIfAbsent=true&apiKey=0b1df858a5da45e9baf46b5c3506e757' },
-    { name: 'Michael Turner', role: 'Legal Counsel', image: 'https://cdn.builder.io/api/v1/image/assets/TEMP/edc0cee99d62e7059d1c5d1245076eafd3153ff84f5703245bed40f038093ae1?placeholderIfAbsent=true&apiKey=0b1df858a5da45e9baf46b5c3506e757' }
+    { name: 'Max Mitchell', role: 'Founder', image: '/assets/team.svg' },
+    { name: 'Sarah Johnson', role: 'Chief Real Estate Officer', image: '/assets/team.svg' },
+    { name: 'David Brown', role: 'Head of Property Management', image: '/assets/team.svg' },
+    { name: 'Michael Turner', role: 'Legal Counsel', image: '/assets/team.svg' }
   ];
 
   return (

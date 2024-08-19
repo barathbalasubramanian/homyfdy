@@ -21,7 +21,7 @@ const FormSelect = ({ label, options ,value, onChange }) => {
         </select>
         <img
           loading="lazy"
-          src="https://cdn.builder.io/api/v1/image/assets/TEMP/c6c7fa7bcc537c506e2eb19ac900ce762bfd77b8cc623b0e18a0ce14810fdae0?placeholderIfAbsent=true&apiKey=0b1df858a5da45e9baf46b5c3506e757"
+          src="/assets/downarr.svg"
           alt=""
           className="object-contain absolute right-5 top-1/2 transform -translate-y-1/2 w-5 aspect-square pointer-events-none"
         />
@@ -29,5 +29,5 @@ const FormSelect = ({ label, options ,value, onChange }) => {
     </div>
   );
 };
-
+  
 export default FormSelect;

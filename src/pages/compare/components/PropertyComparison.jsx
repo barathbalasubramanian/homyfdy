@@ -4,7 +4,7 @@ import ComparisonSection from './ComparisonSection';
 
 const properties = [
   {
-    image: "https://cdn.builder.io/api/v1/image/assets/TEMP/dc5646d3c00e288e1d598579d2e4dc43772bcfab7fa3a21af4a7fb534890166c?placeholderIfAbsent=true&apiKey=0b1df858a5da45e9baf46b5c3506e757",
+    image: "/assets/sample.svg",
     name: "Rustomjee Heights",
     location: "Bangalore",
     developer: "Rustomjee Buliders",
@@ -14,10 +14,10 @@ const properties = [
     address: "Method & Madness Technology Pvt. Ltd Unit No. 1202, 12th floor, One International Center, Tower-3, Senapati Bapat Marg, Elphinstone Road,Delisle Road, Bangalore",
     type: "Residential",
     possession: "December 2025",
-    floorPlan: "https://cdn.builder.io/api/v1/image/assets/TEMP/da099e4a4ce7b2d29ef947d45c4f926d1a39eb50e7187879e17b5bd349fc79b7?placeholderIfAbsent=true&apiKey=0b1df858a5da45e9baf46b5c3506e757"
+    floorPlan: "/assets/flat.svg"
   },
   {
-    image: "https://cdn.builder.io/api/v1/image/assets/TEMP/ecd6fea57dac80990405d979953c2adea1ed50d280530ab5a803a04c12e6be55?placeholderIfAbsent=true&apiKey=0b1df858a5da45e9baf46b5c3506e757",
+    image: "/assets/sample.svg",
     name: "Rustomjee Heights",
     location: "Bangalore",
     developer: "Rustomjee Buliders",
@@ -27,7 +27,7 @@ const properties = [
     address: "Method & Madness Technology Pvt. Ltd Unit No. 1202, 12th floor, One International Center, Tower-3, Senapati Bapat Marg, Elphinstone Road,Delisle Road, Bangalore",
     type: "Residential",
     possession: "December 2025",
-    floorPlan: "https://cdn.builder.io/api/v1/image/assets/TEMP/da099e4a4ce7b2d29ef947d45c4f926d1a39eb50e7187879e17b5bd349fc79b7?placeholderIfAbsent=true&apiKey=0b1df858a5da45e9baf46b5c3506e757"
+    floorPlan: "/assets/flat.svg"
   }
 ];
 

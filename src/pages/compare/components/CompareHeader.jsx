@@ -4,7 +4,7 @@ function CompareHeader() {
   return (
     <section className="flex flex-row items-center gap-4 max-md:flex-col max-md:items-start justify-between px-20 py-16 w-full border-b border-solid border-b-neutral-800 max-md:px-5 max-md:py-24 max-md:mr-2 max-md:max-w-full">
       <div>
-        <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/ae8eb2180968399a5d87eaec0e17cfe3a8d12e0add682b9cde587cfaca4e3fd4?placeholderIfAbsent=true&apiKey=0b1df858a5da45e9baf46b5c3506e757" alt="" className="object-contain pl-2 aspect-[2.29] w-[55px]" />
+        <img loading="lazy" src="assets/design.svg" alt="" className="object-contain pb-2 pl-2 aspect-[2.29] w-[55px]" />
         <div className="flex flex-wrap gap-5 justify-between items-start mt-1.5 ml-2.5 w-full text-white max-md:max-w-full">
           <h1 className="text-4xl">Compare Properties</h1>
         </div>

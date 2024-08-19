@@ -8,8 +8,9 @@ const ConnectSection = () => {
         <div>
         <img
             loading="lazy"
-            src="https://cdn.builder.io/api/v1/image/assets/TEMP/2b2a6197ff7a3d7585712b0a757b925992721691b1f4bcd1ec57260683e86361?placeholderIfAbsent=true&apiKey=0b1df858a5da45e9baf46b5c3506e757"
+            src="/assets/design.svg"
             alt=""
+            className='pb-2'
         />
         </div>
         <div className="flex relative flex-col w-4/5 max-md:w-full">

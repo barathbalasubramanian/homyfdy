@@ -1,4 +1,5 @@
 import React from 'react'
+import PropertyCard from '../../../components/PropertyCard'
 
 function PropertyHeader() {
   return (
@@ -9,7 +10,9 @@ function PropertyHeader() {
         </div>
 
         <div>
-            <div></div>
+            <div>
+             {/* <PropertyCard/> */}
+            </div>
         </div>
     
     </div>
