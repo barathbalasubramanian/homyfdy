@@ -8,6 +8,7 @@ import Clients from '../Home/components/Clients'
 import Options from '../Home/components/Options'
 import FeaturedProperties from '../Home/components/FeaturedProperties'
 import Partners from '../Home/components/Partners'
+import HomyfydAdvantage from './components/HomyfdyAdv'
 
 function Home() {
   return (
@@ -16,6 +17,7 @@ function Home() {
       <FeaturedProperties/>
       <Partners/>
       <FeaturedProperties/>
+      <HomyfydAdvantage/>
       <Options/>
       <Clients/>
       <Ques/>

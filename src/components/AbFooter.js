@@ -10,7 +10,7 @@ function AbFooter() {
               <div className='text-2xl'>START YOUR REAL ESTATE JOURNEY TODAY</div>
               <div className='text-sm' style={{color:"grey"}}>Your dream property is just a click away. Whether you're looking for a new home, a strategic investment, or expert real estate advice, Estatein is here to assist you every step of the way. Take the first step towards your real estate goals and explore our available properties or get in touch with our team for personalized assistance.</div>
             </div>
-            <div className='cursor-pointer w-fit flex items-center gap-3 px-2 py-1' style={{zIndex:"999",backgroundColor:"var(--green)",borderRadius:"5px"}}>
+            <div className='cursor-pointer w-fit bg-green-600 shadow-[0px_0px_21px_rgba(31,200,39,1)] flex items-center gap-3 px-2 py-1' style={{zIndex:"999",backgroundColor:"var(--green)",borderRadius:"5px"}}>
               Explore Properties
             </div>
           </div>

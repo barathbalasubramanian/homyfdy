@@ -134,3 +134,18 @@ body {
   outline: none;
   color: green;
 }
+
+.line {
+  position: absolute;
+  top: 8em;
+  left: 53%;
+  max-height: 85%;
+  overflow: hidden;
+  z-index: -999;
+}
+
+@media only screen and (max-width:900px) {
+  .line{
+    left: 30%;
+  }
+}

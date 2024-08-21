@@ -10,8 +10,10 @@ function PropertyHeader() {
         </div>
 
         <div>
-            <div>
-             {/* <PropertyCard/> */}
+            <div className='py-16 px-20 flex flex-wrap gap-2 gap-y-4 items-center justify-between'>
+            {Array.from({ length: 40 }).map((_, index) => (
+                <PropertyCard key={index} />
+            ))}
             </div>
         </div>
     

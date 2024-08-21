@@ -27,8 +27,8 @@ function Header() {
         </div>
         <div className='flex gap-6 items-center'>
           <div
-            className='cursor-pointer flex items-center gap-3 px-2 py-1'
-            style={{ backgroundColor: 'var(--green)', borderRadius: '5px' }}
+            className='cursor-pointer bg-green-600 shadow-[0px_0px_21px_rgba(31,200,39,1)] flex items-center gap-3 px-2 py-1'
+            style={{borderRadius: '5px' }}
           >
             <div className='flex items-center'>
               <img src="/assets/arr.svg" style={{ width: '24px' }} alt="Arr" />

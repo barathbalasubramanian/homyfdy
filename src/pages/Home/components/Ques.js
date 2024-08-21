@@ -17,28 +17,28 @@ function Ques() {
         <div className='ques-con'>
             <div className='pb-1'>How do I search for properties on Homyfyd?</div>
             <div style={{color:"grey"}} className='pb-1 text-sm'>Learn how to use our user-friendly search tools to find properties that match your criteria.</div>
-            <div className='cursor-pointer text-sm w-fit flex items-center gap-3 px-2 py-1' style={{backgroundColor:"var(--green)",borderRadius:"5px"}}>
+            <div className='cursor-pointer bg-green-600 shadow-[0px_0px_21px_rgba(31,200,39,1)]  text-sm w-fit flex items-center gap-3 px-2 py-1' style={{backgroundColor:"var(--green)",borderRadius:"5px"}}>
                 Read More
             </div>
         </div>
         <div className='ques-con'>
             <div className='pb-1'>How do I search for properties on Homyfyd?</div>
             <div style={{color:"grey"}} className='pb-1 text-sm'>Learn how to use our user-friendly search tools to find properties that match your criteria.</div>
-            <div className='cursor-pointer text-sm w-fit flex items-center gap-3 px-2 py-1' style={{backgroundColor:"var(--green)",borderRadius:"5px"}}>
+            <div className='cursor-pointer bg-green-600 shadow-[0px_0px_21px_rgba(31,200,39,1)] text-sm w-fit flex items-center gap-3 px-2 py-1' style={{backgroundColor:"var(--green)",borderRadius:"5px"}}>
                 Read More
             </div>
         </div>
         <div className='ques-con'>
             <div className='pb-1'>How do I search for properties on Homyfyd?</div>
             <div style={{color:"grey"}} className='pb-1 text-sm'>Learn how to use our user-friendly search tools to find properties that match your criteria.</div>
-            <div className='cursor-pointer text-sm w-fit flex items-center gap-3 px-2 py-1' style={{backgroundColor:"var(--green)",borderRadius:"5px"}}>
+            <div className='cursor-pointer bg-green-600 shadow-[0px_0px_21px_rgba(31,200,39,1)] text-sm w-fit flex items-center gap-3 px-2 py-1' style={{backgroundColor:"var(--green)",borderRadius:"5px"}}>
                 Read More
             </div>
         </div>
         <div className='ques-con'>
             <div className='pb-1'>How do I search for properties on Homyfyd?</div>
             <div style={{color:"grey"}} className='pb-1 text-sm'>Learn how to use our user-friendly search tools to find properties that match your criteria.</div>
-            <div className='cursor-pointer text-sm w-fit flex items-center gap-3 px-2 py-1' style={{backgroundColor:"var(--green)",borderRadius:"5px"}}>
+            <div className='cursor-pointer bg-green-600 shadow-[0px_0px_21px_rgba(31,200,39,1)] text-sm w-fit flex items-center gap-3 px-2 py-1' style={{backgroundColor:"var(--green)",borderRadius:"5px"}}>
                 Read More
             </div>
         </div>
