@@ -2,7 +2,7 @@ import React from 'react'
 
 function Partners() {
   return (
-    <div className='py-10 px-16'>
+    <div className='py-10 px-16 max-md:px-3'>
         <div className='flex flex-col gap-10'>
             <div><img src="/assets/design.svg" alt="Design" /></div>
                 <div className='py-6 flex items-center gap-8 justify-between text-start'>

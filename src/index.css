@@ -138,14 +138,16 @@ body {
 .line {
   position: absolute;
   top: 8em;
-  left: 53%;
+  left: 1.8em;
   max-height: 85%;
   overflow: hidden;
   z-index: -999;
 }
 
-@media only screen and (max-width:900px) {
-  .line{
-    left: 30%;
-  }
+@media only screen and (max-width:600px) {
+  .prop-con{
+    width: 21em;
+    min-width: 21em;
+    max-width: 21 em;
+  } 
 }

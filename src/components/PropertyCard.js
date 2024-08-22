@@ -8,7 +8,7 @@ function PropertyCard() {
         <div className='text-lg'>SeaSide Vila</div>
         <div style={{color:"grey"}}>A stunning 4-bedroom, 3-bathroom villa in a peaceful suburban neighborhood  3-bathroom villa in a peaceful suburban neighborhood </div>
       </div>
-      <div className='flex items-center justify-between'> 
+      <div className='flex items-center justify-between max-md:flex-wrap max-md:gap-2 max-md:items-start max-md:justify-start'> 
         <div className='cursor-pointer flex items-center gap-3 px-4 py-1' style={{fontSize:"12px",textWrap:"nowrap",border:"1px solid #262626",backgroundColor:"var(--blackhd)",borderRadius:"8px"}}>
             <img src="/assets/bed.svg" alt="Bed" /> 4-Bedroom
         </div>

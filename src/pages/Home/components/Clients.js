@@ -3,8 +3,8 @@ import React from 'react'
 function Clients() {
   return (
     <div className='py-10'>
-      <div className='px-16'><img src="/assets/design.svg" alt="Design" /></div>
-      <div className='px-16 py-6 flex items-center gap-8 justify-between text-start'>
+      <div className='px-16 max-md:px-3'><img src="/assets/design.svg" alt="Design" /></div>
+      <div className='px-16 py-6 flex items-center gap-8 justify-between text-start max-md:px-3 max-md:flex-col max-md:items-start'>
         <div>
             <div className='text-3xl pb-2'>WHAT OUR CLIENTS SAY</div>
             <div style={{color:"grey"}} className='w-3/4'>Read the success stories and heartfelt testimonials from our valued clients. Discover why they chose Estatein for their real estate needs.</div>
@@ -14,7 +14,7 @@ function Clients() {
         </div>
       </div>
 
-      <div className='flex w-full px-16 gap-8 overflow-scroll py-10' style={{borderBottom:"1px solid #262626"}}>
+      <div className='flex w-full px-16 gap-8 overflow-scroll py-10 max-md:px-3' style={{borderBottom:"1px solid #262626"}}>
         <div className='ques-con'>
             <div><img src="/assets/star.svg" alt="Star" /></div>
             <div className='pb-1'>Exceptional Service!</div>

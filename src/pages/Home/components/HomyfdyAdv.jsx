@@ -20,7 +20,8 @@ function HomyfydAdvantage() {
         <Title />
       </header>
       
-      <section className="relative flex flex-col font-semibold text-white w-full items-end justify-end max-md:max-w-full">
+      <section className="flex flex-col font-semibold text-white w-full items-end justify-end pr-32 max-md:pr-10">
+        <div className="relative">
         {features.map((feature, index) => (
           <FeatureItem
             key={index}
@@ -30,6 +31,7 @@ function HomyfydAdvantage() {
         ))}
         <div className="line" >
             <img src="/assets/line.svg" alt="Line"/>
+        </div>
         </div>
       </section>
     </main>

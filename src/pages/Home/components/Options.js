@@ -2,7 +2,7 @@ import React from 'react';
 
 function Options() {
   return (
-    <div className='py-16 px-16 gap-8 flex w-full overflow-scroll'>
+    <div className='py-16 px-16 gap-8 flex w-full overflow-scroll max-md:px-3 max-md:py-10'>
       {
         Array(5).fill().map((_, ind) => {
           return (

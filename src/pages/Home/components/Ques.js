@@ -3,7 +3,7 @@ import React from 'react'
 function Ques() {
   return (
     <div className='py-10'>
-      <div className='px-16 py-6 flex items-center gap-8 justify-between text-start'>
+      <div className='px-16 py-6 max-md:px-3 flex items-center gap-8 justify-between text-start max-md:flex-col max-md:items-start'>
         <div>
             <div className='text-3xl pb-2'>FREQUENTLY ASKED QUESTIONS</div>
             <div style={{color:"grey"}} className='w-3/4'>Find answers to common questions about Estatein's services, property listings, and the real estate process. We're here to provide clarity and assist you every step of the way.</div>
@@ -13,7 +13,7 @@ function Ques() {
         </div>
       </div>
 
-      <div className='flex w-full px-16 gap-8 overflow-scroll py-10' style={{borderBottom:"1px solid #262626"}}>
+      <div className='flex w-full px-16 max-md:px-3 gap-8 overflow-scroll py-10' style={{borderBottom:"1px solid #262626"}}>
         <div className='ques-con'>
             <div className='pb-1'>How do I search for properties on Homyfyd?</div>
             <div style={{color:"grey"}} className='pb-1 text-sm'>Learn how to use our user-friendly search tools to find properties that match your criteria.</div>
