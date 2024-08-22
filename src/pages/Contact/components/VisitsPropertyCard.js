@@ -2,14 +2,14 @@ import React from 'react'
 
 function VisitsPropertyCard() {
   return (
-    <div className='prop-con-pro flex gap-2'> 
+    <div className='prop-con-pro flex gap-2 max-md:flex-col'> 
       <div><img src="/assets/property.svg" alt="Property" /></div>
       <div className='flex flex-col gap-4'>
         <div>
             <div className='text-lg'>SeaSide Vila</div>
             <div style={{color:"grey"}}>A stunning 4-bedroom, 3-bathroom villa in a peaceful suburban neighborhood  3-bathroom villa in a peaceful suburban neighborhood </div>
         </div>
-        <div className='flex items-center gap-2'> 
+        <div className='flex items-center gap-2 max-md:flex-wrap'> 
             <div className='cursor-pointer flex items-center text-white gap-3 px-4 py-1' style={{fontSize:"12px",textWrap:"nowrap",border:"1px solid #262626",backgroundColor:"var(--blackhd)",borderRadius:"8px"}}>
                 <img src="/assets/bed.svg" alt="Bed" /> 4-Bedroom
             </div>

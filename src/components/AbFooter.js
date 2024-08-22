@@ -4,7 +4,7 @@ function AbFooter() {
   return (
       <div>
 
-        <div style={{position:"relative"}} className='px-10 py-16 max-md:px-3'>
+        <div style={{position:"relative",overflow:"hidden"}} className='px-10 py-16 max-md:px-3'>
           <div className='flex max-md:flex-col max-md:items-start px-10 max-md:px-3 gap-10 items-center justify-between'>
             <div className=' w-4/5 flex flex-col gap-3 items-start text-start'style={{zIndex:"999"}}>
               <div className='text-2xl'>START YOUR REAL ESTATE JOURNEY TODAY</div>
@@ -14,8 +14,8 @@ function AbFooter() {
               Explore Properties
             </div>
           </div>
-          <div><img src="/assets/picture1.svg" alt="Picture" style={{position:"absolute", top:"-40px" , left:0 }} /></div>
-          <div><img src="/assets/picture1.svg" alt="Picture" style={{position:"absolute", top:"-40px" , right:0 }} /></div>
+          <div><img src="/assets/picture1.svg" alt="Picture" style={{overflow:"hidden",position:"absolute", top:"-40px" , left:0 }} /></div>
+          <div><img src="/assets/picture1.svg" alt="Picture" style={{overflow:"hidden",position:"absolute", top:"-40px" , right:0 }} /></div>
         </div>
 
         <div className='w-full  max-md:flex-col px-16 max-md:px-3 py-10 flex justify-between'>

@@ -19,11 +19,11 @@ function ComparisonSection({ properties }) {
           <div className="flex flex-col justify-center items-start px-16 py-5 mt-6 w-full text-2xl font-medium text-black bg-green-200 max-md:px-5 max-md:max-w-full">
             <div className="flex gap-5 items-center justify-between w-full text-start">
               {properties.map((_, propIndex) => (
-                <div key={propIndex} className='w-1/2 pl-20 max-md:text-lg max-md:pl-4'>{item.label}</div>
+                <div key={propIndex} className='w-1/2 pl-20 max-md:pl-4 max-md:text-sm'>{item.label}</div>
               ))}
             </div>
           </div>
-          <div className='w-full px-16 flex items-center justify-center'>
+          <div className='w-full px-16 flex items-center justify-center max-md:px-8'>
             <div className="flex gap-5 items-center w-full text-start pt-4 justify-between max-w-full text-xl text-black">
                 {properties.map((property, propIndex) => (
                 <div key={propIndex} className='w-1/2 pl-20 max-md:text-sm max-md:pl-4'> 

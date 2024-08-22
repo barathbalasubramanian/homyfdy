@@ -10,7 +10,7 @@ function ValuesSection() {
   ];
 
   return (
-    <section className="flex py-16 px-20 flex-wrap gap-10 items-center mt-28 w-full max-md:mt-10 max-md:max-w-full">
+    <section className="flex py-16 px-20 max-md:px-3 flex-wrap gap-10 items-center mt-28 w-full max-md:mt-10 max-md:max-w-full">
       <div className="flex relative flex-col self-stretch my-auto min-w-[240px] w-[413px]">
         <h2 className="z-0 text-4xl text-white">Our Values</h2>
         <p className="z-0 mt-2.5 text-base font-medium leading-6 text-neutral-400">
@@ -23,7 +23,7 @@ function ValuesSection() {
           {values.slice(0, 2).map((value, index) => (
             <React.Fragment key={index}>
               <ValueCard {...value} />
-              {index === 0 && <div className="shrink-0 self-stretch w-0 border border-solid bg-neutral-800 border-neutral-800 h-[124px]" />}
+              {index === 0 && <div className="shrink-0 self-stretch w-0 border border-solid bg-neutral-800 border-neutral-800 h-[124px] max-md:border-none" />}
             </React.Fragment>
           ))}
         </div>
@@ -32,7 +32,7 @@ function ValuesSection() {
           {values.slice(2).map((value, index) => (
             <React.Fragment key={index}>
               <ValueCard {...value} />
-              {index === 0 && <div className="shrink-0 self-stretch w-0 border border-solid bg-neutral-800 border-neutral-800 h-[124px]" />}
+              {index === 0 && <div className="shrink-0 self-stretch w-0 border border-solid bg-neutral-800 border-neutral-800 h-[124px] max-md:border-none" />}
             </React.Fragment>
           ))}
         </div>

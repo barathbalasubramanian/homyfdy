@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import SideBar from "./SideBar";
 import VisitsPropertyCard from "./VisitsPropertyCard";
+import Style from './container.module.css'
 
 function MainContainer() {
   const [selected, setSelected] = useState("Dashboard");
@@ -34,14 +35,14 @@ function MainContainer() {
   };
 
   return (
-    <div className="w-full px-16 py-10 gap-8 flex relative" style={{ height: "80vh", backgroundColor: "#F7F6F5" }}>
-        <div className="w-full flex gap-8">
-            <div className="w-1/4 flex justify-center p-4 bg-white" style={{ borderRadius: "10px" }}>
+    <div className={`w-full px-16 py-10 gap-8 flex relative max-md:px-6 ${Style.con}`} style={{ backgroundColor: "#F7F6F5" }}>
+        <div className="w-full flex gap-8 max-md:flex-col max-md:gap-0">
+            <div className="w-1/4 flex justify-center p-4 bg-white max-md:w-full" style={{ borderRadius: "10px" }}>
                 <SideBar selected={selected} setSelected={setSelected} />
             </div>
-            <div className="w-3/4 px-16 py-8 overflow-scroll text-black flex flex-col gap-4 bg-white" style={{ borderRadius: "10px" }}>
+            <div className="w-3/4 px-16 py-8 overflow-scroll text-black flex flex-col max-md:w-full max-md:px-4 max-md:items-center gap-4 bg-white" style={{ borderRadius: "10px" }}>
                 {selected === "Contact Details" ? (
-                    <div className="w-full px-16 py-8 overflow-scroll text-black flex flex-col gap-4 bg-white" style={{ borderRadius: "10px" }}
+                    <div className="w-full px-16 py-8 max-md:px-4 overflow-scroll text-black flex flex-col gap-4 bg-white" style={{ borderRadius: "10px" }}
                     >
                     <div className="text-3xl " style={{ color: "#1FC827" }}>
                         HOMYFYD
@@ -159,10 +160,10 @@ function MainContainer() {
                 {
                     selected === 'Dashboard' ? (
                         <div className="w-full overflow-scroll text-black flex flex-col gap-4 bg-white" style={{ borderRadius: "10px" }}>
-                            <div className="text-3xl mb-2" style={{ color: "#1FC827" }}>
+                            <div className="text-3xl mb-2 max-md:text-2xl" style={{ color: "#1FC827" }}>
                                 My Homyfyd journey
                             </div>
-                            <div className="flex gap-4 mt-8 items-center">
+                            <div className="flex gap-4 mt-8 items-center max-md:flex-wrap max-md:justify-center max-md:mt-2">
                                 <div className="p-6 px-8 text-center"> 
                                     <div><img src="/assets/viewed.svg" alt="Viewed" /></div>
                                     <div className="pt-2" style={{fontSize:"14px"}}>
@@ -198,10 +199,10 @@ function MainContainer() {
                 {
                     selected === 'My Properties' ? (
                         <div className="w-full overflow-scroll text-black flex flex-col gap-4 bg-white" style={{ borderRadius: "10px" }}>
-                            <div className="text-3xl mb-2" style={{ color: "#1FC827" }}>
+                            <div className="text-3xl mb-2 max-md:text-2xl" style={{ color: "#1FC827" }}>
                                 My Visits
                             </div>
-                            <div className="flex gap-6 mb-6">
+                            <div className="flex gap-6 mb-6 max-md:flex-wrap">
                                 <div
                                     className={`cursor-pointer flex items-center w-fit gap-3 px-6 py-2 ${
                                     selected === "Completed" ? "text-white" : "text-black"
@@ -244,7 +245,7 @@ function MainContainer() {
                             <div className="text-3xl mb-2" style={{ color: "#1FC827" }}>
                                 My Visits
                             </div>
-                            <div className="flex gap-6 mb-6 w-full">
+                            <div className="flex gap-6 mb-6 w-full max-md:flex-wrap">
                                 {menuItems.map((item) => (
                                 <div
                                     key={item.label}

@@ -9,8 +9,8 @@ function JourneySection() {
   ];
 
   return (
-    <section className="flex py-16 px-20 justify-between gap-10 items-center mt-28 w-full shadow-[0px_4px_4px_rgba(0,0,0,0.25)] max-md:mt-10 max-md:max-w-full lg:flex-row  sm:flex-col">
-      <div className="flex flex-col w-1/2 flex-1 shrink justify-center self-stretch my-auto basis-0 min-w-[240px] sm:w-full">
+    <section className="flex py-16 px-20 justify-between gap-10 items-center mt-28 w-full shadow-[0px_4px_4px_rgba(0,0,0,0.25)] max-md:mt-10 max-md:max-w-full max-md:flex-col-reverse max-md:px-3">
+      <div className="flex flex-col w-1/2 flex-1 shrink justify-center self-stretch my-auto basis-0 max-md:w-full min-w-[240px] sm:w-full">
         <div className="flex relative flex-col w-full max-md:max-w-full">
           <img loading="lazy" src="/assets/design.svg" alt="" className="object-contain  z-0 h-6 aspect-[2.29] top-[-31px] w-[55px]" />
           <h2 className="z-0 text-4xl text-white max-md:max-w-full pt-2">Our Journey</h2>

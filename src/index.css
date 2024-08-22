@@ -144,10 +144,17 @@ body {
   z-index: -999;
 }
 
+.searchbar{
+  height: 35vh;
+}
+
 @media only screen and (max-width:600px) {
-  .prop-con{
+  .prop-con,.prop-con-pro{
     width: 21em;
     min-width: 21em;
-    max-width: 21 em;
+    max-width: 21em;
   } 
+  .searchbar{
+    height: 70vh;
+  }
 }

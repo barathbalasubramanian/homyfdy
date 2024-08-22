@@ -35,7 +35,7 @@ function PropertyComparison() {
   return (
     <section className="flex z-10 px-20 py-16 flex-col self-center mt-0 w-full bg-white rounded-lg max-md:max-w-full max-md:px-4">
       <div className="self-center w-4/5 flex items-center justify-between max-md:w-full">
-        <div className="flex w-full items-center gap-10 justify-between">
+        <div className="flex w-full items-center gap-10 justify-between max-md:gap-4">
           {properties.map((property, index) => (
             <PropertyCard key={index} {...property} />
           ))}

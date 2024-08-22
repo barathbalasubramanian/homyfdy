@@ -27,7 +27,7 @@ function Login({ closeLogin }) {
   return (
     <div style={{position: 'fixed',top: 0,left: 0,width: '100vw',height: '100vh',backgroundColor: 'rgba(0, 0, 0, 0.8)', backdropFilter: 'blur(10px)', zIndex: 1000, display: 'flex',justifyContent: 'center',alignItems: 'center',}}>
         <div className='login-con'>
-        <div>
+        <div className='max-md:hidden'>
             <img src="/assets/login.svg" alt="Login" style={{ width: '30em', height: '30em', objectFit: 'contain' }}/>
         </div>
         <div className='p-8 flex flex-col gap-4'>
@@ -100,8 +100,7 @@ function Login({ closeLogin }) {
                 </div> : <></>
             }
 
-
-            <div onClick={closeLogin} className='cursor-pointer' style={{width:"14px",height:"14px",borderRadius:"50%",backgroundColor:"crimson",position:"absolute",top:0,right:0}}></div>
+            <div onClick={closeLogin} className='cursor-pointer absolute top-0 right-0 max-md:right-5' style={{width:"14px",height:"14px",borderRadius:"50%",backgroundColor:"crimson"}}></div>
         </div>
     </div>
     </div>

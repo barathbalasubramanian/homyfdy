@@ -1,0 +1,10 @@
+
+.con {
+    height: 80vh;
+}
+
+@media only screen and (max-width:600px) {
+    .con {
+        height: auto;
+    }
+}
