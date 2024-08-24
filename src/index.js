@@ -12,6 +12,7 @@ import About from "./pages/aboutus/About";
 import ComparePage from "./pages/compare/ComparePage";
 import Connect from "./pages/Contect.js/Connect";
 import PropertyDetails from "./pages/propertydetails/PropertyDetails";
+import Admin from "./admin/Admin";
 
 const router = createBrowserRouter([
   {
@@ -54,6 +55,12 @@ const router = createBrowserRouter([
     path: "/propertydetails",
     element: (
       <PropertyDetails/>
+    ),
+  },
+  {
+    path: "/admin",
+    element: (
+      <Admin/>
     ),
   }
 ]);
