@@ -8,7 +8,7 @@ import Bookings from './components/Bookings';
 import Responses from './components/Response';
 
 function Admin() {
-  const [activeIndex, setActiveIndex] = useState(1);
+  const [activeIndex, setActiveIndex] = useState(3);
 
   return (
     <div className='w-full flex min-h-screen bg-green-50'>

@@ -67,7 +67,6 @@ body {
   flex-direction: column;
   gap: 10px;
   border-radius: 12px;
-  border:1px solid #262626;
   padding: 1.5em;
 } 
 
@@ -147,6 +146,11 @@ body {
 .searchbar{
   height: 35vh;
 }
+  
+.css-10ufb1t-MuiSlider-root,.css-188mx6n-MuiSlider-root {
+  color: #1FC827 !important;
+}
+
 
 @media only screen and (max-width:600px) {
   .prop-con,.prop-con-pro{
