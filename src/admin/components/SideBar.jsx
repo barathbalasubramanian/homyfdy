@@ -1,13 +1,13 @@
 import React from 'react';
 
 const sidebarItems = [
-  { icon: "https://cdn.builder.io/api/v1/image/assets/TEMP/00c7af5a0f848f6f830526837852e7716c595b2fa889995233e1eeb13895b00a?placeholderIfAbsent=true&apiKey=0b1df858a5da45e9baf46b5c3506e757", text: "Dashboard" },
-  { icon: "https://cdn.builder.io/api/v1/image/assets/TEMP/9b04546b5f1ec3fe9f4a160c196297154198af2f66d5e6370877526e379c084f?placeholderIfAbsent=true&apiKey=0b1df858a5da45e9baf46b5c3506e757", text: "Users" },
-  { icon: "https://cdn.builder.io/api/v1/image/assets/TEMP/6b9ae2457c112d100f5447f95d9a9a85da38f7e1de3bca611161328fa0557ab9?placeholderIfAbsent=true&apiKey=0b1df858a5da45e9baf46b5c3506e757", text: "Responses" },
-  { icon: "https://cdn.builder.io/api/v1/image/assets/TEMP/b8a5085fefa850f2822910aa12dd7321e58f0db3f04e713821dc9af9930f17db?placeholderIfAbsent=true&apiKey=0b1df858a5da45e9baf46b5c3506e757", text: "Property" },
-  { icon: "https://cdn.builder.io/api/v1/image/assets/TEMP/2c75a55853251b22666be27493a78db73425c125af5f2be86a062d92f84a13ce?placeholderIfAbsent=true&apiKey=0b1df858a5da45e9baf46b5c3506e757", text: "Bookings" },
-  { icon: "https://cdn.builder.io/api/v1/image/assets/TEMP/c8795c02fb4adcc5e043fcc2956d4c304eb6804f48ea8d081e602ca2930ae14b?placeholderIfAbsent=true&apiKey=0b1df858a5da45e9baf46b5c3506e757", text: "FAQs" },
-  { icon: "https://cdn.builder.io/api/v1/image/assets/TEMP/0e2874928d1e0259ff14a13d7627fbcb769ef994f9dffdc4bf938ad8b471db58?placeholderIfAbsent=true&apiKey=0b1df858a5da45e9baf46b5c3506e757", text: "Blogs" },
+  { icon: "/assets/dashboard.svg", text: "Dashboard" },
+  { icon: "/assets/users.svg", text: "Users" },
+  { icon: "/assets/responses.svg", text: "Responses" },
+  { icon: "/assets/proicon.svg", text: "Property" },
+  { icon: "/assets/bookings.svg", text: "Bookings" },
+  { icon: "/assets/faqs.svg", text: "FAQs" },
+  { icon: "/assets/blogs.svg", text: "Blogs" },
 ];
 
 function Sidebar({ activeIndex, onSetActiveIndex }) {
@@ -32,7 +32,7 @@ function Sidebar({ activeIndex, onSetActiveIndex }) {
             })}
           </div>
           <div className="flex gap-3.5 py-7 px-12 mt-36 cursor-pointer font-medium text-green-600 text-opacity-70 max-md:mt-10">
-            <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/7f7cea57bdde4783d18f4d3c3c86201f316a4091d1d3648a6c25e408f530c789?placeholderIfAbsent=true&apiKey=0b1df858a5da45e9baf46b5c3506e757" alt="" className="object-contain shrink-0 w-6 aspect-square" />
+            <img loading="lazy" src="/assets/logout.svg" alt="" className="object-contain shrink-0 w-6 aspect-square" />
             <div>Log out</div>
           </div>
         </div>

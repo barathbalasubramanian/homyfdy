@@ -28,7 +28,7 @@ function Bookings() {
       email: 'mark.johnson@example.com',
     },
   ];
-
+  
   return (
     <div className="overflow-hidden py-6 px-8 bg-green-50 max-md:pr-5 min-h-screen">
       <main className="flex flex-col w-[100%] max-md:ml-0 max-md:w-full">
@@ -36,7 +36,7 @@ function Bookings() {
           <div className="flex flex-col gap-8 w-full max-md:mr-2.5 max-md:max-w-full">
             <div className='flex items-center justify-between'>
               <div className="flex overflow-hidden flex-wrap gap-2 items-center px-3 w-1/2 text-xs leading-6 text-center text-gray-400 whitespace-nowrap bg-white rounded-lg border border-gray-300 border-solid min-h-[40px] max-md:max-w-full">
-                <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/51a0430ee58a1c70a8bd7129382b322477b4e868f6106bd719ff31411841b3ec?placeholderIfAbsent=true&apiKey=0b1df858a5da45e9baf46b5c3506e757" alt="" className="object-contain shrink-0 self-stretch my-auto w-4 aspect-square" />
+                <img loading="lazy" src="/assets/search.svg" alt="" className="object-contain shrink-0 self-stretch my-auto w-4 aspect-square" />
                 <input type="text" placeholder="Search..." className="gap-0 self-stretch my-auto bg-transparent border-none focus:outline-none" aria-label="Search" />
               </div>
               <div>

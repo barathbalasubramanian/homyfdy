@@ -5,7 +5,7 @@ function Title() {
     <div className="flex flex-col items-end self-end max-w-full text-right w-full">
       <img
         loading="lazy"
-        src="https://cdn.builder.io/api/v1/image/assets/TEMP/5f6924fd941434f7a17cc42fbb51494df215ffad110aa1f6cddff1d0db60735f?placeholderIfAbsent=true&apiKey=0b1df858a5da45e9baf46b5c3506e757"
+        src="/assets/design.svg"
         alt=""
         className="object-contain aspect-[1.97] w-[71px]"
       />
