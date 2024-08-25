@@ -6,9 +6,10 @@ import FAQs from './components/FAQs';
 import Blogs from './components/Blogs';
 import Bookings from './components/Bookings';
 import Responses from './components/Response';
+import Dashboard from './components/Dashboard';
 
 function Admin() {
-  const [activeIndex, setActiveIndex] = useState(3);
+  const [activeIndex, setActiveIndex] = useState(0);
 
   return (
     <div className='w-full flex min-h-screen bg-green-50'>
@@ -16,7 +17,7 @@ function Admin() {
         <Sidebar activeIndex={activeIndex} onSetActiveIndex={setActiveIndex} />
       </div>
       <div className='w-4/5 max-md:w-full min-h-screen bg-green-50 max-h-screen overflow-scroll'>
-        {activeIndex === 0 && <UserDashboard />}
+        {activeIndex === 0 && <Dashboard />}
         {activeIndex === 1 && <UserDashboard/>}
         {activeIndex === 2 && <Responses/>}
         {activeIndex === 3 && <Property/>}

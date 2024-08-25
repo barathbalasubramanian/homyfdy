@@ -15,6 +15,11 @@ body {
   font-style: normal;
 }
 
+*::selection {
+  color: #1FC827;
+  background-color: #b1fcb5;
+}
+
 :root {
   --bg: #141414;
   --white: #fff;
@@ -149,6 +154,10 @@ body {
   
 .css-10ufb1t-MuiSlider-root,.css-188mx6n-MuiSlider-root {
   color: #1FC827 !important;
+}
+
+.CircularProgressbar .CircularProgressbar-text{
+  font-weight: 600 !important;
 }
 
 
