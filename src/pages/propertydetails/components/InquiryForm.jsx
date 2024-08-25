@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-function InquiryForm() {
+function InquiryForm({property}) {
 
     const [isChecked, setIsChecked] = useState(false);
     const handleCheckboxChange = () => {
@@ -21,13 +21,13 @@ function InquiryForm() {
               <label htmlFor="selectedProperty" className="text-base font-semibold max-md:max-w-full">
                 Selected Property
               </label>
-              <div className="flex flex-wrap gap-3 items-center px-5 py-4 mt-3.5 w-full text-sm font-medium leading-none rounded-md border border-solid bg-zinc-900 border-neutral-800 max-md:max-w-full">
+              <div className="flex flex-wrap gap-3 items-center px-5 py-4 mt-3.5 w-full text-sm font-medium leading-none rounded-md border border-none bg-zinc-900 border-neutral-800 max-md:max-w-full">
                 <input
                   id="selectedProperty"
                   type="text"
-                  value="Seaside Villa, Bangalore"
+                  value={`${property.propertyType} ${property.address}`}
                   readOnly
-                  className="flex-1 shrink self-stretch my-auto basis-0 bg-transparent text-white max-md:max-w-full"
+                  className="flex-1 shrink self-stretch my-auto basis-0 bg-transparent border-none outline-none text-white max-md:max-w-full"
                 />
                 <img loading="lazy" src="/assets/location.svg" alt="" className="object-contain shrink-0 self-stretch my-auto w-5 aspect-square" />
               </div>

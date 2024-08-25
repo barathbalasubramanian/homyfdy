@@ -1,5 +1,6 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Noti from './Noti';
+import { createBlog, getAllBlogs, updateBlog, deleteBlog } from '../../firebase/Blogs';
 
 function Blogs() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -7,6 +8,8 @@ function Blogs() {
   const [writerName, setWriterName] = useState('');
   const [publishDate, setPublishDate] = useState('');
   const [selectedFile, setSelectedFile] = useState(null);
+  const [blogs, setBlogs] = useState([]);
+  const [editingBlogId, setEditingBlogId] = useState(null); // Track which blog is being edited
 
   const fileInputRef = useRef(null);
 
@@ -14,16 +17,31 @@ function Blogs() {
     setSelectedFile(e.target.files[0]);
   };
 
-  const handleSave = () => {
-    console.log("Blog Name:", blogName);
-    console.log("Writer Name:", writerName);
-    console.log("Date of Publish:", publishDate);
-    console.log("Uploaded Image:", selectedFile ? selectedFile.name : "No file uploaded");
-    setIsModalOpen(false);
-    setBlogName('');
-    setWriterName('');
-    setPublishDate('');
-    setSelectedFile(null);
+  const handleSave = async () => {
+    try {
+      if (editingBlogId) {
+        // Update blog if editing
+        await updateBlog(editingBlogId, {
+          blogName,
+          writerName,
+          publishDate,
+          // Handle image upload here if needed
+        });
+      } else {
+        // Create new blog
+        await createBlog({
+          blogName,
+          writerName,
+          publishDate,
+          // Handle image upload here if needed
+        });
+      }
+      fetchBlogs(); // Refresh the list after saving
+      setIsModalOpen(false);
+      handleClear();
+    } catch (error) {
+      console.error("Error saving blog:", error);
+    }
   };
 
   const handleClear = () => {
@@ -31,44 +49,43 @@ function Blogs() {
     setWriterName('');
     setPublishDate('');
     setSelectedFile(null);
+    setEditingBlogId(null); // Reset editing state
   };
 
   const triggerFileInput = () => {
     fileInputRef.current.click();
   };
 
-  const blogs = [
-    {
-      id: 1,
-      blogName: 'Exploring React',
-      writerName: 'John Doe',
-      publishDate: '2024-08-15',
-      imageUrl: 'path/to/image1.jpg',
-    },
-    {
-      id: 2,
-      blogName: 'Understanding JavaScript',
-      writerName: 'Jane Smith',
-      publishDate: '2024-08-10',
-      imageUrl: 'path/to/image2.jpg',
-    },
-    {
-      id: 3,
-      blogName: 'Web Development Trends',
-      writerName: 'Mark Johnson',
-      publishDate: '2024-08-08',
-      imageUrl: 'path/to/image3.jpg',
-    },
-  ];
+  const fetchBlogs = async () => {
+    try {
+      const fetchedBlogs = await getAllBlogs();
+      setBlogs(fetchedBlogs);
+    } catch (error) {
+      console.error("Error fetching blogs:", error);
+    }
+  };
 
   const handleEdit = (id) => {
-    console.log(`Edit blog with id: ${id}`);
+    const blogToEdit = blogs.find(blog => blog.id === id);
+    setBlogName(blogToEdit.blogName);
+    setWriterName(blogToEdit.writerName);
+    setPublishDate(blogToEdit.publishDate);
+    setEditingBlogId(id);
+    setIsModalOpen(true);
   };
 
-  const handleDelete = (id) => {
-    console.log(`Delete blog with id: ${id}`);
+  const handleDelete = async (id) => {
+    try {
+      await deleteBlog(id);
+      fetchBlogs(); // Refresh blogs after deletion
+    } catch (error) {
+      console.error("Error deleting blog:", error);
+    }
   };
 
+  useEffect(() => {
+    fetchBlogs();
+  }, []);
 
   return (
     <main className="flex flex-col py-6 px-8 max-md:ml-0 max-md:w-full">
@@ -90,46 +107,46 @@ function Blogs() {
               Add Blog
             </div>
           </div>
-    
+
           <div className="p-6 text-black">
-                <div className="flex w-full bg-green-100 p-4 font-bold text-[16px]">
-                    <div className="w-1/4">Blog Name</div>
-                    <div className="w-1/4">Writer Name</div>
-                    <div className="w-1/4">Date of Publish</div>
-                    <div className='w-[3.5em]'>Image</div>
-                    <div className="w-1/4"></div>
+            <div className="flex w-full bg-green-100 p-4 font-bold text-[16px]">
+              <div className="w-1/4">Blog Name</div>
+              <div className="w-1/4">Writer Name</div>
+              <div className="w-1/4">Date of Publish</div>
+              <div className='w-[3.5em]'>Image</div>
+              <div className="w-1/4"></div>
+            </div>
+            {blogs.map((blog) => (
+              <div key={blog.id} className="flex items-center w-full p-4 border-b border-gray-200">
+                <div className="w-1/4 flex items-center gap-4">
+                  <div>{blog.blogName}</div>
                 </div>
-                {blogs.map((blog) => (
-                    <div key={blog.id} className="flex items-center w-full p-4 border-b border-gray-200">
-                        <div className="w-1/4 flex items-center gap-4">
-                            <div>{blog.blogName}</div>
-                        </div>
-                        <div className="w-1/4">{blog.writerName}</div>
-                        <div className="w-1/4">{blog.publishDate}</div>
-                        <div className='w-[3.5em]'><img src='/assets/image.svg' alt={blog.blogName} className="w-12 h-12 object-cover rounded-full" /></div>
-                        <div className="w-1/4 flex justify-center gap-4">
-                            <button 
-                            onClick={() => handleEdit(blog.id)} 
-                            className="bg-green-500 text-white px-4 py-2 rounded-lg"
-                            >
-                            Edit
-                            </button>
-                            <button 
-                            onClick={() => handleDelete(blog.id)} 
-                            className="text-white rounded-lg"
-                            >
-                            <img src="/assets/delete.svg" alt="" />
-                            </button>
-                        </div>
-                    </div>
-                ))}
+                <div className="w-1/4">{blog.writerName}</div>
+                <div className="w-1/4">{blog.publishDate}</div>
+                <div className='w-[3.5em]'><img src='/assets/image.svg' alt={blog.blogName} className="w-12 h-12 object-cover rounded-full" /></div>
+                <div className="w-1/4 flex justify-center gap-4">
+                  <button 
+                    onClick={() => handleEdit(blog.id)} 
+                    className="bg-green-500 text-white px-4 py-2 rounded-lg"
+                  >
+                    Edit
+                  </button>
+                  <button 
+                    onClick={() => handleDelete(blog.id)} 
+                    className="text-white rounded-lg"
+                  >
+                    <img src="/assets/delete.svg" alt="Delete" />
+                  </button>
+                </div>
+              </div>
+            ))}
           </div>
 
           {isModalOpen && (
             <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
               <div className="bg-white p-6 rounded-lg max-w-lg w-full">
                 <div className='w-full flex items-center justify-between mb-6'>
-                  <div className="text-xl font-semibold text-black">Add/Update Blog</div>
+                  <div className="text-xl font-semibold text-black">{editingBlogId ? 'Update Blog' : 'Add Blog'}</div>
                   <div className='font-bold text-xl text-red-500 cursor-pointer' onClick={() => setIsModalOpen(false)}><img src='/assets/close.svg' alt='Close'/></div>
                 </div>
                 <div className='flex flex-col gap-4'>
@@ -178,8 +195,12 @@ function Blogs() {
                     </div>
                   </div>
                   <div className="flex justify-end gap-4">
-                    <button onClick={handleClear} className="bg-gray-300 text-black px-4 py-2 rounded-lg">Clear</button>
-                    <button onClick={handleSave} className="bg-green-500 text-white px-4 py-2 rounded-lg">Save</button>
+                    <button onClick={handleClear} className="bg-gray-300 text-black px-4 py-2 rounded-lg">
+                      Clear
+                    </button>
+                    <button onClick={handleSave} className="bg-green-500 text-white px-4 py-2 rounded-lg">
+                      {editingBlogId ? 'Update' : 'Save'}
+                    </button>
                   </div>
                 </div>
               </div>

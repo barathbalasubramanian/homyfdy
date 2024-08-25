@@ -1,23 +1,78 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Noti from './Noti';
+import { createFAQ, getAllFAQ, getFAQ, updateFAQ, deleteFAQ } from '../../firebase/faq';
 
 function FAQs() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [question, setQuestion] = useState('');
   const [answer, setAnswer] = useState('');
+  const [faqs, setFaqs] = useState([]);
+  const [editingFaqId, setEditingFaqId] = useState(null); // To track which FAQ is being edited
 
-  const handleSave = () => {
-    console.log("Question:", question);
-    console.log("Answer:", answer);
-    setIsModalOpen(false);
-    setQuestion('');
-    setAnswer('');
+  // Handle Save or Update
+  const handleSave = async () => {
+    try {
+      if (editingFaqId) {
+        await updateFAQ(editingFaqId, { question, answer });
+      } else {
+        await createFAQ({ question, answer });
+      }
+      fetchFaqs();
+      setIsModalOpen(false);
+      clearForm();
+    } catch (error) {
+      console.log(error);
+      alert(error);
+    }
   };
 
   const handleClear = () => {
+    clearForm();
+  };
+
+  const clearForm = () => {
     setQuestion('');
     setAnswer('');
+    setEditingFaqId(null); // Reset editing FAQ
   };
+
+  // Fetch all FAQs from Firebase
+  const fetchFaqs = async () => {
+    try {
+      const fetchedFaqs = await getAllFAQ();
+      setFaqs(fetchedFaqs);
+      console.log(fetchedFaqs);
+    } catch (error) {
+      console.error("Error fetching FAQs:", error);
+    }
+  };
+
+  // Handle Edit
+  const handleEdit = async (id) => {
+    try {
+      const faqToEdit = await getFAQ(id);
+      setQuestion(faqToEdit.question);
+      setAnswer(faqToEdit.answer);
+      setEditingFaqId(id);
+      setIsModalOpen(true);
+    } catch (error) {
+      console.error("Error fetching FAQ for edit:", error);
+    }
+  };
+
+  // Handle Delete
+  const handleDelete = async (id) => {
+    try {
+      await deleteFAQ(id);
+      fetchFaqs(); // Refresh FAQs after deletion
+    } catch (error) {
+      console.error("Error deleting FAQ:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchFaqs();
+  }, []);
 
   return (
     <main className="flex flex-col py-6 px-8 max-md:ml-0 max-md:w-full">
@@ -42,25 +97,22 @@ function FAQs() {
           </div>
           <div>
             <div className='w-full flex flex-wrap gap-6 items-start'>
-              {
-                Array.from({ length: 5 }).map((_, index) => {
-                  return (
-                    <div key={index} className='flex p-4 border-neutral-400 w-[30%] max-lg:w-[40%] max-sm:w-[100%] flex-col items-start justify-between gap-3'>
-                      <div className='text-black font-semibold'>How do I search for properties on Homyfyd?</div>
-                      <div className='text-neutral-500 font-light'>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                        Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-                        Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-                        Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-                      </div>
-                      <div className='flex w-full gap-3 items-center justify-between'>
-                        <div className="bg-green-500 flex-1 text-white px-4 py-2 rounded-lg">Edit</div>
-                        <div className="bg-green-500 flex-1 text-white px-4 py-2 rounded-lg">Delete</div>
-                      </div>
+              {faqs.length > 0 ? (
+                faqs.map((faq) => (
+                  <div key={faq.id} className='flex p-4 border-neutral-400 w-[30%] max-lg:w-[40%] max-sm:w-[100%] flex-col items-start justify-between gap-3'>
+                    <div className='text-black font-semibold'>{faq.question}</div>
+                    <div className='text-neutral-500 font-light'>
+                      {faq.answer}
                     </div>
-                  );
-                })
-              }
+                    <div className='flex w-full gap-3 items-center justify-between'>
+                      <div className="bg-green-500 flex-1 text-white px-4 py-2 rounded-lg cursor-pointer" onClick={() => handleEdit(faq.id)}>Edit</div>
+                      <div className="bg-green-500 flex-1 text-white px-4 py-2 rounded-lg cursor-pointer" onClick={() => handleDelete(faq.id)}>Delete</div>
+                    </div>
+                  </div>
+                ))
+              ) : (
+                <div>No FAQs available</div>
+              )}
             </div>
           </div>
         </div>
@@ -71,8 +123,10 @@ function FAQs() {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
           <div className="bg-white p-6 rounded-lg max-w-lg w-full">
             <div className='w-full flex items-center justify-between mb-6'>
-                <div className="text-xl font-semibold text-black">Add/Update FAQ</div>
-                <div className='font-bold text-xl cursor-pointer text-red-500' onClick={()=>{setIsModalOpen(false)}}><img src='assets/close.svg' alt='Close'/></div>
+              <div className="text-xl font-semibold text-black">{editingFaqId ? 'Update FAQ' : 'Add FAQ'}</div>
+              <div className='font-bold text-xl cursor-pointer text-red-500' onClick={() => setIsModalOpen(false)}>
+                <img src='assets/close.svg' alt='Close' />
+              </div>
             </div>
             <div className='flex flex-col gap-4'>
               <div>

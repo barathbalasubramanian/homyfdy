@@ -1,5 +1,4 @@
 const db = require('./firebase'); 
-
 const usersCollection = db.collection('users');
 const housesCollection = db.collection('houses');
 
@@ -50,30 +49,31 @@ async function deleteUser(userId) {
 }
 
 // Add watched history to a user
-async function addWatchedHistory(userId, houseId, timestamp) {
-    try {
-        const userRef = usersCollection.doc(userId);
-        await userRef.update({
-            watched: firebase.firestore.FieldValue.arrayUnion({ houseId, timestamp })
-        });
-        console.log(`Watched history added for user with ID: ${userId}`);
-    } catch (error) {
-        console.error("Error adding watched history: ", error);
-    }
-}
+// async function addWatchedHistory(userId, houseId, timestamp) {
+//     try {
+//         const userRef = usersCollection.doc(userId);
+//         await userRef.update({
+//             watched: firebase.firestore.FieldValue.arrayUnion({ houseId, timestamp })
+//         });
+//         console.log(`Watched history added for user with ID: ${userId}`);
+//     } catch (error) {
+//         console.error("Error adding watched history: ", error);
+//     }
+// }
 
 // Add a favorite house to a user
-async function addFavorite(userId, houseId) {
-    try {
-        const userRef = usersCollection.doc(userId);
-        await userRef.update({
-            favorite: firebase.firestore.FieldValue.arrayUnion(houseId)
-        });
-        console.log(`Favorite house added for user with ID: ${userId}`);
-    } catch (error) {
-        console.error("Error adding favorite: ", error);
-    }
-}
+// async function addFavorite(userId, houseId) {
+//     try {
+//         const userRef = usersCollection.doc(userId);
+//         await userRef.update({
+//             // firebase is not defined
+//             favorite: firebase.firestore.FieldValue.arrayUnion(houseId)
+//         });
+//         console.log(`Favorite house added for user with ID: ${userId}`);
+//     } catch (error) {
+//         console.error("Error adding favorite: ", error);
+//     }
+// }
 
 // Get all favorite houses with details for a user
 async function getAllFavoritesWithDetails(userId) {
@@ -128,9 +128,10 @@ module.exports = {
     getUser,
     updateUser,
     deleteUser,
-    addWatchedHistory,
-    addFavorite,
+    // addWatchedHistory,
+    // addFavorite,
     getAllFavoritesWithDetails,
     getFavoritesWithDetails,
     getallUsers
 };
+    

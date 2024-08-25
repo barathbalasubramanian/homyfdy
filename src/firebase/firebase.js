@@ -3,21 +3,16 @@ require('firebase/compat/firestore');
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-    apiKey: "AIzaSyC8NBV8SAz1zR7JTkgdiZ5xfwtrPc-0sYA",
-    authDomain: "kioskbillbuddy.firebaseapp.com",
-    databaseURL: "https://kioskbillbuddy-default-rtdb.asia-southeast1.firebasedatabase.app",
-    projectId: "kioskbillbuddy",
-    storageBucket: "kioskbillbuddy.appspot.com",
-    messagingSenderId: "282967025495",
-    appId: "1:282967025495:web:7c91b451831ee4bc974012",
-    measurementId: "G-XPFDE6ZBLF"
+    apiKey: "AIzaSyCd3uwUGAGwv1SXAdFAvB9eGCrQDECNQv4",
+    authDomain: "homyfyd-ba82d.firebaseapp.com",
+    projectId: "homyfyd-ba82d",
+    storageBucket: "homyfyd-ba82d.appspot.com",
+    messagingSenderId: "893096877697",
+    appId: "1:893096877697:web:0f62c38a3444d5b224f780",
+    measurementId: "G-RJMVHN9JPL"
 };
 
-// Initialize Firebase
 firebase.initializeApp(firebaseConfig);
-
-// Get a Firestore instance
 const db = firebase.firestore();
 
-// Export the Firestore instance for use in other parts of your app
 module.exports = db;

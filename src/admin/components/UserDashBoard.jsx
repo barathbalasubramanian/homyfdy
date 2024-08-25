@@ -1,33 +1,24 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Noti from './Noti';
+import { getallUsers } from '../../firebase/user'; // Import the function correctly
 
 function UserDashboard() {
-  const users = [
-    {
-      id: 1,
-      name: 'John Doe',
-      registrationDate: '2024-08-01',
-      city: 'New York',
-      phoneNumber: '+1 123-456-7890',
-      email: 'john.doe@example.com',
-    },
-    {
-      id: 2,
-      name: 'Jane Smith',
-      registrationDate: '2024-07-25',
-      city: 'Los Angeles',
-      phoneNumber: '+1 098-765-4321',
-      email: 'jane.smith@example.com',
-    },
-    {
-      id: 3,
-      name: 'Mark Johnson',
-      registrationDate: '2024-08-10',
-      city: 'Chicago',
-      phoneNumber: '+1 234-567-8901',
-      email: 'mark.johnson@example.com',
-    },
-  ];
+  const [users, setUsers] = useState([]);
+
+  // Fetch all users from Firebase
+  const fetchUsers = async () => {
+    try {
+      const fetchedUsers = await getallUsers();
+      setUsers(fetchedUsers);
+    } catch (error) {
+      console.error("Error fetching users:", error);
+    }
+  };
+
+  // Fetch users when component mounts
+  useEffect(() => {
+    fetchUsers();
+  }, []);
 
   return (
     <div className="overflow-hidden py-6 px-8 bg-green-50 max-md:pr-5 min-h-screen">
@@ -52,7 +43,10 @@ function UserDashboard() {
                   </header>
                 </div>
                 <div>
-                  <button className="self-end px-11 py-2 text-base text-white whitespace-nowrap bg-emerald-500 rounded-lg border border-solid border-emerald-500 border-opacity-80 shadow-[0px_2px_4px_rgba(0,0,0,0.25)] max-md:px-5 max-md:mt-10">
+                  <button
+                    onClick={fetchUsers} // Call fetchUsers on button click
+                    className="self-end px-11 py-2 text-base text-white whitespace-nowrap bg-emerald-500 rounded-lg border border-solid border-emerald-500 border-opacity-80 shadow-[0px_2px_4px_rgba(0,0,0,0.25)] max-md:px-5 max-md:mt-10"
+                  >
                     Refresh
                   </button>
                 </div>
@@ -72,9 +66,15 @@ function UserDashboard() {
             {users.map((user) => (
               <div key={user.id} className="flex items-center w-full p-4 border-b border-gray-200">
                 <div className="w-1/5 overflow-scroll text-[14px]">{user.name}</div>
-                <div className="w-1/5 overflow-scroll text-[14px]">{user.registrationDate}</div>
+                <div className="w-1/5 overflow-scroll text-[14px]">
+                  {new Date(user.registeredAt).toLocaleDateString("en-US", {
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
+                  })}
+                </div>
                 <div className="w-1/5 overflow-scroll text-[14px]">{user.city}</div>
-                <div className="w-1/5 overflow-scroll text-[14px]">{user.phoneNumber}</div>
+                <div className="w-1/5 overflow-scroll text-[14px]">{user.number}</div>
                 <div className="w-1/5 overflow-scroll text-[14px]">{user.email}</div>
               </div>
             ))}

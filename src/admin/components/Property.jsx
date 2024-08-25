@@ -1,10 +1,10 @@
-import React, { useState } from 'react'
-import Noti from './Noti'
+import React, { useState, useEffect } from 'react';
+import Noti from './Noti';
 import FilterComponent from './FilterComponent';
-import PropertyCard from '../../components/PropertyCard'
+import PropertyCard from '../../components/PropertyCard';
+import { createHouse, getAllHouses } from '../../firebase/house'; // Assume you have a function to get all houses
 
 function Property() {
-
     const additionalFeaturesList = [
         { name: 'emergencyExit', label: 'Emergency Exit' },
         { name: 'CCTV', label: 'CCTV' },
@@ -34,68 +34,89 @@ function Property() {
         additionalFeatures: additionalFeaturesList.reduce((acc, feature) => {
             acc[feature.name] = false;
             return acc;
-          }, {})
+        }, {})
     });
-    
+
+    const [properties, setProperties] = useState([]); // To store all properties
+
+    // Fetch properties on component mount
+    useEffect(() => {
+        const fetchProperties = async () => {
+            try {
+                const fetchedProperties = await getAllHouses(); // Assume this returns an array of property objects
+                setProperties(fetchedProperties);
+            } catch (error) {
+                console.error("Error fetching properties: ", error);
+            }
+        };
+
+        fetchProperties();
+    }, []);
+
     const handleCheckboxChange = (e) => {
         const { name, checked } = e.target;
         setFormData(prevState => ({
-          ...prevState,
-          additionalFeatures: {
-            ...prevState.additionalFeatures,
-            [name]: checked
-          }
+            ...prevState,
+            additionalFeatures: {
+                ...prevState.additionalFeatures,
+                [name]: checked
+            }
         }));
     };
 
     const handleChange = (e) => {
         const { name, value, type, checked } = e.target;
         if (type === 'checkbox') {
-          setFormData(prevState => ({
-            ...prevState,
-            additionalFeatures: {
-              ...prevState.additionalFeatures,
-              [name]: checked
-            }
-          }));
+            setFormData(prevState => ({
+                ...prevState,
+                additionalFeatures: {
+                    ...prevState.additionalFeatures,
+                    [name]: checked
+                }
+            }));
         } else {
-          setFormData({ ...formData, [name]: value });
+            setFormData({ ...formData, [name]: value });
         }
     };
-    
-    const handleSubmit = (e) => {
+
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log(formData);
-        alert("Added Successfully ..")
-        handleClear()
+        try {
+            console.log(formData);
+            alert("Added Successfully ..")
+            await createHouse(formData);
+        } catch (error) {
+            alert(error);
+        }
+        handleClear();
     };
-    
+
     const handleClear = () => {
         setFormData({
-          propertyType: '',
-          region: '',
-          propertyPrice: '',
-          maxRooms: '',
-          bedrooms: '',
-          bathrooms: '',
-          area: '',
-          brochureLink: '',
-          manager: '',
-          contact: '',
-          rankings: '',
-          description: '',
-          features: '',
-          amenities: '',
-          address: '',
-          addressLink: '',
-          additionalFeatures: {
-            emergencyExit: false,
-            CCTV: false,
-            freeWifi: false,
-            airConditioning: false,
-            terrace: false,
-            elevatorLift: false,
-          }
+            propertyType: '',
+            region: '',
+            propertyPrice: '',
+            maxRooms: '',
+            bedrooms: '',
+            bathrooms: '',
+            area: '',
+            brochureLink: '',
+            manager: '',
+            contact: '',
+            rankings: '',
+            description: '',
+            features: '',
+            amenities: '',
+            address: '',
+            addressLink: '',
+            additionalFeatures: {
+                emergencyExit: false,
+                CCTV: false,
+                freeWifi: false,
+                airConditioning: false,
+                terrace: false,
+                elevatorLift: false,
+            }
         });
     };
 
@@ -107,31 +128,30 @@ function Property() {
         console.log('Region:', filters.region);
         console.log('Price Range:', filters.priceRange);
         console.log('Area Range:', filters.areaRange);
-      };
+    };
 
-return (
-    <main className="flex flex-col py-6 px-8 max-md:ml-0 max-md:w-full">
-        <div className="flex flex-col w-full max-md:mt-10 max-md:max-w-full">
-            <div className="flex flex-col gap-8 w-full max-md:mr-2.5 max-md:max-w-full">
-                <div className='flex items-center justify-between max-md:flex-col max-md:items-start gap-4'>
-                    <div className="flex overflow-hidden flex-wrap gap-2 items-center px-3 w-1/2 max-md:w-[90%] text-xs leading-6 text-center text-gray-400 whitespace-nowrap bg-white rounded-lg border border-gray-300 border-solid min-h-[40px] max-md:max-w-full">
-                        <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/51a0430ee58a1c70a8bd7129382b322477b4e868f6106bd719ff31411841b3ec?placeholderIfAbsent=true&apiKey=0b1df858a5da45e9baf46b5c3506e757" alt="" className="object-contain shrink-0 self-stretch my-auto w-4 aspect-square" />
-                        <input type="text" placeholder="Search..." className="gap-0 self-stretch my-auto bg-transparent border-none focus:outline-none" aria-label="Search" />
-                    </div>
-                    <div>
-                        <Noti/>
-                    </div>
-                </div>
-
-                {
-                    AddPropert ? 
-                    <>
-                        <div className='text-black font-semibold text-2xl'>
-                            Add Property
+    return (
+        <main className="flex flex-col py-6 px-8 max-md:ml-0 max-md:w-full">
+            <div className="flex flex-col w-full max-md:mt-10 max-md:max-w-full">
+                <div className="flex flex-col gap-8 w-full max-md:mr-2.5 max-md:max-w-full">
+                    <div className='flex items-center justify-between max-md:flex-col max-md:items-start gap-4'>
+                        <div className="flex overflow-hidden flex-wrap gap-2 items-center px-3 w-1/2 max-md:w-[90%] text-xs leading-6 text-center text-gray-400 whitespace-nowrap bg-white rounded-lg border border-gray-300 border-solid min-h-[40px] max-md:max-w-full">
+                            <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/51a0430ee58a1c70a8bd7129382b322477b4e868f6106bd719ff31411841b3ec?placeholderIfAbsent=true&apiKey=0b1df858a5da45e9baf46b5c3506e757" alt="" className="object-contain shrink-0 self-stretch my-auto w-4 aspect-square" />
+                            <input type="text" placeholder="Search..." className="gap-0 self-stretch my-auto bg-transparent border-none focus:outline-none" aria-label="Search" />
                         </div>
-                        <div className='bg-white p-6 text-black'>
-                        <form onSubmit={handleSubmit} className="bg-white p-6 text-black">
-                            <div className="">
+                        <div>
+                            <Noti />
+                        </div>
+                    </div>
+
+                    {AddPropert ? 
+                        <>
+                            <div className='text-black font-semibold text-2xl'>
+                                Add Property
+                            </div>
+                            <div className='bg-white p-6 text-black'>
+                                <form onSubmit={handleSubmit} className="bg-white p-6 text-black">
+                                    <div className="">
                                 <div className='grid grid-cols-1 gap-4 lg:grid-cols-3'>
                                     <div className='flex flex-col gap-2'>
                                         <label htmlFor="propertyType" className='text-neutral-500'>Property Type</label>
@@ -178,70 +198,70 @@ return (
                                         <input name="rankings" type="number" value={formData.rankings} onChange={handleChange} style={{border:"1px solid #E5E5E5"}} className='px-2 py-1 rounded-md outline-none' />
                                     </div>
                                 </div>
+                                    </div>
+                                    <div className='pt-2 grid grid-cols-1 gap-4 lg:grid-cols-2'>
+                                        <div className='flex flex-col gap-2'>
+                                            <label htmlFor="description" className='text-neutral-500'>Description</label>
+                                            <textarea name="description" value={formData.description} onChange={handleChange} style={{border:"1px solid #E5E5E5"}} className='px-2 py-1 rounded-md outline-none'></textarea>
+                                        </div>
+                                        <div className='flex flex-col gap-2'>
+                                            <label htmlFor="features" className='text-neutral-500'>Key Features and Amenities</label>
+                                            <textarea name="features" value={formData.features} onChange={handleChange} style={{border:"1px solid #E5E5E5"}} className='px-2 py-1 rounded-md outline-none'></textarea>
+                                        </div>
+                                    </div>
+                                    <div className='pt-2 grid grid-cols-1 gap-4 lg:grid-cols-2'>
+                                        <div className='flex flex-col gap-2'>
+                                            <label htmlFor="address" className='text-neutral-500'>Address</label>
+                                            <input name="address" type="text" value={formData.address} onChange={handleChange} style={{border:"1px solid #E5E5E5"}} className='px-2 py-1 rounded-md outline-none' />
+                                        </div>
+                                        <div className='flex flex-col gap-2'>
+                                            <label htmlFor="addressLink" className='text-neutral-500'>Address Link (Google Maps)</label>
+                                            <input name="addressLink" type="text" value={formData.addressLink} onChange={handleChange} style={{border:"1px solid #E5E5E5"}} className='px-2 py-1 rounded-md outline-none' />
+                                        </div>
+                                    </div>
+                                    <div className='pt-8 flex flex-col gap-2'>
+                                        <div className='text-neutral-500'>
+                                        Additional Features
+                                        </div>
+                                        <div className='flex flex-wrap gap-4 pt-1'>
+                                        {additionalFeaturesList.map((feature) => (
+                                            <label key={feature.name} className='flex items-center'>
+                                            <input
+                                                type="checkbox"
+                                                name={feature.name}
+                                                checked={formData.additionalFeatures[feature.name]}
+                                                onChange={handleCheckboxChange}
+                                                className='mr-2 text-neutral-600'
+                                            />
+                                            {feature.label}
+                                            </label>
+                                        ))}
+                                        </div>
+                                    </div>
+                                    <div className="mt-8 flex gap-4">
+                                        <button type="submit" className="bg-green-500 text-white px-4 py-2 rounded-md">Submit</button>
+                                        <button type="button" onClick={handleClear} className="border text-neutral-900 px-4 py-2 rounded-md">Clear</button>
+                                    </div>
+                                </form>
                             </div>
-                            <div className='pt-2 grid grid-cols-1 gap-4 lg:grid-cols-2'>
-                                <div className='flex flex-col gap-2'>
-                                    <label htmlFor="description" className='text-neutral-500'>Description</label>
-                                    <textarea name="description" value={formData.description} onChange={handleChange} style={{border:"1px solid #E5E5E5"}} className='px-2 py-1 rounded-md outline-none'></textarea>
-                                </div>
-                                <div className='flex flex-col gap-2'>
-                                    <label htmlFor="features" className='text-neutral-500'>Key Features and Amenities</label>
-                                    <textarea name="features" value={formData.features} onChange={handleChange} style={{border:"1px solid #E5E5E5"}} className='px-2 py-1 rounded-md outline-none'></textarea>
-                                </div>
+                        </> : 
+                        <>
+                            <div className='flex w-full items-center justify-between'>
+                                <div><div className='text-black font-semibold text-2xl'>Add Property</div></div>
+                                <div><button onClick={() => setAddProperty(true)} className="self-end px-14 py-1 text-base text-white whitespace-nowrap bg-emerald-500 rounded-lg border border-solid border-emerald-500 border-opacity-80 shadow-[0px_2px_4px_rgba(0,0,0,0.25)] max-md:px-5 max-md:mt-10">Add Property</button></div>
                             </div>
-                            <div className='pt-2 grid grid-cols-1 gap-4 lg:grid-cols-2'>
-                                <div className='flex flex-col gap-2'>
-                                    <label htmlFor="address" className='text-neutral-500'>Address</label>
-                                    <input name="address" type="text" value={formData.address} onChange={handleChange} style={{border:"1px solid #E5E5E5"}} className='px-2 py-1 rounded-md outline-none' />
-                                </div>
-                                <div className='flex flex-col gap-2'>
-                                    <label htmlFor="addressLink" className='text-neutral-500'>Address Link (Google Maps)</label>
-                                    <input name="addressLink" type="text" value={formData.addressLink} onChange={handleChange} style={{border:"1px solid #E5E5E5"}} className='px-2 py-1 rounded-md outline-none' />
-                                </div>
-                            </div>
-                            <div className='pt-8 flex flex-col gap-2'>
-                                <div className='text-neutral-500'>
-                                Additional Features
-                                </div>
-                                <div className='flex flex-wrap gap-4 pt-1'>
-                                {additionalFeaturesList.map((feature) => (
-                                    <label key={feature.name} className='flex items-center'>
-                                    <input
-                                        type="checkbox"
-                                        name={feature.name}
-                                        checked={formData.additionalFeatures[feature.name]}
-                                        onChange={handleCheckboxChange}
-                                        className='mr-2 text-neutral-600'
-                                    />
-                                    {feature.label}
-                                    </label>
+                            <FilterComponent onSearch={handleSearch} />
+                            <div className='flex flex-wrap w-full gap-4'>
+                                {properties.map((property) => (
+                                    <PropertyCard key={property.id} property={property} verbose={true} />
                                 ))}
-                                </div>
                             </div>
-                            <div className="mt-8 flex gap-4">
-                                <button type="submit" className="bg-green-500 text-white px-4 py-2 rounded-md">Submit</button>
-                                <button type="button" onClick={handleClear} className="border text-neutral-900 px-4 py-2 rounded-md">Clear</button>
-                            </div>
-                        </form>
-                        </div>
-                    </> :
-                    <>
-                        <div className='flex w-full items-center justify-between'>
-                            <div><div className='text-black font-semibold text-2xl'>Add Property</div></div>
-                            <div><button onClick={()=>setAddProperty(true)} className="self-end px-14 py-1 text-base text-white whitespace-nowrap bg-emerald-500 rounded-lg border border-solid border-emerald-500 border-opacity-80 shadow-[0px_2px_4px_rgba(0,0,0,0.25)] max-md:px-5 max-md:mt-10">Add Property</button></div>
-                        </div>
-                        <FilterComponent onSearch={handleSearch} />
-                        <div className='flex flex-wrap w-full gap-4'>
-                            <PropertyCard verbose={true}/>
-                            <PropertyCard verbose={true}/>
-                            <PropertyCard verbose={true}/>
-                        </div>
-                    </>
-                }
+                        </>
+                    }
+                </div>
             </div>
-        </div>
-    </main>
-)
+        </main>
+    )
 }
 
-export default Property
+export default Property;
