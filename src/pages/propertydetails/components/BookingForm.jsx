@@ -1,5 +1,7 @@
+import Cookies from 'js-cookie';
 import React, { useState } from "react";
 import { createBooking } from "../../../firebase/booking";
+import { getUserDetails } from "../../../firebase/user";
 
 function CustomForm({SetBookingForm,property}) {
   const [formData, setFormData] = useState({
@@ -21,10 +23,14 @@ function CustomForm({SetBookingForm,property}) {
 
   const handleConfirmClick = async() => {
     console.log(formData);
+    const name = Cookies.get("name")
+    const email = Cookies.get("email")
+    const id = await getUserDetails(name,email);
     try {
         await createBooking({
             ...formData,
             propertyname: property.propertyType,
+            id:id
         });
         SetBookingForm(true)
     } catch (error) {

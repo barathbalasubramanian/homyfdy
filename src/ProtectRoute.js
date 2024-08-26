@@ -15,7 +15,7 @@ function ProtectedRoute({ children }) {
           return;
         }
 
-        const response = await axios.get('http://localhost:8000/protected', {
+        const response = await axios.get('https://homyfdy-backend-1.onrender.com/protected', {
           headers: {
             Authorization: token,
           },

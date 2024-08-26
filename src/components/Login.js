@@ -21,7 +21,7 @@ function Login({ closeLogin }) {
 
   const handleCompareClick = async () => {
     try {
-      const response = await axios.post('http://localhost:8000/auth/login', formData);
+      const response = await axios.post('https://homyfdy-backend-1.onrender.com/auth/login', formData);
       const tokenData = response.data;
       const token = response.data.token;
       Cookies.set('token', token, { expires: 7 })

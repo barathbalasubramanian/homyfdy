@@ -13,24 +13,27 @@ async function createUser(userData) {
   }
 }
 
-// get user details by giving phonenumber
-async function getUserDetails(phoneNumber) {
+async function getUserDetails(name,email) {
   try {
     const userRef = await usersCollection
-      .where("number", "==", phoneNumber)
+      .where("name", "==", name)
+      .where("email", "==", email)
       .get();
+
     if (userRef.empty) {
-      console.log("No user found with the given phone number.");
+      console.log("No user found with the given name and email.");
       return null;
     }
+
     const userDoc = userRef.docs[0];
     const userDetails = userDoc.data();
     console.log("User details:", userDetails);
-    return userDetails.name;
+    return userDoc.id;
   } catch (error) {
     console.error("Error getting user details: ", error);
   }
 }
+
 
 // Get a user by ID
 async function getUser(userId) {

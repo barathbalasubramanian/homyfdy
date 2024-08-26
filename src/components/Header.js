@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import Login from './Login';
 import { useNavigate } from 'react-router-dom';
-import Cookies from 'js-cookie';
 import axios from 'axios';
+import Cookies from 'js-cookie';
 
 function Header() {
 
@@ -16,7 +16,7 @@ function Header() {
           setIsLoginOpen(true);
           return;
         }
-        const response = await axios.get('http://localhost:8000/protected', {
+        const response = await axios.get('https://homyfdy-backend-1.onrender.com/protected', {
           headers: {
             Authorization: token,
           },
