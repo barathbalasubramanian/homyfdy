@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import SideBar from "./SideBar";
 import VisitsPropertyCard from "./VisitsPropertyCard";
 import Style from './container.module.css'
-
+import { updateUserDocument } from "../../../firebase/userprofile";
 function MainContainer() {
   const [selected, setSelected] = useState("Dashboard");
   const [selected_, setSelected_] = useState("Completed");
@@ -30,8 +30,23 @@ function MainContainer() {
     });
   };
 
-  const handleClick = () => {
+  const handleClick = async() => {
     console.log(formData);
+    const phoneNumber = "72938843687"; 
+    try {
+      await updateUserDocument(phoneNumber, formData);
+      alert('User document updated successfully.');
+      setFormData({
+        name: "",
+        email: "",
+        number: "",
+        pincode: "",
+        city: "",
+      });
+    } catch (error) {
+      console.error('Error updating user document:', error);
+      alert('Failed to update user document.');
+    }
   };
 
   return (
