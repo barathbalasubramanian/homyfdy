@@ -12,7 +12,7 @@ function PropertyCard({property,verbose}) {
       <div><img src="/assets/property.svg" alt="Property" /></div>
       <div>
         <div className={`text-lg ${!verbose ? 'text-white' : 'text-black'}`}>{property.propertyType}</div>
-        <div style={{color:"grey"}}>{property.description}</div>
+        <div style={{color:"grey"}}> <div className='truncate-text'>{property.description} </div><span>Readmore</span> </div>
       </div>
       {
         !verbose && (

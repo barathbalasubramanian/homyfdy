@@ -1,14 +1,15 @@
 import React, { useState } from 'react'
 import OtpInput from 'react-otp-input';
 import { createUser } from '../firebase/user';
+import axios from 'axios';
+import Cookies from 'js-cookie';
 
 function Login({ closeLogin }) {
-
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     number: '',
-    city: '', // Added city to formData
+    city: '',
   });
 
   const handleChange = (e) => {
@@ -19,11 +20,23 @@ function Login({ closeLogin }) {
   };
 
   const handleCompareClick = async () => {
-    console.log(formData);
+    try {
+      const response = await axios.post('http://localhost:8000/auth/login', formData);
+      const tokenData = response.data;
+      const token = response.data.token;
+      Cookies.set('token', token, { expires: 7 })
+      Cookies.set('name', formData.name, { expires: 7 });
+      Cookies.set('number', formData.number, { expires: 7 });
+      Cookies.set('email', formData.email, { expires: 7 });
+      Cookies.set('city', formData.city, { expires: 7 });
+    } catch (error) {
+      console.error('Error submitting data:', error);
+      alert('Failed to submit data');
+    }
     try {
       await createUser({
         ...formData,
-        registeredAt: Date.now() // Added timestamp for registration
+        registeredAt: Date.now()
       });
     } catch (error) {
       alert(error);

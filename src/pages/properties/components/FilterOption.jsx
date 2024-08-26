@@ -24,7 +24,7 @@ function FilterOption({ icon, label, options }) {
             <select
               id={label.toLowerCase().replace(/\s/g, "-")}
               style={{ backgroundColor: "#141414" }}
-              className="flex outline-none gap-3 items-center px-5 py-2 pl-2 w-full text-sm font-medium leading-none rounded-md border border-solid text-stone-500 appearance-none"
+              className="flex outline-none border-none gap-3 items-center px-5 py-2 pl-2 w-full text-sm font-medium leading-none rounded-md border text-stone-500 appearance-none"
             >
               {options.map((option, index) => (
                 <option key={index} value={option}>

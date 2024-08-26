@@ -1,9 +1,44 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Login from './Login';
 import { useNavigate } from 'react-router-dom';
+import Cookies from 'js-cookie';
+import axios from 'axios';
 
 function Header() {
-  const [isLoginOpen, setIsLoginOpen] = useState(false);
+
+  const [isLoginOpen, setIsLoginOpen] = useState(null);
+
+  useEffect(() => {
+    const verifyToken = async () => {
+      try {
+        const token = Cookies.get('token');
+        if (!token) {
+          setIsLoginOpen(true);
+          return;
+        }
+        const response = await axios.get('http://localhost:8000/protected', {
+          headers: {
+            Authorization: token,
+          },
+        });
+        if (response.status === 200) {
+          setIsLoginOpen(false);
+        } else {
+          setIsLoginOpen(true);
+        }
+      } catch (error) {
+        const allCookies = Cookies.get();
+          for (const cookie in allCookies) {
+            Cookies.remove(cookie);
+        }
+        console.error('Error fetching protected data:', error);
+        setIsLoginOpen(true);
+      }
+    };
+
+    verifyToken();
+  }, []);
+
 
   const handleUserClick = () => {
     setIsLoginOpen(true);

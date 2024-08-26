@@ -13,7 +13,7 @@ function PropertiesPage() {
       <Header/>
       <Head/>
       <div className="searchbar relative flex flex-col items-center px-20 w-full max-md:px-5 max-md:max-w-full">
-        <div className='absolute -top-10  flex flex-col items-center w-4/5 max-md:w-full max-md:px-3'>
+        <div className='absolute -top-10 max-md:top-10 flex flex-col items-center w-4/5 max-md:w-full max-md:px-3'>
           <SearchBar />
           <FilterOptions />
         </div>
