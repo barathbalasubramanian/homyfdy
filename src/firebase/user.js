@@ -1,51 +1,70 @@
-const db = require('./firebase'); 
-const usersCollection = db.collection('users');
-const housesCollection = db.collection('houses');
+const db = require("./firebase");
+const usersCollection = db.collection("users");
+const housesCollection = db.collection("houses");
 
 // Create a new user
 async function createUser(userData) {
-    try {
-        const userRef = await usersCollection.add(userData);
-        console.log(`User created with ID: ${userRef.id}`);
-        return userRef.id;
-    } catch (error) {
-        console.error("Error creating user: ", error);
+  try {
+    const userRef = await usersCollection.add(userData);
+    console.log(`User created with ID: ${userRef.id}`);
+    return userRef.id;
+  } catch (error) {
+    console.error("Error creating user: ", error);
+  }
+}
+
+// get user details by giving phonenumber
+async function getUserDetails(phoneNumber) {
+  try {
+    const userRef = await usersCollection
+      .where("number", "==", phoneNumber)
+      .get();
+    if (userRef.empty) {
+      console.log("No user found with the given phone number.");
+      return null;
     }
+    const userDoc = userRef.docs[0];
+    const userDetails = userDoc.data();
+    console.log("User details:", userDetails);
+    return userDetails.name;
+  } catch (error) {
+    console.error("Error getting user details: ", error);
+  }
 }
 
 // Get a user by ID
 async function getUser(userId) {
-    try {
-        const userDoc = await usersCollection.doc(userId).get();
-        if (userDoc.exists) {
-            return userDoc.data();
-        } else {
-            console.log("No such user!");
-            return null;
-        }
-    } catch (error) {
-        console.error("Error getting user: ", error);
+  try {
+    const userDoc = await usersCollection.doc(userId).get();
+    if (userDoc.exists) {
+      return userDoc.data();
+    } else {
+      console.log("No such user!");
+      return null;
     }
+  } catch (error) {
+    console.error("Error getting user: ", error);
+  }
 }
 
 // Update a user by ID
 async function updateUser(userId, updatedData) {
-    try {
-        await usersCollection.doc(userId).update(updatedData);
-        console.log(`User with ID: ${userId} updated successfully.`);
-    } catch (error) {
-        console.error("Error updating user: ", error);
-    }
+  try {
+    await usersCollection.doc(userId).update(updatedData);
+    console.log(`User with ID: ${userId} updated successfully.`);
+  } catch (error) {
+    console.error("Error updating user: ", error);
+  }
 }
 
 // Delete a user by ID
 async function deleteUser(userId) {
-    try {
-        await usersCollection.doc(userId).delete();
-        console.log(`User with ID: ${userId} deleted successfully.`);
-    } catch (error) {
-        console.error("Error deleting user: ", error);
-    }
+  try {
+    await usersCollection.doc(userId).delete();
+    console.log(`User with ID: ${userId} deleted successfully.`);
+  } catch (error) {
+    console.error("Error deleting user: ", error);
+  }
 }
 
 // Add watched history to a user
@@ -76,62 +95,64 @@ async function deleteUser(userId) {
 // }
 
 // Get all favorite houses with details for a user
+
 async function getAllFavoritesWithDetails(userId) {
-    try {
-        const userDoc = await usersCollection.doc(userId).get();
-        if (!userDoc.exists) {
-            console.log("No such user!");
-            return null;
-        }
-        
-        const favoriteIds = userDoc.data().favorite || [];
-        const favoriteDetailsPromises = favoriteIds.map(houseId => housesCollection.doc(houseId).get());
-        const favoriteDetails = await Promise.all(favoriteDetailsPromises);
-        
-        return favoriteDetails.map(doc => doc.data());
-    } catch (error) {
-        console.error("Error getting favorites with details: ", error);
+  try {
+    const userDoc = await usersCollection.doc(userId).get();
+    if (!userDoc.exists) {
+      console.log("No such user!");
+      return null;
     }
+
+    const favoriteIds = userDoc.data().favorite || [];
+    const favoriteDetailsPromises = favoriteIds.map((houseId) =>
+      housesCollection.doc(houseId).get()
+    );
+    const favoriteDetails = await Promise.all(favoriteDetailsPromises);
+
+    return favoriteDetails.map((doc) => doc.data());
+  } catch (error) {
+    console.error("Error getting favorites with details: ", error);
+  }
 }
 
 // Get specific favorite houses with details for a user
 async function getFavoritesWithDetails(houseIds) {
-    try {
-        const favoriteDetailsPromises = houseIds.map(houseId => housesCollection.doc(houseId).get());
-        const favoriteDetails = await Promise.all(favoriteDetailsPromises);
-        
-        return favoriteDetails.map(doc => doc.data());
-    } catch (error) {
-        console.error("Error getting specific favorites with details: ", error);
-    }
+  try {
+    const favoriteDetailsPromises = houseIds.map((houseId) =>
+      housesCollection.doc(houseId).get()
+    );
+    const favoriteDetails = await Promise.all(favoriteDetailsPromises);
+
+    return favoriteDetails.map((doc) => doc.data());
+  } catch (error) {
+    console.error("Error getting specific favorites with details: ", error);
+  }
 }
 
 //get all users
-async function getallUsers(){
-    try {
-        const usersSnapshot = await usersCollection.get();
-        const users = [];
-        usersSnapshot.forEach(doc => {
-            users.push({ id: doc.id, ...doc.data() });
-        });
-        return users;
-    } catch (error) {
-        console.error("Error getting all Users: ", error);
-    }
+async function getallUsers() {
+  try {
+    const usersSnapshot = await usersCollection.get();
+    const users = [];
+    usersSnapshot.forEach((doc) => {
+      users.push({ id: doc.id, ...doc.data() });
+    });
+    return users;
+  } catch (error) {
+    console.error("Error getting all Users: ", error);
+  }
 }
 
-
-
-
 module.exports = {
-    createUser,
-    getUser,
-    updateUser,
-    deleteUser,
-    // addWatchedHistory,
-    // addFavorite,
-    getAllFavoritesWithDetails,
-    getFavoritesWithDetails,
-    getallUsers
+  createUser,
+  getUser,
+  updateUser,
+  deleteUser,
+  // addWatchedHistory,
+  // addFavorite,
+  getAllFavoritesWithDetails,
+  getFavoritesWithDetails,
+  getallUsers,
+  getUserDetails
 };
-    

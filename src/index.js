@@ -10,7 +10,7 @@ import Profile from "./pages/Contact/contact";
 import PropertiesPage from "./pages/properties/propertiesPage";
 import About from "./pages/aboutus/About";
 import ComparePage from "./pages/compare/ComparePage";
-import Connect from "./pages/Contect.js/Connect";
+import Connect from "./pages/Contect/Connect";
 import PropertyDetails from "./pages/propertydetails/PropertyDetails";
 import Admin from "./admin/Admin";
 

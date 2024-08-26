@@ -1,35 +1,38 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Noti from './Noti';
+import { getAllBookings } from '../../firebase/booking';
 
 function Bookings() {
-  const users = [
-    {
-      id: 1,
-      name: 'John Doe',
-      registrationDate: '2024-08-01',
-      city: 'New York',
-      phoneNumber: '+1 123-456-7890',
-      email: 'john.doe@example.com',
-    },
-    {
-      id: 2,
-      name: 'Jane Smith',
-      registrationDate: '2024-07-25',
-      city: 'Los Angeles',
-      phoneNumber: '+1 098-765-4321',
-      email: 'jane.smith@example.com',
-    },
-    {
-      id: 3,
-      name: 'Mark Johnson',
-      registrationDate: '2024-08-10',
-      city: 'Chicago',
-      phoneNumber: '+1 234-567-8901',
-      email: 'mark.johnson@example.com',
-    },
-  ];
+
+  const [Bookings,SetBookings] = useState([]);
+    const fetchBookings = async () => {
+      try {
+        const fetchedBookings = await getAllBookings();
+        SetBookings(fetchedBookings);
+        console.log(fetchedBookings);
+      } catch (error) {
+        console.error("Error fetching FAQs:", error);
+      }
+    };
+
+    useEffect(() => {
+      fetchBookings();
+    }, []);
+
+    const formatDateTime = (datetime) => {
+      const date = new Date(datetime);
+      const options = { 
+        month: 'long', 
+        day: '2-digit', 
+        year: 'numeric', 
+        hour: 'numeric', 
+        minute: '2-digit', 
+        hour12: true 
+      };
+      return date.toLocaleString('en-US', options).replace(',', ' at');
+    };
   
-  return (
+    return (
     <div className="overflow-hidden py-6 px-8 bg-green-50 max-md:pr-5 min-h-screen">
       <main className="flex flex-col w-[100%] max-md:ml-0 max-md:w-full">
         <div className="flex flex-col w-full max-md:mt-10 max-md:max-w-full">
@@ -51,8 +54,8 @@ function Bookings() {
                     <p className="mt-1.5 text-lg leading-tight">List of Booked Properties</p>
                   </header>
                 </div>
-                <div>
-                  <button className="self-end px-11 py-2 text-base text-white whitespace-nowrap bg-emerald-500 rounded-lg border border-solid border-emerald-500 border-opacity-80 shadow-[0px_2px_4px_rgba(0,0,0,0.25)] max-md:px-5 max-md:mt-10">
+                <div onClick={()=>fetchBookings()}>
+                  <button className="self-end outline-none px-11 py-2 text-base text-white whitespace-nowrap bg-emerald-500 rounded-lg border border-solid border-emerald-500 border-opacity-80 shadow-[0px_2px_4px_rgba(0,0,0,0.25)] max-md:px-5 max-md:mt-10">
                     Refresh
                   </button>
                 </div>
@@ -63,19 +66,21 @@ function Bookings() {
           {/* User List */}
           <div className="flex flex-col w-full text-black bg-white mt-6 rounded-lg shadow-sm">
             <div className="flex w-full bg-green-100 p-4 font-bold text-lg border-b-2 border-gray-200">
-              <div className="w-1/5 text-[16px]">Name</div>
-              <div className="w-1/5 text-[16px]">Registration Date</div>
-              <div className="w-1/5 text-[16px]">City</div>
-              <div className="w-1/5 text-[16px]">Phone Number</div>
-              <div className="w-1/5 text-[16px]">Email</div>
+              <div className="w-1/6 text-center text-[16px]">Name</div>
+              <div className="w-1/6 text-center text-[16px]">Phone Number</div>
+              <div className="w-1/6 text-center text-[16px]">Email</div>
+              <div className="w-1/6 text-center text-[16px]">Booking Date</div>
+              <div className="w-1/6 text-center text-[16px]">Property name</div>
+              <div className="w-1/6 text-center text-[16px]">Property Type</div>
             </div>
-            {users.map((user) => (
+            {Bookings.map((user) => (
               <div key={user.id} className="flex items-center w-full p-4 border-b border-gray-200">
-                <div className="w-1/5 overflow-scroll text-[14px]">{user.name}</div>
-                <div className="w-1/5 overflow-scroll text-[14px]">{user.registrationDate}</div>
-                <div className="w-1/5 overflow-scroll text-[14px]">{user.city}</div>
-                <div className="w-1/5 overflow-scroll text-[14px]">{user.phoneNumber}</div>
-                <div className="w-1/5 overflow-scroll text-[14px]">{user.email}</div>
+                <div className="w-1/6 text-center overflow-scroll text-nowrap mr-4 text-[14px]">{user.name}</div>
+                <div className="w-1/6 text-center overflow-scroll text-nowrap mr-4 text-[14px]">{user.phoneNumber}</div>
+                <div className="w-1/6 text-center overflow-scroll text-nowrap mr-4 text-[14px]">{user.email}</div>
+                <div className="w-1/6 text-center overflow-scroll text-nowrap mr-4 text-[14px]">{formatDateTime(user.datetime)}</div>
+                <div className="w-1/6 text-center overflow-scroll text-nowrap mr-4 text-[14px]">{user.propertyname}</div>
+                <div className="w-1/6 text-center overflow-scroll text-nowrap mr-4 text-[14px]">{user.name}</div>
               </div>
             ))}
           </div>

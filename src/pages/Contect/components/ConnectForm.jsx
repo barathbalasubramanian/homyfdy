@@ -3,13 +3,24 @@ import FormInput from './FormInput.jsx';
 import FormSelect from './FormSelect';
 import FormTextArea from './FormTextArea';
 import Button from './Button';
+import { createEnquiry } from '../../../firebase/enquiries.js';
+import { useLocation } from 'react-router-dom';
+import { getUserDetails } from '../../../firebase/user.js';
 
 const ConnectForm = () => {
+
     const [phone, setPhone] = useState('');
     const [inquiryType, setInquiryType] = useState('');
     const [hearAbout, setHearAbout] = useState('');
     const [message, setMessage] = useState('');
     const [isChecked, setIsChecked] = useState(false);
+
+    const location = useLocation();
+    const { propertyType } = location.state || {};
+
+    if (!propertyType) {
+        return <div>No property type available</div>;
+    }
 
     const inquiryTypes = ['Select Inquiry Type', 'General Inquiry', 'Property Listing', 'Buying', 'Selling'];
     const hearAboutUs = ['Select', 'Friend', 'Social Media', 'Advertisement', 'Other'];
@@ -18,7 +29,7 @@ const ConnectForm = () => {
         setIsChecked(!isChecked);
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async(e) => {
         e.preventDefault();
         if (isChecked) {
             console.log({
@@ -26,13 +37,25 @@ const ConnectForm = () => {
                 inquiryType,
                 hearAbout,
                 message,
+                SelectedProperty:propertyType
             });
+            const Name = await getUserDetails(phone)
+            await createEnquiry({
+                name: Name,
+                phone:phone,
+                inquiryType:inquiryType,
+                hearAbout:hearAbout,
+                message:message,
+                SelectedProperty:propertyType
+            })
         } else {
             alert('Please agree to the terms and conditions.');
         }
     };
 
     return (
+
+        propertyType ? (
         <form 
             onSubmit={handleSubmit} 
             className="flex flex-col justify-center p-20 mt-24 w-full rounded-xl border border-solid border-neutral-800 max-md:px-5 max-md:mt-10 max-md:max-w-full"
@@ -87,7 +110,7 @@ const ConnectForm = () => {
                     </div>
                 </div>
             </div>
-        </form>
+        </form> ) : <div>No property data available</div>
     );
 };
 

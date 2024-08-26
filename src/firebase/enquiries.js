@@ -1,5 +1,4 @@
 const db = require('./firebase'); // Import the Firestore instance
-const { Timestamp } = require('@google-cloud/firestore');
 
 const enquiriesCollection = db.collection('enquiries');
 
@@ -93,51 +92,47 @@ async function getAllEnquiries() {
     }
 }
 
-//get enquiries count monthly of current year
-async function getEnquiriesCountByMonth() {
-    try {
-        const currentYear = new Date().getFullYear();
-        const startOfYear = new Date(currentYear, 0, 1); // January 1st of the current year
-        const endOfYear = new Date(currentYear + 1, 0, 1); // January 1st of the next year
+// //get enquiries count monthly of current year
+// async function getEnquiriesCountByMonth() {
+//     try {
+//         const currentYear = new Date().getFullYear();
+//         const startOfYear = new Date(currentYear, 0, 1); // January 1st of the current year
+//         const endOfYear = new Date(currentYear + 1, 0, 1); // January 1st of the next year
         
-        // Convert to Firestore Timestamp
-        const startTimestamp = Timestamp.fromDate(startOfYear);
-        const endTimestamp = Timestamp.fromDate(endOfYear);
+//         // Convert to Firestore Timestamp
+//         const startTimestamp = Timestamp.fromDate(startOfYear);
+//         const endTimestamp = Timestamp.fromDate(endOfYear);
 
-        // Query to get enquiries from the start of the year to the end of the year
-        const enquiriesSnapshot = await enquiriesCollection
-            .where('created_at', '>=', startTimestamp)
-            .where('created_at', '<', endTimestamp)
-            .get();
+//         // Query to get enquiries from the start of the year to the end of the year
+//         const enquiriesSnapshot = await enquiriesCollection
+//             .where('created_at', '>=', startTimestamp)
+//             .where('created_at', '<', endTimestamp)
+//             .get();
 
-        // Initialize an array to hold counts for each month
-        const monthCounts = Array(12).fill(0);
+//         // Initialize an array to hold counts for each month
+//         const monthCounts = Array(12).fill(0);
 
-        // Process each enquiry
-        enquiriesSnapshot.forEach(doc => {
-            const data = doc.data();
-            const createdAt = data.created_at.toDate(); // Convert Timestamp to Date
-            const month = createdAt.getMonth(); // Get month (0-based index)
+//         // Process each enquiry
+//         enquiriesSnapshot.forEach(doc => {
+//             const data = doc.data();
+//             const createdAt = data.created_at.toDate(); // Convert Timestamp to Date
+//             const month = createdAt.getMonth(); // Get month (0-based index)
             
-            // Increment the count for the appropriate month
-            monthCounts[month]++;
-        });
+//             // Increment the count for the appropriate month
+//             monthCounts[month]++;
+//         });
 
-        // Create an array with month names and their counts
-        const result = monthCounts.map((count, index) => ({
-            month: index + 1, // Months are 1-based (1 for January, 2 for February, etc.)
-            count
-        }));
+//         // Create an array with month names and their counts
+//         const result = monthCounts.map((count, index) => ({
+//             month: index + 1, // Months are 1-based (1 for January, 2 for February, etc.)
+//             count
+//         }));
 
-        return result;
-    } catch (error) {
-        console.error("Error getting enquiries count by month: ", error);
-    }
-}
-
-
-
-
+//         return result;
+//     } catch (error) {
+//         console.error("Error getting enquiries count by month: ", error);
+//     }
+// }
 
 module.exports = {
     createEnquiry,
@@ -147,5 +142,5 @@ module.exports = {
     getEnquiriesByHouse,
     getEnquiriesByUser,
     getAllEnquiries,
-    getEnquiriesCountByMonth
+    // getEnquiriesCountByMonth
 };

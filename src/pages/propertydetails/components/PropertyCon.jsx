@@ -17,9 +17,9 @@ function PropertyCon({property}) {
         <div className="flex gap-5 max-md:flex-col">
           <div className="flex flex-col w-6/12 max-md:ml-0 max-md:w-full">
             <div className="flex flex-col w-full max-md:max-w-full">
-              <BookingButtons />
+              <BookingButtons property={property}/>
               <Description property={property}/>
-              <ContactUs manager={property.manager} phoneNumber={property.contact} rankings={property.rankings}/>
+              <ContactUs property={property} manager={property.manager} phoneNumber={property.contact} rankings={property.rankings}/>
             </div>
           </div>
           <div className="flex flex-col ml-5 w-6/12 max-md:ml-0 max-md:w-full">

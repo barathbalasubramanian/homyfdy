@@ -1,37 +1,23 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Noti from './Noti';
+import { getAllEnquiries } from '../../firebase/enquiries';
 
 function Responses() {
-  
-    const users = [
-        {
-            id: 1,
-            name: "John Doe",
-            phoneNumber: "123-456-7890",
-            inquiryType: "Purchase",
-            selectedProperty: "Villa Sunshine",
-            siteVisit: "Yes",
-            message: "Looking forward to the site visit.",
-        },
-        {
-            id: 2,
-            name: "Jane Smith",
-            phoneNumber: "098-765-4321",
-            inquiryType: "Rental",
-            selectedProperty: "Oceanview Apartment",
-            siteVisit: "No",
-            message: "Please send more details about the property.",
-        },
-        {
-            id: 3,
-            name: "Michael Johnson",
-            phoneNumber: "555-555-5555",
-            inquiryType: "Lease",
-            selectedProperty: "Downtown Office",
-            siteVisit: "Yes",
-            message: "Interested in leasing the office space.",
-        },
-    ];
+
+    const [responses,Setresponses] = useState([]);
+    const fetchResponses = async () => {
+      try {
+        const fetchedResponses = await getAllEnquiries();
+        Setresponses(fetchedResponses);
+        console.log(fetchedResponses);
+      } catch (error) {
+        console.error("Error fetching FAQs:", error);
+      }
+    };
+
+    useEffect(() => {
+      fetchResponses();
+    }, []);
 
     return (
     <div className="overflow-hidden py-6 px-8 bg-green-50 max-md:pr-5 min-h-screen">
@@ -55,7 +41,7 @@ function Responses() {
                     <p className="mt-1.5 text-lg leading-tight">List of Users</p>
                   </header>
                 </div>
-                <div>
+                <div onClick={()=>fetchResponses()}>
                   <button className="self-end px-11 py-2 text-base text-white whitespace-nowrap bg-emerald-500 rounded-lg border border-solid border-emerald-500 border-opacity-80 shadow-[0px_2px_4px_rgba(0,0,0,0.25)] max-md:px-5 max-md:mt-10">
                     Refresh
                   </button>
@@ -66,21 +52,19 @@ function Responses() {
 
           <div className="flex flex-col w-full text-black bg-white mt-6 rounded-lg shadow-sm">
             <div className="flex w-full bg-green-100 p-4 font-bold text-lg border-b-2 border-gray-200">
-              <div className="w-1/6 text-[16px]">Name</div>
-              <div className="w-1/6 text-[16px]">Phone Number</div>
-              <div className="w-1/6 text-[16px]">Inquiry Type</div>
-              <div className="w-1/6 text-[16px]">Selected Property</div>
-              <div className="w-1/6 text-[16px]">Site Visit</div>
-              <div className="w-1/6 text-[16px]">Message</div>
+              <div className="w-1/5 text-[16px]">Name</div>
+              <div className="w-1/5 text-[16px]">Phone Number</div>
+              <div className="w-1/5 text-[16px]">Inquiry Type</div>
+              <div className="w-1/5 text-[16px]">Selected Property</div>
+              <div className="w-1/5 text-[16px]">Message</div>
             </div>
-            {users.map((user) => (
-              <div key={user.id} className="flex items-center w-full p-4 border-b border-gray-200">
-                <div className="w-1/6 overflow-scroll text-[14px]">{user.name}</div>
-                <div className="w-1/6 overflow-scroll text-[14px]">{user.phoneNumber}</div>
-                <div className="w-1/6 overflow-scroll text-[14px]">{user.inquiryType}</div>
-                <div className="w-1/6 overflow-scroll text-[14px]">{user.selectedProperty}</div>
-                <div className="w-1/6 overflow-scroll text-[14px]">{user.siteVisit}</div>
-                <div className="w-1/6 overflow-scroll text-[14px]">{user.message}</div>
+            {responses.map((response) => (
+              <div key={response.id} className="flex items-center w-full p-4 border-b border-gray-200">
+                <div className="w-1/5 overflow-scroll text-[14px]">{response.name}</div>
+                <div className="w-1/5 overflow-scroll text-[14px]">{response.phone}</div>
+                <div className="w-1/5 overflow-scroll text-[14px]">{response.inquiryType}</div>
+                <div className="w-1/5 overflow-scroll text-[14px]">{response.SelectedProperty}</div>
+                <div className="w-1/5 overflow-scroll text-[14px]">{response.message}</div>
               </div>
             ))}
           </div>

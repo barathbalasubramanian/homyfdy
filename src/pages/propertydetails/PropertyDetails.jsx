@@ -6,6 +6,7 @@ import Ques from '../Home/components/Ques'
 import FeaturedProperties from '../Home/components/FeaturedProperties'
 import PropertyCon from './components/PropertyCon'
 import { useLocation } from 'react-router-dom'
+import CustomForm from './components/BookingForm'
 
 function PropertyDetails() {
   const location = useLocation();
