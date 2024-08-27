@@ -1,7 +1,7 @@
 import Cookies from 'js-cookie';
 import React, { useState } from "react";
 import { createBooking } from "../../../firebase/booking";
-import { getUserDetails } from "../../../firebase/user";
+import { getUserDetails_, updateUser } from "../../../firebase/user";
 
 function CustomForm({SetBookingForm,property}) {
   const [formData, setFormData] = useState({
@@ -22,21 +22,47 @@ function CustomForm({SetBookingForm,property}) {
   }
 
   const handleConfirmClick = async() => {
-    console.log(formData);
     const name = Cookies.get("name")
     const email = Cookies.get("email")
-    const id = await getUserDetails(name,email);
+    const userDoc = await getUserDetails_(name, email);
+    var BookingId ;
     try {
-        await createBooking({
-            ...formData,
-            propertyname: property.propertyType,
-            id:id
-        });
-        SetBookingForm(true)
+      const id = await createBooking({
+          ...formData,
+          propertyname: property.propertyType,
+          id:userDoc.id,
+      });
+      BookingId = id
+      SetBookingForm(true)
     } catch (error) {
         console.log(error)
         alert(error)
     }
+
+    const currentVisit = {
+      propertyId: property.id,
+      timestamp: new Date().toISOString(),
+      BookingId:BookingId
+    };
+    
+    let updatedData;
+    if (userDoc.data.bookings) {
+      const existingVisitIndex = userDoc.data.bookings.findIndex(
+        visit => visit.propertyId === property.id
+      );
+      if (existingVisitIndex !== -1) {
+        userDoc.data.bookings[existingVisitIndex].timestamp = currentVisit.timestamp;
+        userDoc.data.bookings[existingVisitIndex].BookingId = currentVisit.BookingId;
+      } else {
+        userDoc.data.bookings.push(currentVisit);
+      }
+
+      updatedData = { bookings: userDoc.data.bookings };
+    } else {
+        updatedData = { bookings: [currentVisit] };
+    }
+    await updateUser(userDoc.id, updatedData);
+
   };
 
   return (

@@ -3,6 +3,7 @@ import OtpInput from 'react-otp-input';
 import { createUser } from '../firebase/user';
 import axios from 'axios';
 import Cookies from 'js-cookie';
+import { Favorite } from '@mui/icons-material';
 
 function Login({ closeLogin }) {
   const [formData, setFormData] = useState({
@@ -36,7 +37,10 @@ function Login({ closeLogin }) {
     try {
       await createUser({
         ...formData,
-        registeredAt: Date.now()
+        registeredAt: Date.now(),
+        visits: [],
+        likes: [],
+        favorites: [],
       });
     } catch (error) {
       alert(error);

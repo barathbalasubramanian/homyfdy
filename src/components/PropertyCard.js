@@ -1,9 +1,37 @@
+import Cookies from 'js-cookie';
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
+import { getUserDetails, getUserDetails_, updateUser } from '../firebase/user';
 
 function PropertyCard({property,verbose}) {
   const navigate = useNavigate();
-  const handleViewDetails = () => {
+  
+  const handleViewDetails = async () => {
+    const name = Cookies.get("name");
+    const email = Cookies.get("email");
+    const userDoc = await getUserDetails_(name, email);
+  
+    const currentVisit = {
+      propertyId: property.id,
+      timestamp: new Date().toISOString()
+    };
+    
+    let updatedData;
+    if (userDoc.data.visits) {
+      const existingVisitIndex = userDoc.data.visits.findIndex(
+        visit => visit.propertyId === property.id
+      );
+      if (existingVisitIndex !== -1) {
+        userDoc.data.visits[existingVisitIndex].timestamp = currentVisit.timestamp;
+      } else {
+        userDoc.data.visits.push(currentVisit);
+      }
+
+      updatedData = { visits: userDoc.data.visits };
+    } else {
+        updatedData = { visits: [currentVisit] };
+    }
+    await updateUser(userDoc.id, updatedData);
     navigate('/propertydetails', { state: { property } });
   };
 

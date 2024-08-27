@@ -13,7 +13,6 @@ import ComparePage from "./pages/compare/ComparePage";
 import Connect from "./pages/Contect/Connect";
 import PropertyDetails from "./pages/propertydetails/PropertyDetails";
 import Admin from "./admin/Admin";
-import { useAuth } from "../src/provider/AuthProvider";
 import ProtectedRoute from "./ProtectRoute";
 
 const router = createBrowserRouter([

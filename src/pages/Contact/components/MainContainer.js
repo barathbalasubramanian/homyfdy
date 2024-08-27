@@ -1,18 +1,88 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import SideBar from "./SideBar";
 import VisitsPropertyCard from "./VisitsPropertyCard";
 import Style from './container.module.css'
 import { updateUserDocument } from "../../../firebase/userprofile";
-function MainContainer() {
+import { getHouse } from "../../../firebase/house";
+function MainContainer({likes, booksCnt, viewCnt}) {
+
   const [selected, setSelected] = useState("Dashboard");
   const [selected_, setSelected_] = useState("Completed");
   const [activeStatus, setActiveStatus] = useState("Watched");
 
+  const [likedProperties, setlikedProperties] = useState([]);
+  const [viewedProperties, setviewedProperties] = useState([]);
+  const [bookedProperties, setbookedProperties] = useState([]);
+  const [likedPropertyData, setLikedPropertyData] = useState([]);
+  const [bookedPropertyData, setbookedPropertyData] = useState([]);
+  const [viewedPropertyData, setviewedPropertyData] = useState([]);
+
+  useEffect(() => {
+    const getPropertiesWithTwoLikes = () => {
+        for (let [key, value] of Object.entries(viewCnt)) {
+            setviewedProperties(prevProperties => [
+              ...prevProperties,
+              value['propertyId']
+            ]);
+        }
+        for (let [key, value] of Object.entries(likes)) {
+            setlikedProperties(prevProperties => [
+              ...prevProperties,
+              value['propertyId']
+            ]);
+        }
+        for (let [key, value] of Object.entries(booksCnt)) {
+            setbookedProperties(prevProperties => [
+              ...prevProperties,
+              value['propertyId']
+            ]);
+        }
+    };
+    getPropertiesWithTwoLikes();
+  }, [likes,booksCnt,viewCnt]);
+
+  useEffect(() => {
+    const fetchPropertyData = async () => {
+      if (likedProperties.length) {
+        const fetchPromises = likedProperties.map(propertyId => getHouse(propertyId));
+        try {
+          const data = await Promise.all(fetchPromises);
+          console.log(data)
+          setLikedPropertyData(data);
+        } catch (error) {
+          console.error('Error fetching property data:', error);
+        }
+      }
+      if (bookedProperties.length) {
+        const fetchPromises = bookedProperties.map(propertyId => getHouse(propertyId));
+        try {
+          const data = await Promise.all(fetchPromises);
+          console.log(data)
+          setbookedPropertyData(data);
+        } catch (error) {
+          console.error('Error fetching property data:', error);
+        }
+      }
+      if (viewedProperties.length) {
+        const fetchPromises = viewedProperties.map(propertyId => getHouse(propertyId));
+        try {
+          const data = await Promise.all(fetchPromises);
+          console.log(data)
+          setviewedPropertyData(data);
+        } catch (error) {
+          console.error('Error fetching property data:', error);
+        }
+      }
+    };
+
+    fetchPropertyData();
+  }, [likedProperties,bookedProperties,viewedProperties]); 
+
   const menuItems = [
-    { label: "Watched", count: 1 },
-    { label: "Favourite", count: 0 },
+    { label: "Watched", count: viewCnt.length | 0 },
+    { label: "Favourite", count: likes.length | 0},
     { label: "Site Visits", count: 0 },
-    { label: "Bookings", count: 0 },
+    { label: "Bookings", count: booksCnt.length | 0},
   ];
 
   const [formData, setFormData] = useState({
@@ -179,32 +249,32 @@ function MainContainer() {
                                 My Homyfyd journey
                             </div>
                             <div className="flex gap-4 mt-8 items-center max-md:flex-wrap max-md:justify-center max-md:mt-2">
-                                <div className="p-6 px-8 text-center"> 
-                                    <div><img src="/assets/viewed.svg" alt="Viewed" /></div>
+                                <div className="p-6 px-8 text-center gra rounded-md"> 
+                                    <div className=""><img src="/assets/viewed.svg" alt="Viewed" /></div>
                                     <div className="pt-2" style={{fontSize:"14px"}}>
                                         <div>Viewed</div>
-                                        <div>0 Properties</div>
+                                        <div>{viewCnt.length} Properties</div>
                                     </div>
                                 </div>
-                                <div className="p-6 px-8 text-center"> 
+                                <div className="p-6 px-8 text-center gra rounded-md"> 
                                     <div><img src="/assets/fav.svg" alt="Viewed" /></div>
                                     <div className="pt-2" style={{fontSize:"14px"}}>
                                         <div>Favourite</div>
-                                        <div>0 Properties</div>
+                                        <div>{likes.length} Properties</div>
                                     </div>
                                 </div>
-                                <div className="p-6 px-8 text-center"> 
+                                <div className="p-6 px-8 text-center gra rounded-md"> 
                                     <div><img src="/assets/public.svg" alt="Viewed" /></div>
                                     <div className="pt-2" style={{fontSize:"14px"}}>
                                         <div>Site Visits</div>
                                         <div>0 Properties</div>
                                     </div>
                                 </div>
-                                <div className="p-6 px-8 text-center"> 
+                                <div className="p-6 px-8 text-center gra rounded-md"> 
                                     <div><img src="/assets/click.svg" alt="Viewed" /></div>
                                     <div className="pt-2" style={{fontSize:"14px"}}>
                                         <div>Bookings</div>
-                                        <div>0 Properties</div>
+                                        <div>{booksCnt.length} Properties</div>
                                     </div>
                                 </div>
                             </div>
@@ -248,8 +318,13 @@ function MainContainer() {
                                 </div>
                                 </div>
                             <div className="flex flex-col gap-4">
-                                <VisitsPropertyCard/>
-                                <VisitsPropertyCard/>
+                                {likedPropertyData.length > 0 ? (
+                                    likedPropertyData.map(property => (
+                                        <VisitsPropertyCard key={property.id} property={property} />
+                                    ))
+                                    ) : (
+                                    <p>No properties found.</p>
+                                )}
                             </div>
                         </div>
                     ) : <></>
@@ -280,8 +355,34 @@ function MainContainer() {
                                 ))}
                             </div>
                             <div className="flex flex-col gap-4">
-                                <VisitsPropertyCard/>
-                                <VisitsPropertyCard/>
+                                {
+                                    activeStatus === 'Bookings' ? (
+                                        bookedPropertyData.length > 0 ? (
+                                            bookedPropertyData.map(property => (
+                                            <VisitsPropertyCard key={property.id} property={property} />
+                                            ))
+                                        ) : (
+                                            <p>No properties found.</p>
+                                        )
+                                    ) : activeStatus === 'Favourite' ? (
+                                        likedPropertyData.length > 0 ? (
+                                            likedPropertyData.map(property => (
+                                            <VisitsPropertyCard key={property.id} property={property} />
+                                            ))
+                                        ) : (
+                                            <p>No properties found.</p>
+                                        )
+                                    ) : activeStatus === 'Watched' ? (
+                                        viewedPropertyData.length > 0 ? (
+                                            viewedPropertyData.map(property => (
+                                            <VisitsPropertyCard key={property.id} property={property} />
+                                                ))
+                                            ) : (
+                                                <p>No properties found.</p>
+                                            )
+                                        ) : (
+                                        <p>Select a category to see properties.</p>
+                                    )}
                             </div>
                         </div>
                     ) : <></>

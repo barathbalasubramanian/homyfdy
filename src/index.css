@@ -32,6 +32,24 @@ body {
   display: none;
 }
 
+.welcome{
+  background-image: url("../public//assets//homebg1.svg");
+}
+
+.home-input *{
+  outline: none;
+  border: none;
+}
+
+.gra {
+  background: linear-gradient(
+  to bottom, 
+  #00C782 0%, 
+  #78E0BC 16%, 
+  #FBFBFB 50%
+);
+}
+
 .ques-con {
   width: 20em;
   min-width: 20em;
@@ -44,7 +62,7 @@ body {
   border:1px solid #262626;
   border-radius: 10px;
 }
-
+  
 .options-con {
   width: 20em;
   min-width: 20em;

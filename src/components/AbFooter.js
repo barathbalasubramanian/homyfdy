@@ -38,8 +38,8 @@ function AbFooter() {
               </div>
             </div>
           </div>
-          <div className='self-end max-md:self-start w-[30em] max-md:w-[20em]' style={{backgroundColor:"white",color:"black",borderRadius:"10px",height:"12em"}}> 
-            <div style={{width:'20em'}} className='p-6 flex flex-col gap-2'>
+          <div className='self-end max-md:self-start relative w-[30em] max-md:w-[20em] overflow-hidden' style={{zIndex:999,backgroundColor:"white",color:"black",borderRadius:"10px",height:"12em"}}> 
+            <div style={{zIndex:"999",width:'20em'}} className='p-6 flex flex-col gap-2'>
               <div className='flex gap-4 items-start text-start'>
                 <div style={{padding:"5px 4px 0 0"}}><img src="/assets/map.svg" alt="Map" /></div>
                 <div style={{width:"12em"}}>7th b main Btm 1st stage Bangalore Karnataka 560029</div>
@@ -52,6 +52,7 @@ function AbFooter() {
                 <div><img src="/assets/call.svg" alt="Map" /></div>
                 <div>(480) 555-0103</div>
               </div>
+              <div style={{zIndex:"-999"}}><img src="/assets/addressbg.svg" alt="Bg" className='absolute top-1 left-10 z-0' /></div>
             </div>
           </div>
         </div>

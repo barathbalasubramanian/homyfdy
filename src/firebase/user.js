@@ -13,6 +13,7 @@ async function createUser(userData) {
   }
 }
 
+// Get user Id
 async function getUserDetails(name,email) {
   try {
     const userRef = await usersCollection
@@ -29,6 +30,26 @@ async function getUserDetails(name,email) {
     const userDetails = userDoc.data();
     console.log("User details:", userDetails);
     return userDoc.id;
+  } catch (error) {
+    console.error("Error getting user details: ", error);
+  }
+}
+
+// Get user data 
+async function getUserDetails_(name, email) {
+  try {
+    const userRef = await usersCollection
+      .where("name", "==", name)
+      .where("email", "==", email)
+      .get();
+
+    if (userRef.empty) {
+      console.log("No user found with the given name and email.");
+      return null;
+    }
+    const userDoc = userRef.docs[0];
+    const userDetails = userDoc.data();
+    return { id: userDoc.id, data: userDetails };
   } catch (error) {
     console.error("Error getting user details: ", error);
   }
@@ -53,12 +74,14 @@ async function getUser(userId) {
 // Update a user by ID
 async function updateUser(userId, updatedData) {
   try {
-    await usersCollection.doc(userId).update(updatedData);
+    const userRef = usersCollection.doc(userId); 
+    await userRef.update(updatedData);
     console.log(`User with ID: ${userId} updated successfully.`);
   } catch (error) {
     console.error("Error updating user: ", error);
   }
 }
+
 
 // Delete a user by ID
 async function deleteUser(userId) {
@@ -157,5 +180,6 @@ module.exports = {
   getAllFavoritesWithDetails,
   getFavoritesWithDetails,
   getallUsers,
-  getUserDetails
+  getUserDetails,
+  getUserDetails_
 };

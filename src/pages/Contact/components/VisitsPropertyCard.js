@@ -1,29 +1,29 @@
 import React from 'react'
 
-function VisitsPropertyCard() {
+function VisitsPropertyCard({property}) {
   return (
     <div className='prop-con-pro flex gap-2 max-md:flex-col'> 
       <div><img src="/assets/property.svg" alt="Property" /></div>
       <div className='flex flex-col gap-4'>
         <div>
-            <div className='text-lg'>SeaSide Vila</div>
-            <div style={{color:"grey"}}>A stunning 4-bedroom, 3-bathroom villa in a peaceful suburban neighborhood  3-bathroom villa in a peaceful suburban neighborhood </div>
+            <div className='text-lg'>{property.propertyType}</div>
+            <div style={{color:"grey"}}>{property.description}</div>
         </div>
         <div className='flex items-center gap-2 max-md:flex-wrap'> 
             <div className='cursor-pointer flex items-center text-white gap-3 px-4 py-1' style={{fontSize:"12px",textWrap:"nowrap",border:"1px solid #262626",backgroundColor:"var(--blackhd)",borderRadius:"8px"}}>
-                <img src="/assets/bed.svg" alt="Bed" /> 4-Bedroom
+                <img src="/assets/bed.svg" alt="Bed" />  {property.bedrooms}-Bedroom
             </div>
             <div className='cursor-pointer flex items-center text-white gap-3 px-4 py-1' style={{fontSize:"12px",textWrap:"nowrap",border:"1px solid #262626",backgroundColor:"var(--blackhd)",borderRadius:"8px"}}>
-                <img src="/assets/bth.svg" alt="Bed" /> 2-Bathroom
+                <img src="/assets/bth.svg" alt="Bed" /> {property.bathrooms}-Bathroom
             </div>
             <div className='cursor-pointer flex items-center text-white gap-3 px-4 py-1' style={{fontSize:"12px",textWrap:"nowrap",border:"1px solid #262626",backgroundColor:"var(--blackhd)",borderRadius:"8px"}}>
-                <img src="/assets/vila.svg" alt="Bed" /> Vila
+                <img src="/assets/vila.svg" alt="Bed" /> {property.maxRooms}Vila
             </div>
         </div>
         <div className='flex items-center justify-between'>
             <div>
                 <div style={{color:"grey",fontSize:"12px"}}>Price</div>
-                <div className='text-xl'>$550,000</div>
+                <div className='text-xl'>${property.propertyPrice}</div>
             </div>
             <div className='cursor-pointer flex text-white items-center w-fit gap-3 px-2 py-2' style={{fontSize:"13px",textWrap:"nowrap",backgroundColor:"var(--green)",borderRadius:"5px"}}>
                 <img src="/assets/vila.svg" alt="Bed" /> View Property Details

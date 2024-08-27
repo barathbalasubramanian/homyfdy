@@ -9,11 +9,13 @@ import Options from '../Home/components/Options'
 import FeaturedProperties from '../Home/components/FeaturedProperties'
 import Partners from '../Home/components/Partners'
 import HomyfydAdvantage from './components/HomyfdyAdv'
+import Welcome from './components/Welcome'
 
 function Home() {
   return (
     <div>
       <Header/>
+      <Welcome/>
       <FeaturedProperties/>
       <Partners/>
       <FeaturedProperties/>
