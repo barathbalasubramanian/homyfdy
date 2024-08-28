@@ -29,7 +29,7 @@ function Home() {
 
   return (
     <div>
-      <Header property={properties}/>
+      <Header/>
       <Welcome/>
       <FeaturedProperties property={properties}/>
       <Partners/>

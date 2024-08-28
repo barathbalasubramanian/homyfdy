@@ -31,17 +31,17 @@ const properties = [
   }
 ];
 
-function PropertyComparison() {
+function PropertyComparison({PropertyData}) {
   return (
-    <section className="flex z-10 px-20 py-16 flex-col self-center mt-0 w-full bg-white rounded-lg max-md:max-w-full max-md:px-4">
-      <div className="self-center w-4/5 flex items-center justify-between max-md:w-full">
-        <div className="flex w-full items-center gap-10 justify-between max-md:gap-4">
-          {properties.map((property, index) => (
-            <PropertyCard key={index} {...property} />
+    <section className="overflow-scroll flex items-start z-10 px-20 py-16 flex-col self-center mt-0 w-full bg-white rounded-lg max-md:max-w-full max-md:px-4">
+      <div className="w-fit">
+        <div className="flex justify-start items-center px-10 py-5 text-lg font-bold text-black max-md:px-2">
+          {PropertyData.map((property, index) => (
+            <PropertyCard key={index} property={property}/>
           ))}
         </div>
       </div>
-      <ComparisonSection properties={properties} />
+      <ComparisonSection properties={PropertyData} />
     </section>
   );
 }

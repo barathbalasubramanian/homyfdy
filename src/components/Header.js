@@ -1,18 +1,33 @@
 import React, { useEffect, useState } from 'react';
 import Login from './Login';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Cookies from 'js-cookie';
 import CompareDiv from './CompareDiv';
 import ComparePage from './ComparePage';
 import { getUserDetails_ } from '../firebase/user';
+import { getAllHouses } from '../firebase/house';
 
-function Header({property}) {
+function Header() {
 
+  const location = useLocation();
+  const isComparePage = location.pathname === '/compare';
   const [isLoginOpen, setIsLoginOpen] = useState(null);
   const [CmpBtn,SetCmpBtn] = useState(false);
   const [CmpPage,setCmpPage] = useState(false)
   const [CmpCnt,setCmpCnt] = useState(0);
+  const [properties, setProperties] = useState([]);
+  useEffect(() => {
+        const fetchProperties = async () => {
+            try {
+                const fetchedProperties = await getAllHouses();
+                setProperties(fetchedProperties);
+            } catch (error) {
+                console.error("Error fetching properties: ", error);
+            }
+        };
+        fetchProperties();
+  }, []);
 
   useEffect(() => {
     const verifyToken = async () => {
@@ -81,20 +96,23 @@ function Header({property}) {
           <div onClick={()=>navigate('/')}>Services</div>
         </div>
         <div className='z-50 relative max-md:hidden flex gap-6 items-center'>
-          <div
-            className='cursor-pointer bg-green-600 shadow-[0px_0px_21px_rgba(31,200,39,1)] flex items-center gap-3 px-2 py-1'
-            style={{borderRadius: '5px' }} 
-            onClick={
-              ()=>{
-                SetCmpBtn(!CmpBtn)
+          {
+            !isComparePage &&
+            <div
+              className='cursor-pointer bg-green-600 shadow-[0px_0px_21px_rgba(31,200,39,1)] flex items-center gap-3 px-2 py-1'
+              style={{borderRadius: '5px' }} 
+              onClick={
+                ()=>{
+                  SetCmpBtn(!CmpBtn)
+                }
               }
-            }
-          >
-            <div className='flex items-center'>
-              <img src="/assets/arr.svg" style={{ width: '24px' }} alt="Arr" />
+            >
+              <div className='flex items-center'>
+                <img src="/assets/arr.svg" style={{ width: '24px' }} alt="Arr" />
+              </div>
+              <div className='text-sm' >Compare</div>
             </div>
-            <div className='text-sm' >Compare</div>
-          </div>
+          }
           {
              CmpBtn && 
             <div className='absolute top-16 right-3'>
@@ -104,7 +122,7 @@ function Header({property}) {
           {
             CmpPage && 
             <div className='absolute top-16 right-3'>
-              <ComparePage property={property} setCmpPage={setCmpPage} setCmpCnt={setCmpCnt} CmpCnt={CmpCnt}/>
+              <ComparePage property={properties} setCmpPage={setCmpPage} setCmpCnt={setCmpCnt} CmpCnt={CmpCnt}/>
             </div>
           }
           <div className='cursor-pointer' onClick={handleUserClick}>
