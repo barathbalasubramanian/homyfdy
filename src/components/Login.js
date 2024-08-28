@@ -3,7 +3,6 @@ import OtpInput from 'react-otp-input';
 import { createUser } from '../firebase/user';
 import axios from 'axios';
 import Cookies from 'js-cookie';
-import { Favorite } from '@mui/icons-material';
 
 function Login({ closeLogin }) {
   const [formData, setFormData] = useState({
@@ -41,6 +40,7 @@ function Login({ closeLogin }) {
         visits: [],
         likes: [],
         favorites: [],
+        compareProperties: []
       });
     } catch (error) {
       alert(error);

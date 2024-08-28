@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import PropertyCard from '../../../components/PropertyCard';
-import { getAllHouses } from '../../../firebase/house';
-
 
 function FeaturedProperties({property}) {
 
@@ -16,22 +14,6 @@ function FeaturedProperties({property}) {
     { name: 'Hot projects' },
     { name: 'Newly launched' },
   ];
-
-    const [properties, setProperties] = useState([]); // To store all properties
-
-    // Fetch properties on component mount
-    useEffect(() => {
-        const fetchProperties = async () => {
-            try {
-                const fetchedProperties = await getAllHouses(); // Assume this returns an array of property objects
-                setProperties(fetchedProperties);
-            } catch (error) {
-                console.error("Error fetching properties: ", error);
-            }
-        };
-
-        fetchProperties();
-    }, []);
 
   return (
     <div className='py-10 px-16 max-md:px-3 max-md:py-6'>
@@ -59,7 +41,7 @@ function FeaturedProperties({property}) {
         </div>
 
         <div className='flex w-full py-10 gap-10 items-center justify-between overflow-scroll'>
-            {properties.map((property) => (
+            {property.map((property) => (
                 <PropertyCard key={property.id} property={property} verbose={false} />
             ))}
         </div>

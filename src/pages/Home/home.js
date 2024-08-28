@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Header from '../../components/Header'
 import Footer from '../../components/Footer'
 import AbFooter from '../../components/AbFooter'
@@ -10,15 +10,30 @@ import FeaturedProperties from '../Home/components/FeaturedProperties'
 import Partners from '../Home/components/Partners'
 import HomyfydAdvantage from './components/HomyfdyAdv'
 import Welcome from './components/Welcome'
+import { getAllHouses } from '../../firebase/house'
 
 function Home() {
+
+  const [properties, setProperties] = useState([]);
+    useEffect(() => {
+        const fetchProperties = async () => {
+            try {
+                const fetchedProperties = await getAllHouses();
+                setProperties(fetchedProperties);
+            } catch (error) {
+                console.error("Error fetching properties: ", error);
+            }
+        };
+        fetchProperties();
+    }, []);
+
   return (
     <div>
-      <Header/>
+      <Header property={properties}/>
       <Welcome/>
-      <FeaturedProperties/>
+      <FeaturedProperties property={properties}/>
       <Partners/>
-      <FeaturedProperties/>
+      <FeaturedProperties property={properties}/>
       <HomyfydAdvantage/>
       <Options/>
       <Clients/>
