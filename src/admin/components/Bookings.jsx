@@ -9,7 +9,6 @@ function Bookings() {
       try {
         const fetchedBookings = await getAllBookings();
         SetBookings(fetchedBookings);
-        console.log(fetchedBookings);
       } catch (error) {
         console.error("Error fetching FAQs:", error);
       }
@@ -75,8 +74,8 @@ function Bookings() {
             </div>
             {Bookings.map((user) => (
               <div key={user.id} className="flex items-center w-full p-4 border-b border-gray-200">
-                <div className="w-1/6 text-center overflow-scroll text-nowrap mr-4 text-[14px]">{user.name}</div>
-                <div className="w-1/6 text-center overflow-scroll text-nowrap mr-4 text-[14px]">{user.phoneNumber}</div>
+                <div className="w-1/6 text-center overflow-scroll text-nowrap mr-4 text-[14px]">{user.username}</div>
+                <div className="w-1/6 text-center overflow-scroll text-nowrap mr-4 text-[14px]">{user.number}</div>
                 <div className="w-1/6 text-center overflow-scroll text-nowrap mr-4 text-[14px]">{user.email}</div>
                 <div className="w-1/6 text-center overflow-scroll text-nowrap mr-4 text-[14px]">{formatDateTime(user.datetime)}</div>
                 <div className="w-1/6 text-center overflow-scroll text-nowrap mr-4 text-[14px]">{user.propertyname}</div>

@@ -29,7 +29,10 @@ function CustomForm({SetBookingForm,property}) {
     try {
       const id = await createBooking({
           ...formData,
+          username:name,
           propertyname: property.propertyType,
+          email: email,
+          number: userDoc.data.number,
           id:userDoc.id,
       });
       BookingId = id
@@ -38,11 +41,11 @@ function CustomForm({SetBookingForm,property}) {
         console.log(error)
         alert(error)
     }
-
     const currentVisit = {
       propertyId: property.id,
       timestamp: new Date().toISOString(),
-      BookingId:BookingId
+      BookingId:BookingId,
+      bookedTimeDate: formData['datetime']
     };
     
     let updatedData;
@@ -53,6 +56,7 @@ function CustomForm({SetBookingForm,property}) {
       if (existingVisitIndex !== -1) {
         userDoc.data.bookings[existingVisitIndex].timestamp = currentVisit.timestamp;
         userDoc.data.bookings[existingVisitIndex].BookingId = currentVisit.BookingId;
+        userDoc.data.bookings[existingVisitIndex].bookedTimeDate = currentVisit.bookedTimeDate;
       } else {
         userDoc.data.bookings.push(currentVisit);
       }

@@ -84,16 +84,16 @@ function Header() {
       <div className='w-full flex px-8 items-center justify-between py-4 max-md:px-3'>
         <div className='flex items-center'>
           <img src="/assets/logo.svg" alt="Logo" style={{ width: '50px' }} />
-          HOMYFDY
+          HOMYFYD
         </div>
         <div className='cursor-pointer hidden max-md:flex'>
           <img src="/assets/ham.svg" alt="Ham" />
         </div>
-        <div className='max-md:hidden cursor-pointer flex gap-6'>
+        <div className='max-md:hidden cursor-pointer flex gap-10'>
           <div onClick={()=>navigate('/')}>Home</div>
           <div onClick={()=>navigate('/about')}>About Us</div>
           <div onClick={()=>navigate('/properties')}>Properties</div>
-          <div onClick={()=>navigate('/')}>Services</div>
+          {/* <div onClick={()=>navigate('/')}>Services</div> */}
         </div>
         <div className='z-50 relative max-md:hidden flex gap-6 items-center'>
           {

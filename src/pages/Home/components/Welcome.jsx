@@ -84,7 +84,9 @@ function Welcome() {
         </div>
 
         <marquee behavior="" direction="" className="px-20 py-2 bg-green-600 shadow-[0px_0px_21px_rgba(31,200,39,1)]">
-            Streamlining Your Home Buying | Journey The One-Stop Solution for All Your Home Buying Needs Book | Your Dream Home with Just a Few Clicks
+            <pre>
+                Streamlining Your Home Buying Journey    |     The One-Stop Solution for All Your Home Buying Needs Book     |     Your Dream Home with Just a Few Clicks
+            </pre>
         </marquee>
     </div>
   )

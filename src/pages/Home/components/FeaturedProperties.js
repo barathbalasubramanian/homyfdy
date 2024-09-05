@@ -10,9 +10,9 @@ function FeaturedProperties({property}) {
   };
 
   const buttons = [
-    { name: 'Homyfyd reliable' },
+    { name: 'Homyfyd Reliable' },
     { name: 'Hot projects' },
-    { name: 'Newly launched' },
+    { name: 'Newly Launched' },
   ];
 
   return (

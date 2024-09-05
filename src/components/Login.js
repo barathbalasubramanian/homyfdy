@@ -40,7 +40,8 @@ function Login({ closeLogin }) {
         visits: [],
         likes: [],
         favorites: [],
-        compareProperties: []
+        compareProperties: [],
+        bookings:[]
       });
     } catch (error) {
       alert(error);
@@ -135,7 +136,7 @@ function Login({ closeLogin }) {
               </div> : <></>
           }
 
-          <div onClick={closeLogin} className='cursor-pointer absolute top-0 right-0 max-md:right-5' style={{ width: "14px", height: "14px", borderRadius: "50%", backgroundColor: "crimson" }}></div>
+          {/* <div onClick={closeLogin} className='cursor-pointer absolute top-0 right-0 max-md:right-5' style={{ width: "14px", height: "14px", borderRadius: "50%", backgroundColor: "crimson" }}></div> */}
         </div>
       </div>
     </div>

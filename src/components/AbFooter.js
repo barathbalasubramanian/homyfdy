@@ -50,7 +50,7 @@ function AbFooter() {
               </div>
               <div className='flex gap-4 items-center text-start'>
                 <div><img src="/assets/call.svg" alt="Map" /></div>
-                <div>(480) 555-0103</div>
+                <div>+91 8310955920</div>
               </div>
               <div style={{zIndex:"-999"}}><img src="/assets/addressbg.svg" alt="Bg" className='absolute top-1 left-10 z-0' /></div>
             </div>

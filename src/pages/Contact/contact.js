@@ -18,7 +18,7 @@ function Profile() {
     if (userDoc) {
       setUserData({
         likes: userDoc.data.likes || 0,
-        booksCnt: userDoc.data.Bookings || 0,
+        booksCnt: userDoc.data.bookings || 0,
         viewCnt: userDoc.data.visits || 0,
       });
     }

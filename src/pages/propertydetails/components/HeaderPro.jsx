@@ -1,5 +1,5 @@
 import Cookies from 'js-cookie';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { getUserDetails_, updateUser } from '../../../firebase/user';
 
 function ProHeader({ property }) {
@@ -8,6 +8,8 @@ function ProHeader({ property }) {
     compare: false,
     share: false,
   });
+
+  const [userDoc, setUserDoc] = useState(null);
 
   const locationBadges = [
     { location: property.region, iconSrc: '/assets/location.svg' },
@@ -19,45 +21,61 @@ function ProHeader({ property }) {
     { id: 'share', src: iconStates.share ? '/assets/inshare.svg' : '/assets/share.svg' }
   ];
 
-  const handleViewDetails = async () => {
-    const name = Cookies.get("name");
-    const email = Cookies.get("email");
-    const userDoc = await getUserDetails_(name, email);
-    const currentVisit = {
-      propertyId: property.id,
-      timestamp: new Date().toISOString()
-    };
-    
-    let updatedData;
-    if (userDoc.data.likes) {
-      const existingVisitIndex = userDoc.data.likes.findIndex(
-        visit => visit.propertyId === property.id
-      );
-      if (existingVisitIndex !== -1) {
-        userDoc.data.likes[existingVisitIndex].timestamp = currentVisit.timestamp;
-      } else {
-        userDoc.data.likes.push(currentVisit);
+  useEffect(() => {
+    const fetchUserData = async () => {
+      const name = Cookies.get("name");
+      const email = Cookies.get("email");
+      const fetchedUserDoc = await getUserDetails_(name, email);
+      setUserDoc(fetchedUserDoc);
+
+      // Handle likes state
+      if (fetchedUserDoc?.data?.likes) {
+        const hasLiked = fetchedUserDoc.data.likes.some(visit => visit.propertyId === property.id);
+        if (hasLiked) {
+          setIconStates(prev => ({ ...prev, like: true }));
+        }
       }
-      updatedData = { likes: userDoc.data.likes };
+
+      // Handle compare state
+      if (fetchedUserDoc?.data?.compareProperties) {
+        const isCompared = fetchedUserDoc.data.compareProperties.some(visit => visit.propertyId === property.id);
+        if (isCompared) {
+          setIconStates(prev => ({ ...prev, compare: true }));
+        }
+      }
+    };
+
+    fetchUserData();
+  }, [property.id]);
+
+  const handleIconToggle = async (iconId, typeKey, dataKey) => {
+    if (!userDoc) return; // Ensure userDoc is available
+
+    const currentVisit = { propertyId: property.id, timestamp: new Date().toISOString() };
+    let updatedData;
+
+    const existingIndex = userDoc?.data?.[dataKey]?.findIndex(visit => visit.propertyId === property.id) ?? -1;
+
+    if (existingIndex !== -1) {
+      setIconStates(prev => ({ ...prev, [iconId]: false }));
+      userDoc.data[dataKey].splice(existingIndex, 1); // Remove entry
+      updatedData = { [dataKey]: userDoc.data[dataKey] };
     } else {
-        updatedData = { likes: [currentVisit] };
+      setIconStates(prev => ({ ...prev, [iconId]: true }));
+      userDoc.data[dataKey] = userDoc.data[dataKey] ? [...userDoc.data[dataKey], currentVisit] : [currentVisit];
+      updatedData = { [dataKey]: userDoc.data[dataKey] };
     }
+
     await updateUser(userDoc.id, updatedData);
   };
 
   const handleIconClick = (iconId) => {
-    setIconStates((prevStates) => ({
-      ...prevStates,
-      [iconId]: !prevStates[iconId],
-    }));
-    
     switch (iconId) {
       case 'like':
-        console.log('Like is clicked');
-        handleViewDetails()
+        handleIconToggle('like', 'like', 'likes');
         break;
       case 'compare':
-        console.log('Compare is clicked');
+        handleIconToggle('compare', 'compare', 'compareProperties');
         break;
       case 'share':
         console.log('Share is clicked');
@@ -75,7 +93,7 @@ function ProHeader({ property }) {
           {locationBadges.map((badge, index) => (
             <div key={index}>
               <div className="flex gap-1 items-center p-2 rounded-md border border-solid border-neutral-800">
-                <img loading="lazy" src={badge.iconSrc} alt="" className="object-contain shrink-0 self-stretch my-auto w-5 aspect-square" />
+                <img loading="lazy" src={badge.iconSrc} alt="Location Icon" className="object-contain shrink-0 self-stretch my-auto w-5 aspect-square" />
                 <div className="self-stretch my-auto">{badge.location}</div>
               </div>
             </div>
@@ -83,9 +101,9 @@ function ProHeader({ property }) {
         </div>
       </div>
       <div className="flex gap-6 items-center whitespace-nowrap">
-        {iconButtons.map((button, index) => (
-          <button key={index} onClick={() => handleIconClick(button.id)} className="p-0 border-0 bg-transparent cursor-pointer">
-            <img loading="lazy" src={button.src} alt="" className="object-contain shrink-0 self-stretch my-auto w-11 aspect-square" />
+        {iconButtons.map((button) => (
+          <button key={button.id} onClick={() => handleIconClick(button.id)} className="p-0 border-0 bg-transparent cursor-pointer">
+            <img loading="lazy" src={button.src} alt={button.id} className="object-contain shrink-0 self-stretch my-auto w-11 aspect-square" />
           </button>
         ))}
         <div className="flex flex-col self-stretch">
@@ -98,4 +116,3 @@ function ProHeader({ property }) {
 }
 
 export default ProHeader;
-

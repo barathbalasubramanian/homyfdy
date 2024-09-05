@@ -5,7 +5,7 @@ import Style from './container.module.css'
 import { updateUserDocument } from "../../../firebase/userprofile";
 import { getHouse } from "../../../firebase/house";
 function MainContainer({likes, booksCnt, viewCnt}) {
-
+  console.log(likes, booksCnt, viewCnt)
   const [selected, setSelected] = useState("Dashboard");
   const [selected_, setSelected_] = useState("Completed");
   const [activeStatus, setActiveStatus] = useState("Watched");
@@ -13,9 +13,13 @@ function MainContainer({likes, booksCnt, viewCnt}) {
   const [likedProperties, setlikedProperties] = useState([]);
   const [viewedProperties, setviewedProperties] = useState([]);
   const [bookedProperties, setbookedProperties] = useState([]);
+  const [upcomingProperties, setupcomingProperties] = useState([]);
+  const [completedProperties, setcompletedProperties] = useState([]);
   const [likedPropertyData, setLikedPropertyData] = useState([]);
   const [bookedPropertyData, setbookedPropertyData] = useState([]);
   const [viewedPropertyData, setviewedPropertyData] = useState([]);
+  const [CompletedPropertyData,setCompletedPropertyData] = useState([]);
+  const [UpcomingPropertyData,setUpcomingPropertyData] = useState([]);
 
   useEffect(() => {
     const getPropertiesWithTwoLikes = () => {
@@ -32,6 +36,19 @@ function MainContainer({likes, booksCnt, viewCnt}) {
             ]);
         }
         for (let [key, value] of Object.entries(booksCnt)) {
+            const bookedTimeDate = new Date(value.bookedTimeDate);
+            const currentDateTime = new Date();
+            if (bookedTimeDate > currentDateTime) {
+                setupcomingProperties(prevProperties => [
+                    ...prevProperties,
+                    value['propertyId']
+                  ]);
+            } else {
+                setcompletedProperties(prevProperties => [
+                    ...prevProperties,
+                    value['propertyId']
+                  ]);
+            }
             setbookedProperties(prevProperties => [
               ...prevProperties,
               value['propertyId']
@@ -57,7 +74,6 @@ function MainContainer({likes, booksCnt, viewCnt}) {
         const fetchPromises = bookedProperties.map(propertyId => getHouse(propertyId));
         try {
           const data = await Promise.all(fetchPromises);
-          console.log(data)
           setbookedPropertyData(data);
         } catch (error) {
           console.error('Error fetching property data:', error);
@@ -73,15 +89,35 @@ function MainContainer({likes, booksCnt, viewCnt}) {
           console.error('Error fetching property data:', error);
         }
       }
+      if (upcomingProperties.length) {
+        const fetchPromises = upcomingProperties.map(propertyId => getHouse(propertyId));
+        try {
+          const data = await Promise.all(fetchPromises);
+          console.log(data,"upcoming")
+          setUpcomingPropertyData(data);
+        } catch (error) {
+          console.error('Error fetching property data:', error);
+        }
+      }
+      if (completedProperties.length) {
+        const fetchPromises = completedProperties.map(propertyId => getHouse(propertyId));
+        try {
+          const data = await Promise.all(fetchPromises);
+          console.log(data,"completed")
+          setCompletedPropertyData(data);
+        } catch (error) {
+          console.error('Error fetching property data:', error);
+        }
+      }
     };
 
     fetchPropertyData();
-  }, [likedProperties,bookedProperties,viewedProperties]); 
+  }, [likedProperties,bookedProperties,viewedProperties,upcomingProperties,completedProperties]); 
 
   const menuItems = [
     { label: "Watched", count: viewCnt.length | 0 },
     { label: "Favourite", count: likes.length | 0},
-    { label: "Site Visits", count: 0 },
+    { label: "Site Visits", count: completedProperties.length | 0 },
     { label: "Bookings", count: booksCnt.length | 0},
   ];
 
@@ -267,7 +303,7 @@ function MainContainer({likes, booksCnt, viewCnt}) {
                                     <div><img src="/assets/public.svg" alt="Viewed" /></div>
                                     <div className="pt-2" style={{fontSize:"14px"}}>
                                         <div>Site Visits</div>
-                                        <div>0 Properties</div>
+                                        <div>{completedProperties.length} Properties</div>
                                     </div>
                                 </div>
                                 <div className="p-6 px-8 text-center gra rounded-md"> 
@@ -284,48 +320,54 @@ function MainContainer({likes, booksCnt, viewCnt}) {
                 {
                     selected === 'My Properties' ? (
                         <div className="w-full overflow-scroll text-black flex flex-col gap-4 bg-white" style={{ borderRadius: "10px" }}>
-                            <div className="text-3xl mb-2 max-md:text-2xl" style={{ color: "#1FC827" }}>
-                                My Visits
+                        <div className="text-3xl mb-2 max-md:text-2xl" style={{ color: "#1FC827" }}>
+                            My Visits
+                        </div>
+                        <div className="flex gap-6 mb-6 max-md:flex-wrap">
+                            <div
+                            className={`cursor-pointer flex items-center w-fit gap-3 px-6 py-2 ${selected_ === "Completed" ? "text-white" : "text-black"}`}
+                            style={{
+                                color: selected_ === "Completed" ? "white" : "#5F5F5F",
+                                fontSize: "13px",
+                                backgroundColor: selected_ === "Completed" ? "var(--green)" : "#E3E3E3",
+                                borderRadius: "5px",
+                            }}
+                            onClick={() => setSelected_("Completed")}
+                            >
+                            Completed
                             </div>
-                            <div className="flex gap-6 mb-6 max-md:flex-wrap">
-                                <div
-                                    className={`cursor-pointer flex items-center w-fit gap-3 px-6 py-2 ${
-                                    selected === "Completed" ? "text-white" : "text-black"
-                                    }`}
-                                    style={{
-                                    color: selected_ === "Completed" ? "white" : "#5F5F5F",
-                                    fontSize: "13px",
-                                    backgroundColor: selected_ === "Completed" ? "var(--green)" : "#E3E3E3",
-                                    borderRadius: "5px",
-                                    }}
-                                    onClick={() => setSelected_("Completed")}
-                                >
-                                    Completed
-                                </div>
-                                <div
-                                    className={`cursor-pointer flex items-center w-fit gap-3 px-6 py-2 ${
-                                    selected === "Upcoming" ? "text-white" : "text-black"
-                                    }`}
-                                    style={{
-                                    color: selected_ === "Upcoming" ? "white" : "#5F5F5F",
-                                    fontSize: "13px",
-                                    backgroundColor: selected_ === "Upcoming" ? "var(--green)" : "#E3E3E3",
-                                    borderRadius: "5px",
-                                    }}
-                                    onClick={() => setSelected_("Upcoming")}
-                                >
-                                    Upcoming
-                                </div>
-                                </div>
-                            <div className="flex flex-col gap-4">
-                                {likedPropertyData.length > 0 ? (
-                                    likedPropertyData.map(property => (
-                                        <VisitsPropertyCard key={property.id} property={property} />
-                                    ))
-                                    ) : (
-                                    <p>No properties found.</p>
-                                )}
+                            <div
+                            className={`cursor-pointer flex items-center w-fit gap-3 px-6 py-2 ${selected_ === "Upcoming" ? "text-white" : "text-black"}`}
+                            style={{
+                                color: selected_ === "Upcoming" ? "white" : "#5F5F5F",
+                                fontSize: "13px",
+                                backgroundColor: selected_ === "Upcoming" ? "var(--green)" : "#E3E3E3",
+                                borderRadius: "5px",
+                            }}
+                            onClick={() => setSelected_("Upcoming")}
+                            >
+                            Upcoming
                             </div>
+                        </div>
+                        <div className="flex flex-col gap-4">
+                            {selected_ === "Completed" ? (
+                            CompletedPropertyData.length > 0 ? (
+                                CompletedPropertyData.map(property => (
+                                <VisitsPropertyCard key={property.id} property={property} />
+                                ))
+                            ) : (
+                                <p>No completed properties found.</p>
+                            )
+                            ) : (
+                            UpcomingPropertyData.length > 0 ? (
+                                UpcomingPropertyData.map(property => (
+                                <VisitsPropertyCard key={property.id} property={property} />
+                                ))
+                            ) : (
+                                <p>No upcoming properties found.</p>
+                            )
+                            )}
+                        </div>
                         </div>
                     ) : <></>
                 }
@@ -380,7 +422,15 @@ function MainContainer({likes, booksCnt, viewCnt}) {
                                             ) : (
                                                 <p>No properties found.</p>
                                             )
-                                        ) : (
+                                    )  : activeStatus === 'Site Visits' ? (
+                                        CompletedPropertyData.length > 0 ? (
+                                            CompletedPropertyData.map(property => (
+                                            <VisitsPropertyCard key={property.id} property={property} />
+                                                ))
+                                            ) : (
+                                                <p>No properties found.</p>
+                                            )
+                                    ): (
                                         <p>Select a category to see properties.</p>
                                     )}
                             </div>
