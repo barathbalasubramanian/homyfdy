@@ -181,10 +181,10 @@ function Property() {
                                         <label htmlFor="area" className='text-neutral-500'>Area (sq ft)</label>
                                         <input required name="area" type="number" value={formData.area} onChange={handleChange} style={{border:"1px solid #E5E5E5"}} className='px-2 py-1 rounded-md outline-none' />
                                     </div>
-                                    <div className='flex flex-col gap-2'>
+                                    {/* <div className='flex flex-col gap-2'>
                                         <label htmlFor="brochureLink" className='text-neutral-500'>Brochure Link</label>
                                         <input required name="brochureLink" type="url" value={formData.brochureLink} onChange={handleChange} style={{border:"1px solid #E5E5E5"}} className='px-2 py-1 rounded-md outline-none' />
-                                    </div>
+                                    </div> */}
                                     <div className='flex flex-col gap-2'>
                                         <label htmlFor="manager" className='text-neutral-500'>Relationship Manager</label>
                                         <input required name="manager" type="text" value={formData.manager} onChange={handleChange} style={{border:"1px solid #E5E5E5"}} className='px-2 py-1 rounded-md outline-none' />
@@ -219,7 +219,7 @@ function Property() {
                                             <input required name="addressLink" type="text" value={formData.addressLink} onChange={handleChange} style={{border:"1px solid #E5E5E5"}} className='px-2 py-1 rounded-md outline-none' />
                                         </div>
                                     </div>
-                                    <div className='pt-8 flex flex-col gap-2'>
+                                    {/* <div className='pt-8 flex flex-col gap-2'>
                                         <div className='text-neutral-500'>
                                         Additional Features
                                         </div>
@@ -237,7 +237,7 @@ function Property() {
                                             </label>
                                         ))}
                                         </div>
-                                    </div>
+                                    </div> */}
                                     <div className="mt-8 flex gap-4">
                                         <button type="submit" className="bg-green-500 text-white px-4 py-2 rounded-md">Submit</button>
                                         <button type="button" onClick={handleClear} className="border text-neutral-900 px-4 py-2 rounded-md">Clear</button>

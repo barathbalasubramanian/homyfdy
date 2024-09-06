@@ -78,7 +78,7 @@ function Header() {
   };
 
   const navigate = useNavigate();
-
+  const [MobileNav, SetMobileNav] = useState(false)
   return (
     <div style={{ backgroundColor: 'var(--blackhd)' }}>
       <div className='w-full flex px-8 items-center justify-between py-4 max-md:px-3'>
@@ -86,14 +86,34 @@ function Header() {
           <img src="/assets/logo.svg" alt="Logo" style={{ width: '50px' }} />
           HOMYFYD
         </div>
-        <div className='cursor-pointer hidden max-md:flex'>
+        <div className='relative cursor-pointer hidden max-md:flex' onClick={() => {
+              SetMobileNav(!MobileNav); 
+              if (CmpBtn) {
+                SetCmpBtn(false)
+              }
+          }}>
           <img src="/assets/ham.svg" alt="Ham" />
+          {
+            MobileNav && (
+              <div className={`px-4 py-8 text-black flex flex-col gap-3 bg-white absolute top-8 right-3 rounded-xl transition-all duration-500 
+                ${MobileNav ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-[-20px]'}`}>
+                <div onClick={() => navigate('/')}>Home</div>
+                <div onClick={() => navigate('/about')}>About Us</div>
+                <div onClick={() => navigate('/properties')}>Properties</div>
+                <div className='cursor-pointer bg-green-600 text-white flex items-center gap-3 px-4 py-1' style={{borderRadius: '5px' }}  onClick={()=>{SetMobileNav(false);SetCmpBtn(!CmpBtn)}}>
+                  <div className='text-sm' >Compare</div>
+                </div>
+                <div className='cursor-pointer bg-neutral-700 text-white flex items-center gap-3 px-4 py-1' style={{borderRadius: '5px' }}  onClick={()=>{navigate('/profile') }}>
+                  <div className='text-sm' >Profile</div>
+                </div>
+              </div>
+            )
+          }
         </div>
         <div className='max-md:hidden cursor-pointer flex gap-10'>
           <div onClick={()=>navigate('/')}>Home</div>
           <div onClick={()=>navigate('/about')}>About Us</div>
           <div onClick={()=>navigate('/properties')}>Properties</div>
-          {/* <div onClick={()=>navigate('/')}>Services</div> */}
         </div>
         <div className='z-50 relative max-md:hidden flex gap-6 items-center'>
           {
@@ -113,18 +133,6 @@ function Header() {
               <div className='text-sm' >Compare</div>
             </div>
           }
-          {
-             CmpBtn && 
-            <div className='absolute top-16 right-3'>
-              <CompareDiv setCmpPage={setCmpPage} CmpCnt={CmpCnt}/>
-            </div>
-          }
-          {
-            CmpPage && 
-            <div className='absolute top-16 right-3'>
-              <ComparePage property={properties} setCmpPage={setCmpPage} setCmpCnt={setCmpCnt} CmpCnt={CmpCnt}/>
-            </div>
-          }
           <div className='cursor-pointer' 
             // onClick={handleUserClick}
             onClick={()=>navigate('/profile')}
@@ -133,6 +141,18 @@ function Header() {
           </div>
         </div>
       </div>
+      {
+        CmpBtn && 
+          <div className='absolute top-16 right-3 max-md:top-20'>
+            <CompareDiv setCmpPage={setCmpPage} CmpCnt={CmpCnt} SetCmpBtn={SetCmpBtn}/>
+          </div>
+      }
+      {
+        CmpPage && 
+        <div className='absolute top-16 right-3'>
+          <ComparePage property={properties} setCmpPage={setCmpPage} setCmpCnt={setCmpCnt} CmpCnt={CmpCnt}/>
+        </div>
+      }
 
       {isLoginOpen && <Login closeLogin={closeLogin} />}
     </div>

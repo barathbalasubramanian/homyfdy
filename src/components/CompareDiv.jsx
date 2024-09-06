@@ -1,13 +1,13 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
 
-function CompareDiv({setCmpPage,CmpCnt}) {
+function CompareDiv({setCmpPage,CmpCnt,SetCmpBtn}) {
     const navigate = useNavigate();
     return (
-    <div style={{width:"25em"}} className='bg-white rounded-xl px-6 py-4 flex flex-col gap-3 items-start justify-between'>
+    <div className='bg-white rounded-xl px-6 py-4 flex flex-col gap-3 items-start justify-between w-[25em] max-md:w-[18em]'>
         <div className='flex w-full text-black items-center justify-between'>
             <div className='text-2xl'>Compare</div>
-            <div className='text-lg text-neutral-500 cursor-pointer'>Clear</div>
+            <div className='text-lg text-rose-600 cursor-pointer' onClick={()=>SetCmpBtn(false)}>Close</div>
         </div>
         
         {

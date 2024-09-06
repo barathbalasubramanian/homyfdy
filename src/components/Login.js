@@ -79,7 +79,7 @@ function Login({ closeLogin }) {
               </div>
               <div className='text-sm mt-3' style={{ color: "grey" }}>00 : 20</div>
               <div className='text-sm cursor-pointer' style={{ color: "grey" }}>Didn't Receive Otp</div>
-              <div onClick={closeLogin} className='cursor-pointer mt-4 w-4/5 text-center justify-center flex items-center gap-3 px-2 py-1' style={{ backgroundColor: 'var(--green)', borderRadius: '5px' }}>
+              <div onClick={closeLogin} className='cursor-pointer mt-4 w-4/5 max-md:w-full text-center justify-center flex items-center gap-3 px-2 py-1' style={{ backgroundColor: 'var(--green)', borderRadius: '5px' }}>
                 <div>Login</div>
               </div>
             </div> :
@@ -113,7 +113,7 @@ function Login({ closeLogin }) {
                 <input type="text" name="city" value={formData.city} onChange={handleChange} required placeholder="Your City" className='input-div' style={{ color: 'grey' }}
                 />
               </div>
-              <div className='cursor-pointer mt-4 w-4/5 text-center justify-center flex items-center gap-3 px-2 py-1' style={{ backgroundColor: 'var(--green)', borderRadius: '5px' }} onClick={handleCompareClick}>
+              <div className='cursor-pointer mt-4 w-4/5 max-md:w-full text-center justify-center flex items-center gap-3 px-2 py-1' style={{ backgroundColor: 'var(--green)', borderRadius: '5px' }} onClick={handleCompareClick}>
                 <div>Continue</div>
               </div>
             </>
@@ -130,7 +130,7 @@ function Login({ closeLogin }) {
                   <input type="text" name="number" value={formData.number} onChange={handleChange} required placeholder="Your Phone Number" className='input-div' style={{ color: 'grey' }}
                   />
                 </div>
-                <div className='cursor-pointer mt-4 w-4/5 text-center justify-center flex items-center gap-3 px-2 py-1' style={{ backgroundColor: 'var(--green)', borderRadius: '5px' }} onClick={handleCompareClick}>
+                <div className='cursor-pointer mt-4 w-4/5 max-md:w-full text-center justify-center flex items-center gap-3 px-2 py-1' style={{ backgroundColor: 'var(--green)', borderRadius: '5px' }} onClick={handleCompareClick}>
                   <div>Continue</div>
                 </div>
               </div> : <></>
