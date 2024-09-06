@@ -125,7 +125,10 @@ function Header() {
               <ComparePage property={properties} setCmpPage={setCmpPage} setCmpCnt={setCmpCnt} CmpCnt={CmpCnt}/>
             </div>
           }
-          <div className='cursor-pointer' onClick={handleUserClick}>
+          <div className='cursor-pointer' 
+            // onClick={handleUserClick}
+            onClick={()=>navigate('/profile')}
+            >
             <img src="/assets/user.svg" alt="User" width={35} />
           </div>
         </div>
