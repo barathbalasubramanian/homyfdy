@@ -38,8 +38,11 @@ function AbFooter() {
               </div>
             </div>
           </div>
-          <div className='self-end max-md:self-start relative w-[30em] max-md:w-[20em] overflow-hidden' style={{zIndex:999,backgroundColor:"white",color:"black",borderRadius:"10px",height:"12em"}}> 
+          <div className='self-end max-md:self-start relative w-[30em] max-md:w-[20em] overflow-hidden' style={{zIndex:999,backgroundColor:"white",color:"black",borderRadius:"10px",height:"14em"}}> 
             <div style={{zIndex:"999",width:'20em'}} className='p-6 flex flex-col gap-2'>
+              <div className='flex gap-4 items-start text-start'>
+                <div>RERA ID: A51900029429</div>
+              </div>
               <div className='flex gap-4 items-start text-start'>
                 <div style={{padding:"5px 4px 0 0"}}><img src="/assets/map.svg" alt="Map" /></div>
                 <div style={{width:"12em"}}>7th b main Btm 1st stage Bangalore Karnataka 560029</div>

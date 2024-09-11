@@ -1,11 +1,12 @@
+import Cookies  from "js-cookie";
 import React, { useEffect, useState } from "react";
 import SideBar from "./SideBar";
 import VisitsPropertyCard from "./VisitsPropertyCard";
 import Style from './container.module.css'
 import { updateUserDocument } from "../../../firebase/userprofile";
 import { getHouse } from "../../../firebase/house";
+
 function MainContainer({likes, booksCnt, viewCnt}) {
-  console.log(likes, booksCnt, viewCnt)
   const [selected, setSelected] = useState("Dashboard");
   const [selected_, setSelected_] = useState("Completed");
   const [activeStatus, setActiveStatus] = useState("Watched");
@@ -138,7 +139,7 @@ function MainContainer({likes, booksCnt, viewCnt}) {
 
   const handleClick = async() => {
     console.log(formData);
-    const phoneNumber = "72938843687"; 
+    const phoneNumber = Cookies.get("number")
     try {
       await updateUserDocument(phoneNumber, formData);
       alert('User document updated successfully.');

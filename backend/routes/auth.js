@@ -15,7 +15,7 @@ router.post("/login", async (req, res) => {
         number:number,
         city:city
     }, "dcce5c8476a044a410939dc30cbd82353281d7b09859fe8eec662be1e21753dc", {
-      expiresIn: "1h",
+      expiresIn: "1d",
     });
     res.status(200).json({ token });
   } catch (error) {

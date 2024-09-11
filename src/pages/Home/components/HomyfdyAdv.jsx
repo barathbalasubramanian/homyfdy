@@ -20,18 +20,26 @@ function HomyfydAdvantage() {
         <Title />
       </header>
       
-      <section className="flex flex-col font-semibold text-white w-full items-end justify-end pr-32 max-md:pr-10">
-        <div className="relative">
-        {features.map((feature, index) => (
-          <FeatureItem
-            key={index}
-            icon={feature.icon}
-            text={feature.text}
-          />
-        ))}
-        <div className="line" >
-            <img src="assets/lineimg.svg" alt="Line"/>
-        </div>
+      <section className="flex flex-col font-semibold text-white w-full items-end justify-end">
+        <div className="flex w-full items-center justify-end">
+            <div 
+              className="absolute right-[8em] max-xl:right-[3.5em] max-lg:right-[2em] max-md:hidden text-8xl transform rotate-90 text-nowrap"
+              style={{ color: "transparent", WebkitTextStroke: "1px #1FC827" }}
+            >
+              Book Your home in 5 Clicks
+            </div>
+          <div className="relative">
+            {features.map((feature, index) => (
+              <FeatureItem
+                key={index}
+                icon={feature.icon}
+                text={feature.text}
+              />
+            ))}
+            <div className="line">
+              <img src="assets/lineimg.svg" alt="Line"/>
+            </div>
+          </div>
         </div>
       </section>
     </main>

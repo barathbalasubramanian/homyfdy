@@ -46,13 +46,14 @@ function Header() {
           setIsLoginOpen(false);
         } else {
           setIsLoginOpen(true);
-        }
+        } 
       } catch (error) {
         const allCookies = Cookies.get();
           for (const cookie in allCookies) {
             Cookies.remove(cookie);
-        }
+          }
         console.error('Error fetching protected data:', error);
+        // Need to change when production
         setIsLoginOpen(true);
       }
     };
