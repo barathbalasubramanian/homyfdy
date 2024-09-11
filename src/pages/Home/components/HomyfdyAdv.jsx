@@ -30,7 +30,7 @@ function HomyfydAdvantage() {
           />
         ))}
         <div className="line" >
-            <img src="/assets/line.svg" alt="Line"/>
+            <img src="assets/lineimg.svg" alt="Line"/>
         </div>
         </div>
       </section>
