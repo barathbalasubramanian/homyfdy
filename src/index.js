@@ -54,11 +54,11 @@ const router = createBrowserRouter([
     ),
   },
   {
-    path: "/propertydetails",
+    path: "/propertydetails/:id",
     element: (
-      <ProtectedRoute>
+      // <ProtectedRoute>
         <PropertyDetails/>
-      </ProtectedRoute>
+      // </ProtectedRoute>
     ),
   },
   {

@@ -49,7 +49,7 @@ function ProHeader({ property }) {
   }, [property.id]);
 
   const handleIconToggle = async (iconId, typeKey, dataKey) => {
-    if (!userDoc) return; // Ensure userDoc is available
+    if (!userDoc) return;
 
     const currentVisit = { propertyId: property.id, timestamp: new Date().toISOString() };
     let updatedData;
@@ -77,9 +77,15 @@ function ProHeader({ property }) {
       case 'compare':
         handleIconToggle('compare', 'compare', 'compareProperties');
         break;
-      case 'share':
-        console.log('Share is clicked');
-        break;
+        case 'share':
+          const currentUrl = window.location.href;      
+          navigator.clipboard.writeText(currentUrl)
+              .then(() => {
+              })
+              .catch(err => {
+                  console.error('Failed to copy URL: ', err);
+              });
+          break;
       default:
         break;
     }

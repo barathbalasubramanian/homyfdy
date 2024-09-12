@@ -8,7 +8,6 @@ function Ques() {
     try {
       const fetchedFaqs = await getAllFAQ();
       setFaqs(fetchedFaqs);
-      console.log(fetchedFaqs);
     } catch (error) {
       console.error("Error fetching FAQs:", error);
     }

@@ -68,11 +68,7 @@ function Header() {
       
     fetchProperties();
     verifyToken();
-  }, []);
-
-  const handleUserClick = () => {
-    setIsLoginOpen(true);
-  };
+  }, [])
 
   const closeLogin = () => {
     setIsLoginOpen(false);

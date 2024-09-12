@@ -76,7 +76,6 @@ async function updateUser(userId, updatedData) {
   try {
     const userRef = usersCollection.doc(userId); 
     await userRef.update(updatedData);
-    console.log(`User with ID: ${userId} updated successfully.`);
   } catch (error) {
     console.error("Error updating user: ", error);
   }

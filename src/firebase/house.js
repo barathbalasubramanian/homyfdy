@@ -18,7 +18,7 @@ async function getHouse(houseId) {
     try {
         const houseDoc = await housesCollection.doc(houseId).get();
         if (houseDoc.exists) {
-            return houseDoc.data();
+            return {id: houseDoc.id, ...houseDoc.data()};
         } else {
             console.log("No such house!");
             return null;

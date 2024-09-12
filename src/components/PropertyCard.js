@@ -54,7 +54,8 @@ const PropertyCard = React.memo(({ property, verbose, fromComparePage, setCmpCnt
     }
 
     await updateUser(userDoc.id, updatedData);
-    navigate('/propertydetails', { state: { property } });
+    // navigate('/propertydetails', { state: { property } });
+    navigate(`/propertydetails/${property.id}`);
   };
 
   const handleCompareClick = async () => {
