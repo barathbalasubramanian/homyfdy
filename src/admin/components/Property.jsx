@@ -1,8 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Noti from './Noti';
 import FilterComponent from './FilterComponent';
 import PropertyCard from '../../components/PropertyCard';
 import { createHouse, getAllHouses } from '../../firebase/house'; // Assume you have a function to get all houses
+import FileUpload from './UploadImages';
+import { storage } from "../../firebase/firebase";
 
 function Property() {
     const additionalFeaturesList = [
@@ -31,15 +33,18 @@ function Property() {
         amenities: '',
         address: '',
         addressLink: '',
+        imageLinks: [], 
         additionalFeatures: additionalFeaturesList.reduce((acc, feature) => {
             acc[feature.name] = false;
             return acc;
         }, {})
     });
 
-    const [properties, setProperties] = useState([]); // To store all properties
+    const [properties, setProperties] = useState([]);
+    const [downloadURLs, setDownloadURLs] = useState([]);
+    const [selectedFiles, setSelectedFiles] = useState(null);
+    const fileInputRef = useRef(null);
 
-    // Fetch properties on component mount
     useEffect(() => {
         const fetchProperties = async () => {
             try {
@@ -82,14 +87,52 @@ function Property() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            console.log(formData);
-            alert("Added Successfully ..")
-            await createHouse(formData);
+            if (!selectedFiles || selectedFiles.length === 0) {
+                console.error("No files selected");
+                return;
+            }
+    
+            const uploadedUrls = [];
+    
+            for (const file of selectedFiles) {
+                if (!file) continue;
+    
+                try {
+                    const storageRef = storage.ref();
+                    const uploadTask = storageRef.child(`images/${file.name}`).put(file);
+    
+                    await new Promise((resolve, reject) => {
+                        uploadTask.on(
+                            'state_changed',
+                            null,
+                            (error) => reject(error),
+                            async () => {
+                                const downloadURL = await uploadTask.snapshot.ref.getDownloadURL();
+                                uploadedUrls.push(downloadURL); // Add to array
+                                resolve();
+                            }
+                        );
+                    });
+                } catch (error) {
+                    console.error("Error uploading file:", error);
+                }
+            }
+    
+            setFormData((prevData) => ({
+                ...prevData,
+                imageLinks: uploadedUrls,
+            }));
+    
+            await createHouse({ ...formData, imageLinks: uploadedUrls });
+            setSelectedFiles(null); 
+            fileInputRef.current.value = null;
+            alert("Added Successfully!");
         } catch (error) {
-            alert(error);
+            alert("Error adding property: " + error.message);
         }
         handleClear();
     };
+    
 
     const handleClear = () => {
         setFormData({
@@ -109,6 +152,7 @@ function Property() {
             amenities: '',
             address: '',
             addressLink: '',
+            imageLinks: [],
             additionalFeatures: {
                 emergencyExit: false,
                 CCTV: false,
@@ -137,7 +181,7 @@ function Property() {
                     <div className='flex items-center justify-between max-md:flex-col max-md:items-start gap-4'>
                         <div className="flex overflow-hidden flex-wrap gap-2 items-center px-3 w-1/2 max-md:w-[90%] text-xs leading-6 text-center text-gray-400 whitespace-nowrap bg-white rounded-lg border border-gray-300 border-solid min-h-[40px] max-md:max-w-full">
                             <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/51a0430ee58a1c70a8bd7129382b322477b4e868f6106bd719ff31411841b3ec?placeholderIfAbsent=true&apiKey=0b1df858a5da45e9baf46b5c3506e757" alt="" className="object-contain shrink-0 self-stretch my-auto w-4 aspect-square" />
-                            <input required type="text" placeholder="Search..." className="gap-0 self-stretch my-auto bg-transparent border-none focus:outline-none" aria-label="Search" />
+                            <input  type="text" placeholder="Search..." className="gap-0 self-stretch my-auto bg-transparent border-none focus:outline-none" aria-label="Search" />
                         </div>
                         <div>
                             <Noti />
@@ -152,52 +196,52 @@ function Property() {
                             <div className='bg-white p-6 text-black'>
                                 <form onSubmit={handleSubmit} className="bg-white p-6 text-black">
                                     <div className="">
-                                <div className='grid grid-cols-1 gap-4 lg:grid-cols-3'>
-                                    <div className='flex flex-col gap-2'>
-                                        <label htmlFor="propertyType" className='text-neutral-500'>Property Type</label>
-                                        <input required name="propertyType" type="text" value={formData.propertyType} onChange={handleChange} style={{border:"1px solid #E5E5E5"}} className='px-2 py-1 rounded-md outline-none' />
-                                    </div>
-                                    <div className='flex flex-col gap-2'>
-                                        <label htmlFor="region" className='text-neutral-500'>Select Region</label>
-                                        <input required name="region" type="text" value={formData.region} onChange={handleChange} style={{border:"1px solid #E5E5E5"}} className='px-2 py-1 rounded-md outline-none' />
-                                    </div>
-                                    <div className='flex flex-col gap-2'>
-                                        <label htmlFor="propertyPrice" className='text-neutral-500'>Property Price</label>
-                                        <input required name="propertyPrice" type="number" value={formData.propertyPrice} onChange={handleChange} style={{border:"1px solid #E5E5E5"}} className='px-2 py-1 rounded-md outline-none' />
-                                    </div>
-                                    <div className='flex flex-col gap-2'>
-                                        <label htmlFor="maxRooms" className='text-neutral-500'>Max Rooms</label>
-                                        <input required name="maxRooms" type="number" value={formData.maxRooms} onChange={handleChange} style={{border:"1px solid #E5E5E5"}} className='px-2 py-1 rounded-md outline-none' />
-                                    </div>
-                                    <div className='flex flex-col gap-2'>
-                                        <label htmlFor="bedrooms" className='text-neutral-500'>Number of Bedrooms</label>
-                                        <input required name="bedrooms" type="number" value={formData.bedrooms} onChange={handleChange} style={{border:"1px solid #E5E5E5"}} className='px-2 py-1 rounded-md outline-none' />
-                                    </div>
-                                    <div className='flex flex-col gap-2'>
-                                        <label htmlFor="bathrooms" className='text-neutral-500'>Number of Bathrooms</label>
-                                        <input required name="bathrooms" type="number" value={formData.bathrooms} onChange={handleChange} style={{border:"1px solid #E5E5E5"}} className='px-2 py-1 rounded-md outline-none' />
-                                    </div>
-                                    <div className='flex flex-col gap-2'>
-                                        <label htmlFor="area" className='text-neutral-500'>Area (sq ft)</label>
-                                        <input required name="area" type="number" value={formData.area} onChange={handleChange} style={{border:"1px solid #E5E5E5"}} className='px-2 py-1 rounded-md outline-none' />
-                                    </div>
-                                    {/* <div className='flex flex-col gap-2'>
-                                        <label htmlFor="brochureLink" className='text-neutral-500'>Brochure Link</label>
-                                        <input required name="brochureLink" type="url" value={formData.brochureLink} onChange={handleChange} style={{border:"1px solid #E5E5E5"}} className='px-2 py-1 rounded-md outline-none' />
-                                    </div> */}
-                                    <div className='flex flex-col gap-2'>
-                                        <label htmlFor="manager" className='text-neutral-500'>Relationship Manager</label>
-                                        <input required name="manager" type="text" value={formData.manager} onChange={handleChange} style={{border:"1px solid #E5E5E5"}} className='px-2 py-1 rounded-md outline-none' />
-                                    </div>
-                                    <div className='flex flex-col gap-2'>
-                                        <label htmlFor="contact" className='text-neutral-500'>Contact Number</label>
-                                        <input required name="contact" type="tel" value={formData.contact} onChange={handleChange} style={{border:"1px solid #E5E5E5"}} className='px-2 py-1 rounded-md outline-none' />
-                                    </div>
-                                    <div className='flex flex-col gap-2'>
-                                        <label htmlFor="rankings" className='text-neutral-500'>Total Rankings</label>
-                                        <input required name="rankings" type="number" value={formData.rankings} onChange={handleChange} style={{border:"1px solid #E5E5E5"}} className='px-2 py-1 rounded-md outline-none' />
-                                    </div>
-                                </div>
+                                        <div className='grid grid-cols-1 gap-4 lg:grid-cols-3'>
+                                            <div className='flex flex-col gap-2'>
+                                                <label htmlFor="propertyType" className='text-neutral-500'>Property Type</label>
+                                                <input  name="propertyType" type="text" value={formData.propertyType} onChange={handleChange} style={{border:"1px solid #E5E5E5"}} className='px-2 py-1 rounded-md outline-none' />
+                                            </div>
+                                            <div className='flex flex-col gap-2'>
+                                                <label htmlFor="region" className='text-neutral-500'>Select Region</label>
+                                                <input  name="region" type="text" value={formData.region} onChange={handleChange} style={{border:"1px solid #E5E5E5"}} className='px-2 py-1 rounded-md outline-none' />
+                                            </div>
+                                            <div className='flex flex-col gap-2'>
+                                                <label htmlFor="propertyPrice" className='text-neutral-500'>Property Price</label>
+                                                <input  name="propertyPrice" type="number" value={formData.propertyPrice} onChange={handleChange} style={{border:"1px solid #E5E5E5"}} className='px-2 py-1 rounded-md outline-none' />
+                                            </div>
+                                            <div className='flex flex-col gap-2'>
+                                                <label htmlFor="maxRooms" className='text-neutral-500'>Max Rooms</label>
+                                                <input  name="maxRooms" type="number" value={formData.maxRooms} onChange={handleChange} style={{border:"1px solid #E5E5E5"}} className='px-2 py-1 rounded-md outline-none' />
+                                            </div>
+                                            <div className='flex flex-col gap-2'>
+                                                <label htmlFor="bedrooms" className='text-neutral-500'>Number of Bedrooms</label>
+                                                <input  name="bedrooms" type="number" value={formData.bedrooms} onChange={handleChange} style={{border:"1px solid #E5E5E5"}} className='px-2 py-1 rounded-md outline-none' />
+                                            </div>
+                                            <div className='flex flex-col gap-2'>
+                                                <label htmlFor="bathrooms" className='text-neutral-500'>Number of Bathrooms</label>
+                                                <input  name="bathrooms" type="number" value={formData.bathrooms} onChange={handleChange} style={{border:"1px solid #E5E5E5"}} className='px-2 py-1 rounded-md outline-none' />
+                                            </div>
+                                            <div className='flex flex-col gap-2'>
+                                                <label htmlFor="area" className='text-neutral-500'>Area (sq ft)</label>
+                                                <input  name="area" type="number" value={formData.area} onChange={handleChange} style={{border:"1px solid #E5E5E5"}} className='px-2 py-1 rounded-md outline-none' />
+                                            </div>
+                                            {/* <div className='flex flex-col gap-2'>
+                                                <label htmlFor="brochureLink" className='text-neutral-500'>Brochure Link</label>
+                                                <input  name="brochureLink" type="url" value={formData.brochureLink} onChange={handleChange} style={{border:"1px solid #E5E5E5"}} className='px-2 py-1 rounded-md outline-none' />
+                                            </div> */}
+                                            <div className='flex flex-col gap-2'>
+                                                <label htmlFor="manager" className='text-neutral-500'>Relationship Manager</label>
+                                                <input  name="manager" type="text" value={formData.manager} onChange={handleChange} style={{border:"1px solid #E5E5E5"}} className='px-2 py-1 rounded-md outline-none' />
+                                            </div>
+                                            <div className='flex flex-col gap-2'>
+                                                <label htmlFor="contact" className='text-neutral-500'>Contact Number</label>
+                                                <input  name="contact" type="tel" value={formData.contact} onChange={handleChange} style={{border:"1px solid #E5E5E5"}} className='px-2 py-1 rounded-md outline-none' />
+                                            </div>
+                                            <div className='flex flex-col gap-2'>
+                                                <label htmlFor="rankings" className='text-neutral-500'>Total Rankings</label>
+                                                <input  name="rankings" type="number" value={formData.rankings} onChange={handleChange} style={{border:"1px solid #E5E5E5"}} className='px-2 py-1 rounded-md outline-none' />
+                                            </div>
+                                        </div>
                                     </div>
                                     <div className='pt-2 grid grid-cols-1 gap-4 lg:grid-cols-2'>
                                         <div className='flex flex-col gap-2'>
@@ -212,12 +256,21 @@ function Property() {
                                     <div className='pt-2 grid grid-cols-1 gap-4 lg:grid-cols-2'>
                                         <div className='flex flex-col gap-2'>
                                             <label htmlFor="address" className='text-neutral-500'>Address</label>
-                                            <input required name="address" type="text" value={formData.address} onChange={handleChange} style={{border:"1px solid #E5E5E5"}} className='px-2 py-1 rounded-md outline-none' />
+                                            <input  name="address" type="text" value={formData.address} onChange={handleChange} style={{border:"1px solid #E5E5E5"}} className='px-2 py-1 rounded-md outline-none' />
                                         </div>
                                         <div className='flex flex-col gap-2'>
                                             <label htmlFor="addressLink" className='text-neutral-500'>Address Link (Google Maps)</label>
-                                            <input required name="addressLink" type="text" value={formData.addressLink} onChange={handleChange} style={{border:"1px solid #E5E5E5"}} className='px-2 py-1 rounded-md outline-none' />
+                                            <input  name="addressLink" type="text" value={formData.addressLink} onChange={handleChange} style={{border:"1px solid #E5E5E5"}} className='px-2 py-1 rounded-md outline-none' />
                                         </div>
+                                    </div>
+                                    <div>
+                                        <FileUpload 
+                                            downloadURLs={downloadURLs}
+                                            setDownloadURLs={setDownloadURLs}
+                                            selectedFiles={selectedFiles}
+                                            setSelectedFiles={setSelectedFiles}
+                                            fileInputRef={fileInputRef}
+                                        />
                                     </div>
                                     {/* <div className='pt-8 flex flex-col gap-2'>
                                         <div className='text-neutral-500'>

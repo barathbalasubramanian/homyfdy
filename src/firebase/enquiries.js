@@ -1,4 +1,4 @@
-const db = require('./firebase'); // Import the Firestore instance
+const {db} = require('./firebase'); // Import the Firestore instance
 
 const enquiriesCollection = db.collection('enquiries');
 

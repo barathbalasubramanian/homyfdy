@@ -1,7 +1,7 @@
 const firebase = require('firebase/compat/app');
 require('firebase/compat/firestore');
+require("firebase/compat/storage");
 
-// Your web app's Firebase configuration
 const firebaseConfig = {
     apiKey: "AIzaSyCd3uwUGAGwv1SXAdFAvB9eGCrQDECNQv4",
     authDomain: "homyfyd-ba82d.firebaseapp.com",
@@ -12,7 +12,11 @@ const firebaseConfig = {
     measurementId: "G-RJMVHN9JPL"
 };
 
-firebase.initializeApp(firebaseConfig);
+const app = firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
+const storage = firebase.storage();
 
-module.exports = db;
+export { db,storage };
+
+
+

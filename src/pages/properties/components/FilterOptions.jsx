@@ -3,15 +3,18 @@ import FilterOption from "./FilterOption";
 
 function FilterOptions() {
 
-    const inquiryTypes = ['Select Inquiry Type', 'General Inquiry', 'Property Listing', 'Buying', 'Selling'];
-    const hearAboutUs = ['Select', 'Friend', 'Social Media', 'Advertisement', 'Other'];
+    const LocationTypes = ["Location", "Bangalore North", "Bangalore South", "Bangalore West", "Bangalore East"]
+    const PropertyTypes = ["Plots", "Apartments", "Vilas"]
+    const PriceRanges = ["Price Range", "0-100k", "100k-500k", "500k-1M"]
+    const PropertySizes = ["Property Size", "0-1000", "1000-5000", "5000-10000"]
+    const BuildYears = ["Build Year", "2020", "2021", "2022"]
 
     const filterOptions = [
-    {  options:inquiryTypes, icon: "/assets/opt1.svg", label: "Location" },
-    {  options:hearAboutUs,  icon: "/assets/opt2.svg", label: "Property Type" },
-    {  options:inquiryTypes, icon: "/assets/opt3.svg", label: "Pricing Range" },
-    {  options:hearAboutUs,  icon: "/assets/opt4.svg", label: "Property Size" },
-    {  options:hearAboutUs,  icon: "/assets/opt5.svg", label: "Build Year" }
+    {  options:LocationTypes, icon: "/assets/opt1.svg", label: "Location" },
+    {  options:PropertyTypes,  icon: "/assets/opt2.svg", label: "Property Type" },
+    {  options:PriceRanges, icon: "/assets/opt3.svg", label: "Pricing Range" },
+    {  options:PropertySizes,  icon: "/assets/opt4.svg", label: "Property Size" },
+    {  options:BuildYears,  icon: "/assets/opt5.svg", label: "Build Year" }
   ];
 
   return (

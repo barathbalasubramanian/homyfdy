@@ -27,12 +27,7 @@ function Welcome() {
                 <div className='home-input text-black flex max-md:flex-col max-md:items-start max-md:gap-4 justify-between w-[60%] max-md:w-[90%] max-md:ml-2 items-center ml-20 bg-white px-10 py-6 rounded-2xl'>
                     <div  className='flex flex-col gap-1'>
                         <label htmlFor="location" className='pl-1 text-[14px]'>Location:</label>
-                        <select
-                            className='text-neutral-400 text-sm'
-                            id="location"
-                            value={location}
-                            onChange={(e) => setLocation(e.target.value)}
-                            >
+                        <select className='text-neutral-400 text-sm' id="location" value={location} onChange={(e) => setLocation(e.target.value)} >
                             <option value="">Select Location</option>
                             <option value="bangalorenorth">Bangalore North</option>
                             <option value="bangaloresouth">bangalore South</option>
@@ -43,18 +38,11 @@ function Welcome() {
 
                     <div  className='flex flex-col gap-1'>
                         <label htmlFor="propertyType" className='pl-1 text-[14px]'>Property Type:</label>
-                        <select
-                        className='text-neutral-400 text-sm'
-                        id="propertyType"
-                        value={propertyType}
-                        onChange={(e) => setPropertyType(e.target.value)}
-                        >
-                        <option value="">Select Property Type</option>
-                        <option value="house">House</option>
-                        <option value="apartment">Apartment</option>
-                        <option value="condo">Condo</option>
-                        <option value="land">Land</option>
-                        <option value="commercial">Commercial</option>
+                        <select className='text-neutral-400 text-sm' id="propertyType" value={propertyType} onChange={(e) => setPropertyType(e.target.value)} >
+                            <option value="">Select Property Type</option>
+                            <option value="plots">Plots</option>
+                            <option value="apartment">Apartment</option>
+                            <option value="vilas">Vilas</option>
                         </select>
                     </div>
 

@@ -1,4 +1,4 @@
-const db = require('./firebase'); 
+const {db} = require('./firebase'); 
 
 const bookingsCollection = db.collection('bookings');
 
