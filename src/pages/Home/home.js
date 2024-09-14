@@ -13,36 +13,65 @@ import Welcome from './components/Welcome'
 import { getAllHouses } from '../../firebase/house'
 
 function Home() {
-
   const [properties, setProperties] = useState([]);
-    useEffect(() => {
-        const fetchProperties = async () => {
-            try {
-                const fetchedProperties = await getAllHouses();
-                setProperties(fetchedProperties);
-            } catch (error) {
-                console.error("Error fetching properties: ", error);
-            }
-        };
-        fetchProperties();
-    }, []);
+  const [filteredProperties, setFilteredProperties] = useState([]);
+  const [filters, setFilters] = useState({
+    location: '',
+    propertyType: '',
+    priceRange: ''
+  });
+
+  useEffect(() => {
+    const fetchProperties = async () => {
+      try {
+        const fetchedProperties = await getAllHouses();
+        setProperties(fetchedProperties);
+        setFilteredProperties(fetchedProperties); // Initially show all properties
+      } catch (error) {
+        console.error("Error fetching properties: ", error);
+      }
+    };
+    fetchProperties();
+  }, []);
+
+  const handleFilter = (location, propertyType, priceRange) => {
+    const filtered = properties.filter(property => {
+      const normalizedPropertyRegion = property.region.toLowerCase().replace(/\s+/g, '');
+      const normalizedLocation = location.toLowerCase().replace(/\s+/g, '');
+      const matchLocation = location ? normalizedPropertyRegion === normalizedLocation : true;
+      const matchType = propertyType ? property.propertyType.toLowerCase().trim() === propertyType.toLowerCase().trim() : true;
+      const matchPrice = priceRange ? matchPriceRange(property.propertyPrice, priceRange) : true;
+  
+      return matchLocation && matchType && matchPrice;
+    });
+    setFilteredProperties(filtered);
+  };
+  
+
+  const matchPriceRange = (price, range) => {
+    if (range === "0-100k") return price <= 100000;
+    if (range === "100k-500k") return price > 100000 && price <= 500000;
+    if (range === "500k-1M") return price > 500000 && price <= 1000000;
+    if (range === "1M+") return price > 1000000;
+    return true;
+  };
 
   return (
     <div>
-      <Header/>
-      <Welcome/>
-      <FeaturedProperties property={properties}/>
-      <Partners/>
-      <FeaturedProperties property={properties}/>
-      <HomyfydAdvantage/>
-      <Options/>
-      <Clients/>
-      <Ques/>
-      <PlayStore/>
-      <AbFooter/>
-      <Footer/>
+      <Header />
+      <Welcome onFilter={handleFilter} filters={filters} setFilters={setFilters} />
+      <FeaturedProperties property={filteredProperties} />
+      <Partners />
+      <FeaturedProperties property={filteredProperties} />
+      <HomyfydAdvantage />
+      <Options />
+      <Clients />
+      <Ques />
+      <PlayStore />
+      <AbFooter />
+      <Footer />
     </div>
-  )
+  );
 }
 
-export default Home
+export default Home;

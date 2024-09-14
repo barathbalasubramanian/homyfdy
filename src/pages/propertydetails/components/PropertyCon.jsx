@@ -12,7 +12,7 @@ function PropertyCon({property}) {
   return (
     <main className="flex flex-col items-start px-16 py-16 w-full max-md:px-5 max-md:mt-10 max-md:max-w-full">
       <ProHeader property={property}/>
-      <ImageGallery />
+      <ImageGallery imageLinks={property.imageLinks}/>
       <section className="self-stretch py-20 max-md:py-16 max-md:max-w-full">
         <div className="flex gap-5 max-md:flex-col">
           <div className="flex flex-col w-6/12 max-md:ml-0 max-md:w-full">
