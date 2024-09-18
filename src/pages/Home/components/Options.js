@@ -46,7 +46,9 @@ function Options() {
               <div className='font-semibold'>{option.title}</div>
               <div className='flex flex-col'>
                 {option.items.map((item, itemIndex) => (
-                  <div key={itemIndex}>{item}</div>
+                  <div key={itemIndex} className="cursor-pointer hover:text-green-500">
+                    {item}
+                  </div>
                 ))}
               </div>
             </div>

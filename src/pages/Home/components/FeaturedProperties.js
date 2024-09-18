@@ -10,9 +10,9 @@ function FeaturedProperties({property}) {
   };
 
   const buttons = [
-    { name: 'Homyfyd Reliable' },
-    { name: 'Hot projects' },
-    { name: 'Newly Launched' },
+    { name: 'Apartments' },
+    { name: 'Plots' },
+    { name: 'Vilas' },
   ];
 
   return (
@@ -20,7 +20,7 @@ function FeaturedProperties({property}) {
         <div><img src="/assets/design.svg" alt="Design" /></div>
             <div className='py-6 flex items-center gap-8 justify-between text-start max-md:flex-col max-md:items-start max-md:pb-10'>
               <div>
-                  <div className='text-3xl pb-2'>WHAT OUR CLIENTS SAY</div>
+                  <div className='text-3xl pb-2'>FEATURED PROPERTIES</div>
                   <div style={{color:"grey"}} className='w-3/4'>Read the success stories and heartfelt testimonials from our valued clients. Discover why they chose Estatein for their real estate needs.</div>
               </div>
               <div className='cursor-pointer flex items-center gap-3 px-2 py-1' style={{textWrap:"nowrap",border:"1px solid #262626",backgroundColor:"var(--blackhd)",borderRadius:"5px"}}>

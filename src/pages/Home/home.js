@@ -11,6 +11,7 @@ import Partners from '../Home/components/Partners'
 import HomyfydAdvantage from './components/HomyfdyAdv'
 import Welcome from './components/Welcome'
 import { getAllHouses } from '../../firebase/house'
+import Blogs from './components/Blogs'
 
 function Home() {
   const [properties, setProperties] = useState([]);
@@ -66,6 +67,7 @@ function Home() {
       <HomyfydAdvantage />
       <Options />
       <Clients />
+      <Blogs/>
       <Ques />
       <PlayStore />
       <AbFooter />

@@ -2,21 +2,7 @@ import React, { useEffect, useState } from 'react';
 import PropertyCard from '../../../components/PropertyCard';
 import { getAllHouses } from '../../../firebase/house';
 
-function PropertyHeader() {
-  const [properties, setProperties] = useState([]);
-
-  useEffect(() => {
-    const fetchProperties = async () => {
-      try {
-        const fetchedProperties = await getAllHouses();
-        setProperties(fetchedProperties);
-      } catch (error) {
-        console.error("Error fetching properties: ", error);
-      }
-    };
-
-    fetchProperties();
-  }, []);
+function PropertyHeader({properties}) {
 
   return (
     <div>

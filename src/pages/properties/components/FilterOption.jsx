@@ -1,6 +1,10 @@
 import React from "react";
 
-function FilterOption({ icon, label, options }) {
+function FilterOption({ icon, label, options, onFilterChange }) {
+  const handleSelectChange = (e) => {
+    onFilterChange(label, e.target.value); 
+  };
+
   return (
     <div className="flex flex-col flex-1 gap-4 shrink basis-0 min-w-[240px] border-neutral-800">
       <div className="relative border-neutral-800">
@@ -25,10 +29,11 @@ function FilterOption({ icon, label, options }) {
               id={label.toLowerCase().replace(/\s/g, "-")}
               style={{ backgroundColor: "#141414" }}
               className="flex outline-none border-none gap-3 items-center px-5 py-2 pl-2 w-full text-sm font-medium leading-none rounded-md border text-stone-500 appearance-none"
+              onChange={handleSelectChange}
             >
               {options.map((option, index) => (
                 <option key={index} value={option}>
-                  <div style={{ padding: "2em 0" }}>{option}</div>
+                  {option}
                 </option>
               ))}
             </select>

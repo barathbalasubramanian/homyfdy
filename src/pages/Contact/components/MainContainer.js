@@ -286,28 +286,28 @@ function MainContainer({likes, booksCnt, viewCnt}) {
                                 My Homyfyd journey
                             </div>
                             <div className="flex gap-4 mt-8 items-center max-md:flex-wrap max-md:justify-center max-md:mt-2">
-                                <div className="p-6 px-8 text-center gra rounded-md"> 
+                                <div className="p-6 px-8 text-center gra rounded-md" onClick={()=>{setSelected("My Visits");setActiveStatus("Watched")}}> 
                                     <div className=""><img src="/assets/viewed.svg" alt="Viewed" /></div>
                                     <div className="pt-2" style={{fontSize:"14px"}}>
                                         <div>Viewed</div>
                                         <div>{viewCnt.length} Properties</div>
                                     </div>
                                 </div>
-                                <div className="p-6 px-8 text-center gra rounded-md"> 
+                                <div className="p-6 px-8 text-center gra rounded-md" onClick={()=>{setSelected("My Visits");setActiveStatus("Favourite")}}> 
                                     <div><img src="/assets/fav.svg" alt="Viewed" /></div>
                                     <div className="pt-2" style={{fontSize:"14px"}}>
                                         <div>Favourite</div>
                                         <div>{likes.length} Properties</div>
                                     </div>
                                 </div>
-                                <div className="p-6 px-8 text-center gra rounded-md"> 
+                                <div className="p-6 px-8 text-center gra rounded-md" onClick={()=>{setSelected("My Visits");setActiveStatus("Site Visits")}}> 
                                     <div><img src="/assets/public.svg" alt="Viewed" /></div>
                                     <div className="pt-2" style={{fontSize:"14px"}}>
                                         <div>Site Visits</div>
                                         <div>{completedProperties.length} Properties</div>
                                     </div>
                                 </div>
-                                <div className="p-6 px-8 text-center gra rounded-md"> 
+                                <div className="p-6 px-8 text-center gra rounded-md" onClick={()=>{setSelected("My Visits");setActiveStatus("Bookings")}}> 
                                     <div><img src="/assets/click.svg" alt="Viewed" /></div>
                                     <div className="pt-2" style={{fontSize:"14px"}}>
                                         <div>Bookings</div>
