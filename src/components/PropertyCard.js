@@ -2,10 +2,15 @@ import Cookies from 'js-cookie';
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getUserDetails_, updateUser } from '../firebase/user';
+import { deleteHouse } from '../firebase/house';
 
-const PropertyCard = React.memo(({ property, verbose, fromComparePage, setCmpCnt, CmpCnt }) => {
+const PropertyCard = React.memo(({ property, verbose, fromComparePage, setCmpCnt, CmpCnt, edit, setEdit, setDel }) => {
   const navigate = useNavigate();
   const [compareImg, setCompareImg] = useState("/assets/compare.svg");
+
+  const handleDetail = () => {
+    setDel(property.id)
+  }
 
   useEffect(() => {
     if (fromComparePage) {
@@ -136,9 +141,20 @@ const PropertyCard = React.memo(({ property, verbose, fromComparePage, setCmpCnt
           <div style={{ color: "grey", fontSize: "12px" }}>Price</div>
           <div className={`${!verbose ? 'text-white' : 'text-black'}`}>${property.propertyPrice}</div>
         </div>
-        <div onClick={handleViewDetails} className='cursor-pointer border-none flex items-center w-fit bg-green-600 shadow-[0px_0px_21px_rgba(31,200,39,1)] gap-3 px-2 py-2' style={{ fontSize: "13px", textWrap: "nowrap", backgroundColor: "var(--green)", borderRadius: "5px" }}>
-          <img src="/assets/vila.svg" alt="Details" /> View Property Details
-        </div>
+        {
+          edit &&
+          <div className='text-black flex gap-10'>
+            <div onClick={handleViewDetails} className='cursor-pointer hover:text-green-500 hover:scale-110 transform transition'>View</div>
+            <div onClick={()=>{setEdit(property.id)}} className='cursor-pointer text-green-600 hover:text-neutral-500  hover:scale-110 transform transition'>Edit</div>
+            <div onClick={handleDetail} className='cursor-pointer  hover:scale-110 transform transition'><img src="/assets/delete.svg" alt="" /></div>
+          </div>
+        }
+        {
+          !edit &&
+          <div onClick={handleViewDetails} className='cursor-pointer border-none flex items-center w-fit bg-green-600 shadow-[0px_0px_21px_rgba(31,200,39,1)] gap-3 px-2 py-2' style={{ fontSize: "13px", textWrap: "nowrap", backgroundColor: "var(--green)", borderRadius: "5px" }}>
+            <img src="/assets/vila.svg" alt="Details" /> View Property Details
+          </div>
+        }
       </div>
     </div>
   );

@@ -1,12 +1,14 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Noti from './Noti';
 import { createBlog, getAllBlogs, updateBlog, deleteBlog } from '../../firebase/Blogs';
+import { storage } from '../../firebase/firebase';
 
 function Blogs() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [blogName, setBlogName] = useState('');
   const [writerName, setWriterName] = useState('');
   const [publishDate, setPublishDate] = useState('');
+  const [description, setDescription] = useState(''); // New state for description
   const [selectedFile, setSelectedFile] = useState(null);
   const [blogs, setBlogs] = useState([]);
   const [editingBlogId, setEditingBlogId] = useState(null); // Track which blog is being edited
@@ -19,35 +21,64 @@ function Blogs() {
 
   const handleSave = async () => {
     try {
+      let blogImage = '';
+  
+      // If a new file is selected, upload it to Firebase storage
+      if (selectedFile) {
+        const storageRef = storage.ref();
+        const uploadTask = storageRef.child(`images/${selectedFile.name}`).put(selectedFile);
+  
+        blogImage = await new Promise((resolve, reject) => {
+          uploadTask.on(
+            'state_changed',
+            null,
+            (error) => reject(error),
+            async () => {
+              const downloadURL = await uploadTask.snapshot.ref.getDownloadURL();
+              resolve(downloadURL); // Return the download URL
+            }
+          );
+        });
+      } else if (editingBlogId) {
+        // If no new image is selected and editing, retain the current image URL
+        const blogToEdit = blogs.find((blog) => blog.id === editingBlogId);
+        blogImage = blogToEdit.blogImage || ''; // Retain the current image URL if available
+      }
+  
       if (editingBlogId) {
         // Update blog if editing
         await updateBlog(editingBlogId, {
           blogName,
           writerName,
           publishDate,
-          // Handle image upload here if needed
+          description, // Include description here
+          blogImage, // Use the image URL (either new or existing)
         });
       } else {
-        // Create new blog
+        // Create a new blog
         await createBlog({
           blogName,
           writerName,
           publishDate,
-          // Handle image upload here if needed
+          description, // Include description here
+          blogImage, // Use the image URL (either new or existing)
         });
       }
+  
       fetchBlogs(); // Refresh the list after saving
       setIsModalOpen(false);
       handleClear();
     } catch (error) {
-      console.error("Error saving blog:", error);
+      console.error('Error saving blog:', error);
     }
   };
+  
 
   const handleClear = () => {
     setBlogName('');
     setWriterName('');
     setPublishDate('');
+    setDescription(''); // Clear the description
     setSelectedFile(null);
     setEditingBlogId(null); // Reset editing state
   };
@@ -61,25 +92,28 @@ function Blogs() {
       const fetchedBlogs = await getAllBlogs();
       setBlogs(fetchedBlogs);
     } catch (error) {
-      console.error("Error fetching blogs:", error);
+      console.error('Error fetching blogs:', error);
     }
   };
 
   const handleEdit = (id) => {
-    const blogToEdit = blogs.find(blog => blog.id === id);
+    const blogToEdit = blogs.find((blog) => blog.id === id);
     setBlogName(blogToEdit.blogName);
     setWriterName(blogToEdit.writerName);
     setPublishDate(blogToEdit.publishDate);
+    setDescription(blogToEdit.description); // Set the description for editing
+    setSelectedFile(null); // Reset the selected file for the image upload
     setEditingBlogId(id);
     setIsModalOpen(true);
   };
+  
 
   const handleDelete = async (id) => {
     try {
       await deleteBlog(id);
       fetchBlogs(); // Refresh blogs after deletion
     } catch (error) {
-      console.error("Error deleting blog:", error);
+      console.error('Error deleting blog:', error);
     }
   };
 
@@ -110,31 +144,37 @@ function Blogs() {
 
           <div className="p-6 text-black">
             <div className="flex w-full bg-green-100 p-4 font-bold text-[16px]">
-              <div className="w-1/4">Blog Name</div>
-              <div className="w-1/4">Writer Name</div>
-              <div className="w-1/4">Date of Publish</div>
+              <div className="w-1/5">Blog Name</div>
+              <div className="w-1/5">Writer Name</div>
+              <div className="w-1/5">Date of Publish</div>
+              <div className="w-1/5">Description</div>
               <div className='w-[3.5em]'>Image</div>
-              <div className="w-1/4"></div>
+              <div className="w-1/5"></div>
             </div>
             {blogs.map((blog) => (
               <div key={blog.id} className="flex items-center w-full p-4 border-b border-gray-200">
-                <div className="w-1/4 flex items-center gap-4">
-                  <div>{blog.blogName}</div>
+                <div className="w-1/5">{blog.blogName}</div>
+                <div className="w-1/5">{blog.writerName}</div>
+                <div className="w-1/5">{blog.publishDate}</div>
+                <div className="w-1/5">{blog.description ? (
+                blog.description.length > 100 ? (
+                  <>
+                    {blog.description.substring(0, 100)}... <span style={{ color: '#1FC827' }}>Read More</span>
+                  </>
+                ) : (
+                  blog.description
+                )
+              ) : (
+                'No description available for this blog.'
+              )}</div> {/* Display description */}
+                <div className='w-[3.5em]'>
+                  <img src={blog.blogImage} alt={blog.blogName} className="w-12 h-12 object-cover rounded-full" />
                 </div>
-                <div className="w-1/4">{blog.writerName}</div>
-                <div className="w-1/4">{blog.publishDate}</div>
-                <div className='w-[3.5em]'><img src='/assets/image.svg' alt={blog.blogName} className="w-12 h-12 object-cover rounded-full" /></div>
-                <div className="w-1/4 flex justify-center gap-4">
-                  <button 
-                    onClick={() => handleEdit(blog.id)} 
-                    className="bg-green-500 text-white px-4 py-2 rounded-lg"
-                  >
+                <div className="w-1/5 flex justify-center gap-4">
+                  <button onClick={() => handleEdit(blog.id)} className="bg-green-500 text-white px-4 py-2 rounded-lg">
                     Edit
                   </button>
-                  <button 
-                    onClick={() => handleDelete(blog.id)} 
-                    className="text-white rounded-lg"
-                  >
+                  <button onClick={() => handleDelete(blog.id)} className="text-white rounded-lg">
                     <img src="/assets/delete.svg" alt="Delete" />
                   </button>
                 </div>
@@ -147,7 +187,9 @@ function Blogs() {
               <div className="bg-white p-6 rounded-lg max-w-lg w-full">
                 <div className='w-full flex items-center justify-between mb-6'>
                   <div className="text-xl font-semibold text-black">{editingBlogId ? 'Update Blog' : 'Add Blog'}</div>
-                  <div className='font-bold text-xl text-red-500 cursor-pointer' onClick={() => setIsModalOpen(false)}><img src='/assets/close.svg' alt='Close'/></div>
+                  <div className='font-bold text-xl text-red-500 cursor-pointer' onClick={() => setIsModalOpen(false)}>
+                    <img src='/assets/close.svg' alt='Close' />
+                  </div>
                 </div>
                 <div className='flex flex-col gap-4'>
                   <div>
@@ -178,6 +220,15 @@ function Blogs() {
                     />
                   </div>
                   <div>
+                    <label className="block text-gray-700">Description</label> {/* New field for description */}
+                    <textarea
+                      value={description}
+                      onChange={(e) => setDescription(e.target.value)}
+                      className="w-full text-neutral-700 outline-none mt-1 px-3 py-2 border border-gray-300 rounded-md"
+                      rows="3"
+                    ></textarea>
+                  </div>
+                  <div>
                     <label className="block text-gray-700">Upload Image</label>
                     <input
                       type="file"
@@ -185,12 +236,10 @@ function Blogs() {
                       onChange={handleImageUpload}
                       className="hidden"
                     />
-                    <div 
-                      className='flex flex-col gap-2 w-full items-center border py-4 mt-3 rounded-xl px-3 border-gray-300 cursor-pointer' 
-                      onClick={triggerFileInput}>
+                    <div className='flex flex-col gap-2 w-full items-center border py-4 mt-3 rounded-xl px-3 border-gray-300 cursor-pointer' onClick={triggerFileInput}>
                       <img src="assets/upload.svg" style={{ width: "4em" }} alt="Upload Image" />
                       <div className='text-neutral-500'>
-                        {selectedFile ? selectedFile.name : "Upload image"}
+                        {selectedFile ? selectedFile.name : 'Upload image'}
                       </div>
                     </div>
                   </div>

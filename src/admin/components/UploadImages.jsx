@@ -9,9 +9,9 @@ const FileUpload = ({fileInputRef,setSelectedFiles}) => {
   };
 
   return (
-    <div>
-      <h2>Upload Multiple Files</h2>
-      <input type="file" multiple ref={fileInputRef} onChange={handleFileChange} />
+    <div className="mt-2">
+      <h2 className="text-neutral-500">Upload Multiple Files</h2>
+      <input type="file" className="mt-2" multiple ref={fileInputRef} onChange={handleFileChange} />
     </div>
   );
 };

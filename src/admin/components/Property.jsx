@@ -2,11 +2,12 @@ import React, { useState, useEffect, useRef } from 'react';
 import Noti from './Noti';
 import FilterComponent from './FilterComponent';
 import PropertyCard from '../../components/PropertyCard';
-import { createHouse, getAllHouses } from '../../firebase/house'; // Assume you have a function to get all houses
+import { createHouse, deleteHouse, getAllHouses } from '../../firebase/house'; // Assume you have a function to get all houses
 import FileUpload from './UploadImages';
 import { storage } from "../../firebase/firebase";
 
 function Property() {
+
     const additionalFeaturesList = [
         { name: 'emergencyExit', label: 'Emergency Exit' },
         { name: 'CCTV', label: 'CCTV' },
@@ -16,7 +17,22 @@ function Property() {
         { name: 'elevatorLift', label: 'Elevator/Lift' },
     ];
 
+    const [del, setDel] = useState(null)
+    const [editable, setEdit] = useState(null)
+
+    useEffect ( ()=>{
+        const PropertyToedit = properties.find( (property) => property.id === editable )
+        console.log(PropertyToedit)
+    },[editable])
+
+    useEffect ( ()=>{
+        const res = deleteHouse(del)
+        fetchProperties()
+    },[del])
+
     const [formData, setFormData] = useState({
+        propertyName: '',
+        propertyBHK: '',
         propertyType: '',
         region: '',
         propertyPrice: '',
@@ -45,16 +61,16 @@ function Property() {
     const [selectedFiles, setSelectedFiles] = useState(null);
     const fileInputRef = useRef(null);
 
-    useEffect(() => {
-        const fetchProperties = async () => {
-            try {
-                const fetchedProperties = await getAllHouses(); // Assume this returns an array of property objects
-                setProperties(fetchedProperties);
-            } catch (error) {
-                console.error("Error fetching properties: ", error);
-            }
-        };
+    const fetchProperties = async () => {
+        try {
+            const fetchedProperties = await getAllHouses();
+            setProperties(fetchedProperties);
+        } catch (error) {
+            console.error("Error fetching properties: ", error);
+        }
+    };
 
+    useEffect(() => {
         fetchProperties();
     }, []);
 
@@ -136,6 +152,8 @@ function Property() {
 
     const handleClear = () => {
         setFormData({
+            propertyName: '',
+            propertyBHK: '',
             propertyType: '',
             region: '',
             propertyPrice: '',
@@ -198,8 +216,38 @@ function Property() {
                                     <div className="">
                                         <div className='grid grid-cols-1 gap-4 lg:grid-cols-3'>
                                             <div className='flex flex-col gap-2'>
+                                                <label htmlFor="propertyName" className='text-neutral-500'>Property Name</label>
+                                                <input  name="propertyName" type="text" value={formData.propertyName} onChange={handleChange} style={{border:"1px solid #E5E5E5"}} className='px-2 py-1 rounded-md outline-none' />
+                                            </div>
+                                            <div className='flex flex-col gap-2'>
                                                 <label htmlFor="propertyType" className='text-neutral-500'>Property Type</label>
-                                                <input  name="propertyType" type="text" value={formData.propertyType} onChange={handleChange} style={{border:"1px solid #E5E5E5"}} className='px-2 py-1 rounded-md outline-none' />
+                                                <select
+                                                    name="propertyType"
+                                                    value={formData.propertyType}
+                                                    onChange={handleChange}
+                                                    style={{ border: "1px solid #E5E5E5" }}
+                                                    className='px-2 py-1 rounded-md outline-none'
+                                                >
+                                                    <option value="">Select Property Type</option>
+                                                    <option value="Apartments">Apartments</option>
+                                                    <option value="Plots">Plots</option>
+                                                    <option value="Villas">Villas</option>
+                                                </select>
+                                            </div>
+                                            <div className='flex flex-col gap-2'>
+                                                <label htmlFor="propertyBHK" className='text-neutral-500'>Property BHK</label>
+                                                <select
+                                                    name="propertyBHK"
+                                                    value={formData.propertyBHK}
+                                                    onChange={handleChange}
+                                                    style={{ border: "1px solid #E5E5E5" }}
+                                                    className='px-2 py-1 rounded-md outline-none'
+                                                >
+                                                    <option value="">Select BHK</option>
+                                                    <option value="BH2">BH2</option>
+                                                    <option value="BH4">BH4</option>
+                                                    <option value="BH6">BH6</option>
+                                                </select>
                                             </div>
                                             <div className='flex flex-col gap-2'>
                                                 <label htmlFor="region" className='text-neutral-500'>Select Region</label>
@@ -306,7 +354,7 @@ function Property() {
                             <FilterComponent onSearch={handleSearch} />
                             <div className='flex flex-wrap w-full gap-4'>
                                 {properties.map((property) => (
-                                    <PropertyCard key={property.id} property={property} verbose={true} />
+                                    <PropertyCard key={property.id} property={property} verbose={true} edit={true} setEdit={setEdit} setDel={setDel}/>
                                 ))}
                             </div>
                         </>
