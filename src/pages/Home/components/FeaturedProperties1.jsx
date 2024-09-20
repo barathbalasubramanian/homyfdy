@@ -2,16 +2,16 @@ import React, { useEffect, useState } from 'react'
 import PropertyCard from '../../../components/PropertyCard';
 import { useNavigate } from 'react-router-dom';
 
-function FeaturedProperties({property, buttons, setbuttonValue}) {
-
-  const [selectedButton, setSelectedButton] = useState(null);
-  const Navigate = useNavigate();
-  const handleButtonClick = (buttonName) => {
-    setSelectedButton(buttonName);
-    setbuttonValue(buttonName)
-  };
-
-  return (
+function FeaturedProperties1({property, buttons1, setbuttonValue1}) {
+  
+    const [selectedButton, setSelectedButton] = useState(null);
+    const Navigate = useNavigate();
+    const handleButtonClick = (buttonName) => {
+        setSelectedButton(buttonName);
+        setbuttonValue1(buttonName);
+    };    
+    
+    return (
     <div className='py-10 px-16 max-md:px-3 max-md:py-6'>
         <div><img src="/assets/design.svg" alt="Design" /></div>
             <div className='py-6 flex items-center gap-8 justify-between text-start max-md:flex-col max-md:items-start max-md:pb-10'>
@@ -25,7 +25,7 @@ function FeaturedProperties({property, buttons, setbuttonValue}) {
           </div>
 
         <div className='flex items-center gap-6 max-md:flex-wrap'>
-            {buttons.map((button) => (
+            {buttons1.map((button) => (
                 <div
                 key={button.name}
                 className={`cursor-pointer flex items-center gap-3 px-2 py-1 border border-[#262626] rounded-md ${selectedButton === button.name ? 'bg-green-600 shadow-[0px_0px_21px_rgba(31,200,39,1)]' : 'bg-blackhd'} whitespace-nowrap`}
@@ -49,4 +49,4 @@ function FeaturedProperties({property, buttons, setbuttonValue}) {
   )
 }
 
-export default FeaturedProperties
+export default FeaturedProperties1

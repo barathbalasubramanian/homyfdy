@@ -12,10 +12,15 @@ import HomyfydAdvantage from './components/HomyfdyAdv'
 import Welcome from './components/Welcome'
 import { getAllHouses } from '../../firebase/house'
 import Blogs from './components/Blogs'
+import FeaturedProperties1 from './components/FeaturedProperties1'
 
 function Home() {
   const [properties, setProperties] = useState([]);
   const [filteredProperties, setFilteredProperties] = useState([]);
+  const [buttonValue, setbuttonValue] = useState(null)
+  const [butonValue1, setbuttonValue1] = useState(null)
+  const [buttonValueFilterProperty, setbuttonValueFilterProperty] = useState([])
+  const [buttonValue1FilterProperty, setbutton1ValueFilterProperty] = useState([])
   const [filters, setFilters] = useState({
     location: '',
     propertyType: '',
@@ -27,7 +32,9 @@ function Home() {
       try {
         const fetchedProperties = await getAllHouses();
         setProperties(fetchedProperties);
-        setFilteredProperties(fetchedProperties); // Initially show all properties
+        setFilteredProperties(fetchedProperties);
+        setbutton1ValueFilterProperty(fetchedProperties)
+        setbuttonValueFilterProperty(fetchedProperties)
       } catch (error) {
         console.error("Error fetching properties: ", error);
       }
@@ -46,6 +53,8 @@ function Home() {
       return matchLocation && matchType && matchPrice;
     });
     setFilteredProperties(filtered);
+    setbuttonValueFilterProperty(filtered)
+    setbutton1ValueFilterProperty(filtered)
   };
   
 
@@ -57,13 +66,62 @@ function Home() {
     return true;
   };
 
+  const buttons = [
+    { name: 'Apartments' },
+    { name: 'Plots' },
+    { name: 'Villas' },
+  ]
+  const buttons1 = [
+    { name: 'Homyfyd Reliable' },
+    { name: 'Hot Projects' },
+    { name: 'Newly Launched' },
+  ]
+
+  useEffect(() => {
+    const fetchProperties = async () => {
+      console.log(filteredProperties)
+      try {
+        const fetchedProperties_ = filteredProperties.filter(property => {
+          console.log(property.propertyReliable.toLowerCase().trim() , butonValue1.toLowerCase().trim())
+          const matchType = property.propertyReliable.toLowerCase().trim() === butonValue1.toLowerCase().trim();
+          return matchType;
+        });
+        setbutton1ValueFilterProperty(fetchedProperties_);
+      } catch (error) {
+        console.error("Error fetching properties: ", error);
+      }
+    };
+    if (butonValue1) {
+      fetchProperties();
+    }
+  }, [butonValue1]);
+
+  useEffect(() => {
+    const fetchProperties = async () => {
+      console.log(filteredProperties)
+      try {
+        const fetchedProperties_1 = filteredProperties.filter(property => {
+          console.log(property.propertyType.toLowerCase().trim(),buttonValue.toLowerCase().trim())
+          const matchType = property.propertyType.toLowerCase().trim() === buttonValue.toLowerCase().trim();
+          return matchType;
+        });
+        setbuttonValueFilterProperty(fetchedProperties_1);
+      } catch (error) {
+        console.error("Error fetching properties: ", error);
+      }
+    };
+    if (buttonValue) {
+      fetchProperties();
+    }
+  }, [buttonValue]);
+
   return (
     <div>
       <Header />
       <Welcome onFilter={handleFilter} filters={filters} setFilters={setFilters} />
-      <FeaturedProperties property={filteredProperties} />
+      <FeaturedProperties1 property={buttonValue1FilterProperty} buttons1={buttons1} setbuttonValue1={setbuttonValue1}/>
       <Partners />
-      <FeaturedProperties property={filteredProperties} />
+      <FeaturedProperties property={buttonValueFilterProperty} buttons={buttons} setbuttonValue={setbuttonValue}/>
       <HomyfydAdvantage />
       <Options />
       <Clients />

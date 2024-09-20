@@ -49,6 +49,7 @@ function Property() {
         addressLink: '',
         MainImage: '',
         FloorImage: '',
+        propertyReliable: '',
         imageLinks: [], 
         additionalFeatures: additionalFeaturesList.reduce((acc, feature) => {
             acc[feature.name] = false;
@@ -224,6 +225,7 @@ function Property() {
             MainImage: '',
             FloorImage: '',
             imageLinks: [],
+            propertyReliable: '',
             additionalFeatures: {
                 emergencyExit: false,
                 CCTV: false,
@@ -233,15 +235,7 @@ function Property() {
                 elevatorLift: false,
             }
         });
-    };
-    const handleSearch = (filters) => {
-        console.log('Keyword:', filters.keyword);
-        console.log('Location:', filters.location);
-        console.log('Type:', filters.type);
-        console.log('Region:', filters.region);
-        console.log('Price Range:', filters.priceRange);
-        console.log('Area Range:', filters.areaRange);
-    };
+    }
     const handleImageUpload1 = (e) => {
         setSelectedFile_Main(e.target.files[0]);
     };
@@ -254,7 +248,60 @@ function Property() {
     const triggerFileInput2 = () => {
         fileInputRef2.current.click();
     };
-    
+
+    const matchPriceRange = (price, range) => {
+        console.log(price, range)
+        if (range === "0-100k") return price <= 100000;
+        if (range === "100k-500k") return price > 100000 && price <= 500000;
+        if (range === "500k-1M") return price > 500000 && price <= 1000000;
+        if (range === "1M+") return price > 1000000;
+        return true;
+    };
+    const handleSearch = (filters) => {
+        console.log('PropertyName:', filters.keyword);
+        console.log('Region:', filters.region);
+        console.log('Type:', filters.type);
+        console.log('BHK Type:', filters.BHKType);
+        console.log('Price Range:', filters.propertyPrice);
+        let filtered = properties;
+        setFilteredProperties(filtered)
+
+        if (filters.keyword !== "") {
+            console.log("F")
+            filtered = filtered.filter((property) =>
+              property.propertyName.toLowerCase().includes(filters.keyword.toLowerCase())
+            );
+            setFilteredProperties(filtered)
+        }
+        if (filters.region !== "") {
+            console.log("F")
+            filtered = filtered.filter((property) =>
+              property.region.toLowerCase().includes(filters.region.toLowerCase())
+            );
+            setFilteredProperties(filtered)
+        }
+        if (filters.type !== "") {
+            console.log("F")
+            filtered = filtered.filter((property) =>
+              property.propertyType.toLowerCase().includes(filters.type.toLowerCase())
+            );
+            setFilteredProperties(filtered)
+        }
+        if (filters.BHKType !== "") {
+            console.log("F")
+            filtered = filtered.filter((property) =>
+              property.propertyBHK.toLowerCase().includes(filters.BHKType.toLowerCase())
+            );
+            setFilteredProperties(filtered)
+        }
+        if (filters.propertyPrice !== "") {
+            filtered = filtered.filter((property) =>
+                matchPriceRange(property.propertyPrice, filters.propertyPrice)
+            );
+            setFilteredProperties(filtered)
+          }
+    };
+
     useEffect(() => {
         
         if (editable) {
@@ -281,6 +328,8 @@ function Property() {
                     address: PropertyToedit.address || '',
                     addressLink: PropertyToedit.addressLink || '',
                     imageLinks: PropertyToedit.imageLinks || [],
+                    buildYear: PropertyToedit.buildYear || '',
+                    propertyReliable: PropertyToedit.propertyReliable || '',
                     additionalFeatures: {
                         ...prevFormData.additionalFeatures,
                         ...Object.keys(prevFormData.additionalFeatures).reduce((acc, featureName) => {
@@ -360,15 +409,31 @@ function Property() {
                                                     className='px-2 py-1 rounded-md outline-none'
                                                 >
                                                     <option value="">Select BHK</option>
-                                                    <option value="BH2">BH2</option>
-                                                    <option value="BH4">BH4</option>
-                                                    <option value="BH6">BH6</option>
+                                                    <option value="BH2">BHK2</option>
+                                                    <option value="BH4">BHK4</option>
+                                                    <option value="BH6">BHK6</option>
                                                 </select>
                                             </div>
                                             <div className='flex flex-col gap-2'>
                                                 <label htmlFor="region" className='text-neutral-500'>Select Region</label>
-                                                <input required name="region" type="text" value={formData.region} onChange={handleChange} style={{border:"1px solid #E5E5E5"}} className='px-2 py-1 rounded-md outline-none' />
+                                                <select
+                                                    name="region"
+                                                    value={formData.region}
+                                                    onChange={handleChange}
+                                                    style={{ border: "1px solid #E5E5E5" }}
+                                                    className='px-2 py-1 rounded-md outline-none'
+                                                >
+                                                    <option value="">Select Location</option>
+                                                    <option value="bangalorenorth">Bangalore North</option>
+                                                    <option value="bangaloresouth">Bangalore South</option>
+                                                    <option value="bangalorewest">Bangalore West</option>
+                                                    <option value="bangaloreeast">Bangalore East</option>
+                                                </select>
                                             </div>
+                                            {/* <div className='flex flex-col gap-2'>
+                                                <label htmlFor="region" className='text-neutral-500'>Select Region</label>
+                                                <input required name="region" type="text" value={formData.region} onChange={handleChange} style={{border:"1px solid #E5E5E5"}} className='px-2 py-1 rounded-md outline-none' />
+                                            </div> */}
                                             <div className='flex flex-col gap-2'>
                                                 <label htmlFor="propertyPrice" className='text-neutral-500'>Property Price</label>
                                                 <input required name="propertyPrice" type="number" value={formData.propertyPrice} onChange={handleChange} style={{border:"1px solid #E5E5E5"}} className='px-2 py-1 rounded-md outline-none' />
@@ -400,6 +465,21 @@ function Property() {
                                             <div className='flex flex-col gap-2'>
                                                 <label htmlFor="contact" className='text-neutral-500'>Contact Number</label>
                                                 <input required name="contact" type="tel" value={formData.contact} onChange={handleChange} style={{border:"1px solid #E5E5E5"}} className='px-2 py-1 rounded-md outline-none' />
+                                            </div>
+                                            <div className='flex flex-col gap-2'>
+                                                <label htmlFor="propertyReliable" className='text-neutral-500'>Property Reliable</label>
+                                                <select
+                                                    name="propertyReliable"
+                                                    value={formData.propertyReliable}
+                                                    onChange={handleChange}
+                                                    style={{ border: "1px solid #E5E5E5" }}
+                                                    className='px-2 py-1 rounded-md outline-none'
+                                                >
+                                                    <option value="">Select Reliability</option>
+                                                    <option value="Homyfyd Reliable">Homyfyd Reliable</option>
+                                                    <option value="Hot Projects">Hot Projects</option>
+                                                    <option value="Newly Launched">Newly Launched</option>
+                                                </select>
                                             </div>
                                             <div className='flex flex-col gap-2'>
                                                 <label htmlFor="rankings" className='text-neutral-500'>Total Rankings</label>
@@ -497,3 +577,4 @@ function Property() {
 }
 
 export default Property;
+

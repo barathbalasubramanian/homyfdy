@@ -15,6 +15,13 @@ function PropertyHeader({properties}) {
 
       <div>
         <div className='py-16 px-20 flex flex-wrap gap-2 gap-y-4 items-center justify-between max-md:px-3 max-md:py-10 max-md:justify-center'>
+          {
+            properties.length === 0 && (
+              <div className='text-2xl text-center w-full'>
+                No properties found
+              </div>
+            )
+          }
           {properties.map((property, index) => (
             <PropertyCard key={index} property={property} verbose={false}/>
           ))}

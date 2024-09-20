@@ -48,7 +48,7 @@ function PropertyDetails() {
         property && <PropertyCon property={property} />
       }
       <div>
-        <FeaturedProperties property={properties} /> 
+        <FeaturedProperties buttons={[]} property={properties} /> 
       </div>
       <Ques />
       <AbFooter />

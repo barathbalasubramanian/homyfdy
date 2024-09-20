@@ -116,7 +116,11 @@ const PropertyCard = React.memo(({ property, verbose, fromComparePage, setCmpCnt
       )}
       <div className='flex items-center justify-center'><img src={property.MainImage} alt="Property" /></div>
       <div>
-        <div className={`text-lg ${!verbose ? 'text-white' : 'text-black'}`}>{property.propertyType}</div>
+        <div className='w-fit flex items-center justify-between'>
+          <div className={`text-lg pr-2 ${!verbose ? 'text-white' : 'text-black'}`}>{property.propertyName}</div>
+          <div>( {property.propertyBHK} )</div>
+        </div>
+        <div><span className='text-sm text-neutral-500'>{property.propertyType}</span></div>
         <div style={{ color: "grey" }}>
           <div className='truncate-text'>{property.description}</div>
           <span>Readmore</span>

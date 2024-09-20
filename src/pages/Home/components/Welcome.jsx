@@ -36,8 +36,8 @@ function Welcome({ onFilter, filters, setFilters }) {
                         <select className='text-neutral-400 text-sm' id="propertyType" value={filters.propertyType} onChange={(e) => setFilters({ ...filters, propertyType: e.target.value })}>
                             <option value="">Select Property Type</option>
                             <option value="plots">Plots</option>
-                            <option value="apartment">Apartment</option>
-                            <option value="vilas">Vilas</option>
+                            <option value="apartments">Apartments</option>
+                            <option value="villas">Villas</option>
                         </select>
                     </div>
 

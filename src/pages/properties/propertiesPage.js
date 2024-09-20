@@ -7,20 +7,35 @@ import SearchBar from './components/SearchBar';
 import FilterOptions from './components/FilterOptions';
 import Head from './components/Head';
 import { getAllHouses } from '../../firebase/house';
+import { useLocation } from 'react-router-dom';
 
 function PropertiesPage() {
+
+  const location = useLocation();
+  const bhkType = location.state?.bhkType || 'BHK Type'; 
+  console.log(bhkType)
+
+  useEffect(()=>{
+    if (bhkType !== 'BHK Type') {
+      setFilters((prevFilters) => ({
+        ...prevFilters,
+        ['BHK Type']: bhkType
+      }));
+    }
+  },[])
+
   const [properties, setProperties] = useState([]);
   const [filteredProperties, setFilteredProperties] = useState([]);
   const [propertyName, setPropertyName] = useState("");
   const [filters, setFilters] = useState({});
 
-  // Map filter labels to property keys
   const filterKeyMapping = {
     "Location": "region",
     "Property Type": "propertyType",
     "Pricing Range": "propertyPrice",
     "Build Year": "buildYear",
-    "Property Size": "area"
+    "Property Size": "area",
+    "BHK Type": "propertyBHK"
   };
 
   // Fetch all properties when the component mounts
@@ -39,6 +54,7 @@ function PropertiesPage() {
 
   // Handle filter changes
   const handleFilterChange = (filterType, selectedValue) => {
+    console.log(filterType, selectedValue)
     setFilters((prevFilters) => ({
       ...prevFilters,
       [filterType]: selectedValue
@@ -94,13 +110,12 @@ function PropertiesPage() {
           );
         }
       } else if (filterValue && filterValue !== filterType) {
-        // Apply the normal filtering for other filters
+        console.log(filterValue,filterType)
         filtered = filtered.filter((property) =>
           property[propertyKey]?.toString().toLowerCase().includes(filterValue.toLowerCase())
         );
       }
     });
-
     setFilteredProperties(filtered);
   }, [propertyName, filters, properties]);
 

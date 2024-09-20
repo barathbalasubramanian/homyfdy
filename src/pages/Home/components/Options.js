@@ -1,7 +1,8 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 function Options() {
-
+  const navigate = useNavigate()
   const data = [
     {
       title: 'Flats by bedrooms in Bangalore',
@@ -37,6 +38,21 @@ function Options() {
     },
   ];
 
+  const HandleClick = (item) => {
+    if (item === "1 BHK apartments in Bangalore") {
+      navigate('/properties', { state: { bhkType: 'BHK1' } });
+    }
+    if (item === "2 BHK apartments in Bangalore") {
+      navigate('/properties', { state: { bhkType: 'BHK2' } });
+    }
+    if (item === "3 BHK apartments in Bangalore") {
+      navigate('/properties', { state: { bhkType: 'BHK3' } });
+    }
+    if (item === "4 BHK apartments in Bangalore") {
+      navigate('/properties', { state: { bhkType: 'BHK4' } });
+    }
+  }
+
   return (
     <div className='py-16 px-16 gap-8 flex w-full overflow-scroll max-md:px-3 max-md:py-10'>
       {
@@ -46,7 +62,7 @@ function Options() {
               <div className='font-semibold'>{option.title}</div>
               <div className='flex flex-col'>
                 {option.items.map((item, itemIndex) => (
-                  <div key={itemIndex} className="cursor-pointer hover:text-green-500">
+                  <div key={itemIndex} className="cursor-pointer hover:text-green-500" onClick={()=>HandleClick(item)}>
                     {item}
                   </div>
                 ))}

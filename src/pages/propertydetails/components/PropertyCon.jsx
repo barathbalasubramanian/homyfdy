@@ -12,6 +12,8 @@ function PropertyCon({property}) {
   return (
     <main className="flex flex-col items-start px-16 py-16 w-full max-md:px-5 max-md:mt-10 max-md:max-w-full">
       <ProHeader property={property}/>
+      <div className='text-neutral-400 text-lg pl-3.5'>{property.propertyType}</div>
+      <div className='text-neutral-500 text-sm pl-3.5'>{property.propertyBHK}</div>
       <ImageGallery imageLinks={property.imageLinks}/>
       <section className="self-stretch py-20 max-md:py-16 max-md:max-w-full">
         <div className="flex gap-5 max-md:flex-col">

@@ -79,7 +79,7 @@ function Header() {
   return (
     <div style={{ backgroundColor: 'var(--blackhd)' }}>
       <div className='w-full flex px-8 items-center justify-between py-4 max-md:px-3'>
-        <div className='flex items-center'>
+        <div className='flex items-center' onClick={()=>navigate('/')}>
           <img src="/assets/logo.svg" alt="Logo" style={{ width: '50px' }} />
           HOMYFYD
         </div>
