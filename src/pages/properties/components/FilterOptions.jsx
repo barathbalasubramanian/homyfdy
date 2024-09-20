@@ -10,13 +10,15 @@ function FilterOptions({ onFilterChange }) {
   const PriceRanges = ["Price Range", "0-100k", "100k-500k", "500k-1M"];
   const PropertySizes = ["Property Size", "0-1000", "1000-5000", "5000-10000"];
   const BuildYears = ["Build Year", "2020", "2021", "2022"];
+  const BHKType = ["BHK Type","BHK 2", "BHK 4","BHK 6", "BHK8"]
 
   const filterOptions = [
     { options: LocationTypes, icon: "/assets/opt1.svg", label: "Location" },
     { options: PropertyTypes, icon: "/assets/opt2.svg", label: "Property Type" },
     { options: PriceRanges, icon: "/assets/opt3.svg", label: "Pricing Range" },
     { options: PropertySizes, icon: "/assets/opt4.svg", label: "Property Size" },
-    { options: BuildYears, icon: "/assets/opt5.svg", label: "Build Year" }
+    { options: BuildYears, icon: "/assets/opt5.svg", label: "Build Year" },
+    { options: BHKType, icon: "/assets/opt2.svg", label: "BHK Type" }
   ];
 
   return (

@@ -30,6 +30,7 @@ async function getHouse(houseId) {
 
 // Update a house by ID
 async function updateHouse(houseId, updatedData) {
+    console.log(updatedData)
     try {
         await housesCollection.doc(houseId).update(updatedData);
         console.log(`House with ID: ${houseId} updated successfully.`);

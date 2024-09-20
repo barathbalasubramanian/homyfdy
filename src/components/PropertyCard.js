@@ -2,7 +2,6 @@ import Cookies from 'js-cookie';
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getUserDetails_, updateUser } from '../firebase/user';
-import { deleteHouse } from '../firebase/house';
 
 const PropertyCard = React.memo(({ property, verbose, fromComparePage, setCmpCnt, CmpCnt, edit, setEdit, setDel }) => {
   const navigate = useNavigate();
@@ -115,7 +114,7 @@ const PropertyCard = React.memo(({ property, verbose, fromComparePage, setCmpCnt
           <img src={compareImg} onClick={handleCompareClick} className='cursor-pointer' alt="Property" />
         </div>
       )}
-      <div><img src="/assets/property.svg" alt="Property" /></div>
+      <div className='flex items-center justify-center'><img src={property.MainImage} alt="Property" /></div>
       <div>
         <div className={`text-lg ${!verbose ? 'text-white' : 'text-black'}`}>{property.propertyType}</div>
         <div style={{ color: "grey" }}>

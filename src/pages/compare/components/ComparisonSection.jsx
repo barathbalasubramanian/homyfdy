@@ -3,7 +3,7 @@ import React from 'react';
 function ComparisonSection({ properties }) {
   if (!properties || properties.length === 0) return null;
 
-  const excludedKeys = ['imageLinks', 'id', 'additionalFeatures', 'brochureLink', 'amenities'];
+  const excludedKeys = ['imageLinks', 'id', 'additionalFeatures', 'brochureLink', 'amenities', 'MainImage'];
   const comparisonKeys = Object.keys(properties[0]).filter(key => !excludedKeys.includes(key));
 
   return (
@@ -41,7 +41,7 @@ function ComparisonSection({ properties }) {
                       )
                     )}
                   </ul>
-                ) : key === 'floorPlan' && property[key] ? (
+                ) : key === 'FloorImage' && property[key] ? (
                   <img
                     loading="lazy"
                     src={property[key]}

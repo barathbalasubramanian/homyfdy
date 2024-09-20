@@ -12,7 +12,6 @@ function Blogs() {
   const [selectedFile, setSelectedFile] = useState(null);
   const [blogs, setBlogs] = useState([]);
   const [editingBlogId, setEditingBlogId] = useState(null); // Track which blog is being edited
-
   const fileInputRef = useRef(null);
 
   const handleImageUpload = (e) => {
@@ -23,7 +22,6 @@ function Blogs() {
     try {
       let blogImage = '';
   
-      // If a new file is selected, upload it to Firebase storage
       if (selectedFile) {
         const storageRef = storage.ref();
         const uploadTask = storageRef.child(`images/${selectedFile.name}`).put(selectedFile);
@@ -40,32 +38,29 @@ function Blogs() {
           );
         });
       } else if (editingBlogId) {
-        // If no new image is selected and editing, retain the current image URL
         const blogToEdit = blogs.find((blog) => blog.id === editingBlogId);
-        blogImage = blogToEdit.blogImage || ''; // Retain the current image URL if available
+        blogImage = blogToEdit.blogImage || ''; 
       }
-  
+      
       if (editingBlogId) {
-        // Update blog if editing
         await updateBlog(editingBlogId, {
           blogName,
           writerName,
           publishDate,
-          description, // Include description here
-          blogImage, // Use the image URL (either new or existing)
+          description,
+          blogImage, 
         });
       } else {
-        // Create a new blog
         await createBlog({
           blogName,
           writerName,
           publishDate,
-          description, // Include description here
-          blogImage, // Use the image URL (either new or existing)
+          description,
+          blogImage, 
         });
       }
   
-      fetchBlogs(); // Refresh the list after saving
+      fetchBlogs();
       setIsModalOpen(false);
       handleClear();
     } catch (error) {

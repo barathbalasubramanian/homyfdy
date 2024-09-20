@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import Noti from './Noti';
 import FilterComponent from './FilterComponent';
 import PropertyCard from '../../components/PropertyCard';
-import { createHouse, deleteHouse, getAllHouses } from '../../firebase/house'; // Assume you have a function to get all houses
+import { createHouse, deleteHouse, getAllHouses, updateHouse } from '../../firebase/house'
 import FileUpload from './UploadImages';
 import { storage } from "../../firebase/firebase";
 
@@ -16,74 +16,45 @@ function Property() {
         { name: 'terrace', label: 'Terrace' },
         { name: 'elevatorLift', label: 'Elevator/Lift' },
     ];
-
+    const [AddPropert, setAddProperty] = useState(false);
     const [del, setDel] = useState(null)
     const [editable, setEdit] = useState(null)
-
-    useEffect ( ()=>{
-        const PropertyToedit = properties.find( (property) => property.id === editable )
-        console.log(PropertyToedit)
-    },[editable])
-
-    useEffect ( ()=>{
-        const res = deleteHouse(del)
-        fetchProperties()
-    },[del])
-
+    const [properties, setProperties] = useState([]);
+    const [downloadURLs, setDownloadURLs] = useState([]);
+    const [selectedFiles, setSelectedFiles] = useState(null);
+    const fileInputRef = useRef(null)
+    const fileInputRef1 = useRef(null);
+    const fileInputRef2 = useRef(null);
+    const [selectedFile_Main, setSelectedFile_Main] = useState(null);
+    const [selectedFile_Floor, setSelectedFile_Floor] = useState(null);
+    const [editingProperty, SeteditingProperty] = useState([]);
+    const [filteredProperties, setFilteredProperties] = useState([]);
     const [formData, setFormData] = useState({
         propertyName: '',
         propertyBHK: '',
         propertyType: '',
+        buildYear: '',
         region: '',
         propertyPrice: '',
         maxRooms: '',
         bedrooms: '',
         bathrooms: '',
         area: '',
-        brochureLink: '',
         manager: '',
         contact: '',
         rankings: '',
         description: '',
         features: '',
-        amenities: '',
         address: '',
         addressLink: '',
+        MainImage: '',
+        FloorImage: '',
         imageLinks: [], 
         additionalFeatures: additionalFeaturesList.reduce((acc, feature) => {
             acc[feature.name] = false;
             return acc;
         }, {})
     });
-
-    const [properties, setProperties] = useState([]);
-    const [downloadURLs, setDownloadURLs] = useState([]);
-    const [selectedFiles, setSelectedFiles] = useState(null);
-    const fileInputRef = useRef(null);
-
-    const fetchProperties = async () => {
-        try {
-            const fetchedProperties = await getAllHouses();
-            setProperties(fetchedProperties);
-        } catch (error) {
-            console.error("Error fetching properties: ", error);
-        }
-    };
-
-    useEffect(() => {
-        fetchProperties();
-    }, []);
-
-    const handleCheckboxChange = (e) => {
-        const { name, checked } = e.target;
-        setFormData(prevState => ({
-            ...prevState,
-            additionalFeatures: {
-                ...prevState.additionalFeatures,
-                [name]: checked
-            }
-        }));
-    };
 
     const handleChange = (e) => {
         const { name, value, type, checked } = e.target;
@@ -99,17 +70,80 @@ function Property() {
             setFormData({ ...formData, [name]: value });
         }
     };
-
+    const fetchProperties = async () => {
+        try {
+            const fetchedProperties = await getAllHouses();
+            setProperties(fetchedProperties);
+            setFilteredProperties(fetchedProperties); 
+        } catch (error) {
+            console.error("Error fetching properties: ", error);
+        }
+    };
     const handleSubmit = async (e) => {
+        let MainImage = '';
+        let FloorImage = '';
         e.preventDefault();
         try {
-            if (!selectedFiles || selectedFiles.length === 0) {
-                console.error("No files selected");
-                return;
+            console.log(editable)
+            if (!selectedFile_Main || !selectedFile_Floor || !selectedFiles) {
+                if (!editable) {
+                    alert("Files Field Required"); 
+                    return 
+                }
             }
-    
-            const uploadedUrls = [];
-    
+            if (selectedFile_Main) {
+                const storageRef = storage.ref();
+                    const uploadTask = storageRef.child(`images/${selectedFile_Main.name}`).put(selectedFile_Main);
+                    await new Promise((resolve, reject) => {
+                        uploadTask.on(
+                            'state_changed',
+                            null,
+                            (error) => reject(error),
+                            async () => {
+                                const downloadURL = await uploadTask.snapshot.ref.getDownloadURL();
+                                MainImage = downloadURL                                    
+                                resolve();
+                            }
+                        );
+                    });
+            } else { MainImage = editingProperty.MainImage;console.log("When Editing Main Image Not Selected ..") }
+            if (selectedFile_Floor) {
+                const storageRef = storage.ref();
+                    const uploadTask = storageRef.child(`images/${selectedFile_Floor.name}`).put(selectedFile_Floor);
+                    await new Promise((resolve, reject) => {
+                        uploadTask.on(
+                            'state_changed',
+                            null,
+                            (error) => reject(error),
+                            async () => {
+                                const downloadURL = await uploadTask.snapshot.ref.getDownloadURL();
+                                FloorImage = downloadURL
+                                resolve();
+                            }
+                        );
+                    }); 
+            } else { FloorImage = editingProperty.FloorImage;console.log("When Editing Floor Image Not Selected ..") }
+
+            if (!selectedFiles || selectedFiles.length === 0) {
+                if (!editable) {
+                    alert("Select Property Images")
+                    return
+                }
+                try {
+                    await updateHouse(editable ,{ ...formData, FloorImage:FloorImage, MainImage:MainImage });
+                    fileInputRef.current.value = null;
+                    fileInputRef1.current.value = null;
+                    fileInputRef2.current.value = null;
+                    setSelectedFile_Floor(null)
+                    setSelectedFile_Main(null)
+                    fetchProperties()
+                    return
+                } catch (error) {
+                    alert("Error updating property: " + error.message);
+                }
+            }
+
+            const uploadedUrls = []
             for (const file of selectedFiles) {
                 if (!file) continue;
     
@@ -133,43 +167,62 @@ function Property() {
                     console.error("Error uploading file:", error);
                 }
             }
-    
             setFormData((prevData) => ({
                 ...prevData,
                 imageLinks: uploadedUrls,
             }));
-    
-            await createHouse({ ...formData, imageLinks: uploadedUrls });
+
+            if (editable) {
+                try {
+                    await updateHouse(editable ,{ ...formData, imageLinks: uploadedUrls  });
+                    fileInputRef.current.value = null;
+                    fileInputRef1.current.value = null;
+                    fileInputRef2.current.value = null;
+                    setSelectedFile_Floor(null)
+                    setSelectedFile_Main(null)
+                    fetchProperties()
+                    return
+                } catch (error) {
+                    alert("Error updating property: " + error.message);
+                    return;
+                }
+            }
+            await createHouse({ ...formData, imageLinks: uploadedUrls, FloorImage:FloorImage, MainImage:MainImage });
             setSelectedFiles(null); 
-            fileInputRef.current.value = null;
+            fetchProperties()
             alert("Added Successfully!");
+            fileInputRef.current.value = null;
+            fileInputRef1.current.value = null;
+            fileInputRef2.current.value = null;
+            setSelectedFile_Floor(null)
+            setSelectedFile_Main(null)
+            setAddProperty(false);setEdit(null)
         } catch (error) {
             alert("Error adding property: " + error.message);
         }
         handleClear();
     };
-    
-
     const handleClear = () => {
         setFormData({
             propertyName: '',
             propertyBHK: '',
             propertyType: '',
+            buildYear: '',
             region: '',
             propertyPrice: '',
             maxRooms: '',
             bedrooms: '',
             bathrooms: '',
             area: '',
-            brochureLink: '',
             manager: '',
             contact: '',
             rankings: '',
             description: '',
             features: '',
-            amenities: '',
             address: '',
             addressLink: '',
+            MainImage: '',
+            FloorImage: '',
             imageLinks: [],
             additionalFeatures: {
                 emergencyExit: false,
@@ -181,8 +234,6 @@ function Property() {
             }
         });
     };
-
-    const [AddPropert, setAddProperty] = useState(false);
     const handleSearch = (filters) => {
         console.log('Keyword:', filters.keyword);
         console.log('Location:', filters.location);
@@ -191,6 +242,66 @@ function Property() {
         console.log('Price Range:', filters.priceRange);
         console.log('Area Range:', filters.areaRange);
     };
+    const handleImageUpload1 = (e) => {
+        setSelectedFile_Main(e.target.files[0]);
+    };
+    const handleImageUpload2 = (e) => {
+        setSelectedFile_Floor(e.target.files[0]);
+    };
+    const triggerFileInput1 = () => {
+        fileInputRef1.current.click();
+    };
+    const triggerFileInput2 = () => {
+        fileInputRef2.current.click();
+    };
+    
+    useEffect(() => {
+        
+        if (editable) {
+            const PropertyToedit = properties.find((property) => property.id === editable);
+            SeteditingProperty(PropertyToedit)
+            setAddProperty(true)
+            if (PropertyToedit) {
+                setFormData((prevFormData) => ({
+                    ...prevFormData,
+                    propertyName: PropertyToedit.propertyName || '',
+                    propertyBHK: PropertyToedit.propertyBHK || '',
+                    propertyType: PropertyToedit.propertyType || '',
+                    region: PropertyToedit.region || '',
+                    propertyPrice: PropertyToedit.propertyPrice || '',
+                    maxRooms: PropertyToedit.maxRooms || '',
+                    bedrooms: PropertyToedit.bedrooms || '',
+                    bathrooms: PropertyToedit.bathrooms || '',
+                    area: PropertyToedit.area || '',
+                    manager: PropertyToedit.manager || '',
+                    contact: PropertyToedit.contact || '',
+                    rankings: PropertyToedit.rankings || '',
+                    description: PropertyToedit.description || '',
+                    features: PropertyToedit.features || '',
+                    address: PropertyToedit.address || '',
+                    addressLink: PropertyToedit.addressLink || '',
+                    imageLinks: PropertyToedit.imageLinks || [],
+                    additionalFeatures: {
+                        ...prevFormData.additionalFeatures,
+                        ...Object.keys(prevFormData.additionalFeatures).reduce((acc, featureName) => {
+                            acc[featureName] = PropertyToedit.additionalFeatures?.[featureName] || false;
+                            return acc;
+                        }, {})
+                    }
+                }));
+            }
+        }
+        else {
+            handleClear()
+        }
+    }, [editable]);
+    useEffect ( ()=>{
+        const res = deleteHouse(del)
+        fetchProperties()
+    },[del])
+    useEffect(() => {
+        fetchProperties();
+    }, []);
 
     return (
         <main className="flex flex-col py-6 px-8 max-md:ml-0 max-md:w-full">
@@ -208,8 +319,13 @@ function Property() {
 
                     {AddPropert ? 
                         <>
-                            <div className='text-black font-semibold text-2xl'>
-                                Add Property
+                            <div className='flex items-center justify-between w-full'>
+                                <div className='text-black font-semibold text-2xl'>
+                                    {
+                                        editable ? "Edit Property" : "Add Property"
+                                    }
+                                </div>
+                                <div className='text-black cursor-pointer hover:scale-110' onClick={()=>{setAddProperty(false);setEdit(null)}}>Back</div>
                             </div>
                             <div className='bg-white p-6 text-black'>
                                 <form onSubmit={handleSubmit} className="bg-white p-6 text-black">
@@ -217,7 +333,7 @@ function Property() {
                                         <div className='grid grid-cols-1 gap-4 lg:grid-cols-3'>
                                             <div className='flex flex-col gap-2'>
                                                 <label htmlFor="propertyName" className='text-neutral-500'>Property Name</label>
-                                                <input  name="propertyName" type="text" value={formData.propertyName} onChange={handleChange} style={{border:"1px solid #E5E5E5"}} className='px-2 py-1 rounded-md outline-none' />
+                                                <input required name="propertyName" type="text" value={formData.propertyName} onChange={handleChange} style={{border:"1px solid #E5E5E5"}} className='px-2 py-1 rounded-md outline-none' />
                                             </div>
                                             <div className='flex flex-col gap-2'>
                                                 <label htmlFor="propertyType" className='text-neutral-500'>Property Type</label>
@@ -251,43 +367,43 @@ function Property() {
                                             </div>
                                             <div className='flex flex-col gap-2'>
                                                 <label htmlFor="region" className='text-neutral-500'>Select Region</label>
-                                                <input  name="region" type="text" value={formData.region} onChange={handleChange} style={{border:"1px solid #E5E5E5"}} className='px-2 py-1 rounded-md outline-none' />
+                                                <input required name="region" type="text" value={formData.region} onChange={handleChange} style={{border:"1px solid #E5E5E5"}} className='px-2 py-1 rounded-md outline-none' />
                                             </div>
                                             <div className='flex flex-col gap-2'>
                                                 <label htmlFor="propertyPrice" className='text-neutral-500'>Property Price</label>
-                                                <input  name="propertyPrice" type="number" value={formData.propertyPrice} onChange={handleChange} style={{border:"1px solid #E5E5E5"}} className='px-2 py-1 rounded-md outline-none' />
+                                                <input required name="propertyPrice" type="number" value={formData.propertyPrice} onChange={handleChange} style={{border:"1px solid #E5E5E5"}} className='px-2 py-1 rounded-md outline-none' />
+                                            </div>
+                                            <div className='flex flex-col gap-2'>
+                                                <label htmlFor="buildYear" className='text-neutral-500'>Build Year</label>
+                                                <input required name="buildYear" type="number" value={formData.buildYear} onChange={handleChange} style={{border:"1px solid #E5E5E5"}} className='px-2 py-1 rounded-md outline-none' />
                                             </div>
                                             <div className='flex flex-col gap-2'>
                                                 <label htmlFor="maxRooms" className='text-neutral-500'>Max Rooms</label>
-                                                <input  name="maxRooms" type="number" value={formData.maxRooms} onChange={handleChange} style={{border:"1px solid #E5E5E5"}} className='px-2 py-1 rounded-md outline-none' />
+                                                <input required name="maxRooms" type="number" value={formData.maxRooms} onChange={handleChange} style={{border:"1px solid #E5E5E5"}} className='px-2 py-1 rounded-md outline-none' />
                                             </div>
                                             <div className='flex flex-col gap-2'>
                                                 <label htmlFor="bedrooms" className='text-neutral-500'>Number of Bedrooms</label>
-                                                <input  name="bedrooms" type="number" value={formData.bedrooms} onChange={handleChange} style={{border:"1px solid #E5E5E5"}} className='px-2 py-1 rounded-md outline-none' />
+                                                <input required name="bedrooms" type="number" value={formData.bedrooms} onChange={handleChange} style={{border:"1px solid #E5E5E5"}} className='px-2 py-1 rounded-md outline-none' />
                                             </div>
                                             <div className='flex flex-col gap-2'>
                                                 <label htmlFor="bathrooms" className='text-neutral-500'>Number of Bathrooms</label>
-                                                <input  name="bathrooms" type="number" value={formData.bathrooms} onChange={handleChange} style={{border:"1px solid #E5E5E5"}} className='px-2 py-1 rounded-md outline-none' />
+                                                <input required name="bathrooms" type="number" value={formData.bathrooms} onChange={handleChange} style={{border:"1px solid #E5E5E5"}} className='px-2 py-1 rounded-md outline-none' />
                                             </div>
                                             <div className='flex flex-col gap-2'>
                                                 <label htmlFor="area" className='text-neutral-500'>Area (sq ft)</label>
-                                                <input  name="area" type="number" value={formData.area} onChange={handleChange} style={{border:"1px solid #E5E5E5"}} className='px-2 py-1 rounded-md outline-none' />
+                                                <input required name="area" type="number" value={formData.area} onChange={handleChange} style={{border:"1px solid #E5E5E5"}} className='px-2 py-1 rounded-md outline-none' />
                                             </div>
-                                            {/* <div className='flex flex-col gap-2'>
-                                                <label htmlFor="brochureLink" className='text-neutral-500'>Brochure Link</label>
-                                                <input  name="brochureLink" type="url" value={formData.brochureLink} onChange={handleChange} style={{border:"1px solid #E5E5E5"}} className='px-2 py-1 rounded-md outline-none' />
-                                            </div> */}
                                             <div className='flex flex-col gap-2'>
                                                 <label htmlFor="manager" className='text-neutral-500'>Relationship Manager</label>
-                                                <input  name="manager" type="text" value={formData.manager} onChange={handleChange} style={{border:"1px solid #E5E5E5"}} className='px-2 py-1 rounded-md outline-none' />
+                                                <input required name="manager" type="text" value={formData.manager} onChange={handleChange} style={{border:"1px solid #E5E5E5"}} className='px-2 py-1 rounded-md outline-none' />
                                             </div>
                                             <div className='flex flex-col gap-2'>
                                                 <label htmlFor="contact" className='text-neutral-500'>Contact Number</label>
-                                                <input  name="contact" type="tel" value={formData.contact} onChange={handleChange} style={{border:"1px solid #E5E5E5"}} className='px-2 py-1 rounded-md outline-none' />
+                                                <input required name="contact" type="tel" value={formData.contact} onChange={handleChange} style={{border:"1px solid #E5E5E5"}} className='px-2 py-1 rounded-md outline-none' />
                                             </div>
                                             <div className='flex flex-col gap-2'>
                                                 <label htmlFor="rankings" className='text-neutral-500'>Total Rankings</label>
-                                                <input  name="rankings" type="number" value={formData.rankings} onChange={handleChange} style={{border:"1px solid #E5E5E5"}} className='px-2 py-1 rounded-md outline-none' />
+                                                <input required name="rankings" type="number" value={formData.rankings} onChange={handleChange} style={{border:"1px solid #E5E5E5"}} className='px-2 py-1 rounded-md outline-none' />
                                             </div>
                                         </div>
                                     </div>
@@ -304,11 +420,11 @@ function Property() {
                                     <div className='pt-2 grid grid-cols-1 gap-4 lg:grid-cols-2'>
                                         <div className='flex flex-col gap-2'>
                                             <label htmlFor="address" className='text-neutral-500'>Address</label>
-                                            <input  name="address" type="text" value={formData.address} onChange={handleChange} style={{border:"1px solid #E5E5E5"}} className='px-2 py-1 rounded-md outline-none' />
+                                            <input required name="address" type="text" value={formData.address} onChange={handleChange} style={{border:"1px solid #E5E5E5"}} className='px-2 py-1 rounded-md outline-none' />
                                         </div>
                                         <div className='flex flex-col gap-2'>
                                             <label htmlFor="addressLink" className='text-neutral-500'>Address Link (Google Maps)</label>
-                                            <input  name="addressLink" type="text" value={formData.addressLink} onChange={handleChange} style={{border:"1px solid #E5E5E5"}} className='px-2 py-1 rounded-md outline-none' />
+                                            <input required name="addressLink" type="text" value={formData.addressLink} onChange={handleChange} style={{border:"1px solid #E5E5E5"}} className='px-2 py-1 rounded-md outline-none' />
                                         </div>
                                     </div>
                                     <div>
@@ -320,27 +436,42 @@ function Property() {
                                             fileInputRef={fileInputRef}
                                         />
                                     </div>
-                                    {/* <div className='pt-8 flex flex-col gap-2'>
+                                    <div>
+                                        <label className="block text-gray-700">Main Image</label>
+                                        <input
+                                        type="file"
+                                        ref={fileInputRef1}
+                                        onChange={handleImageUpload1}
+                                        className="hidden"
+                                        />
+                                        <div className='flex flex-col gap-2 w-full items-center border py-4 mt-3 rounded-xl px-3 border-gray-300 cursor-pointer' onClick={triggerFileInput1}>
+                                        <img src="assets/upload.svg" style={{ width: "4em" }} alt="Upload Image" />
                                         <div className='text-neutral-500'>
-                                        Additional Features
+                                            {selectedFile_Main ? selectedFile_Main.name : 'Upload image'}
                                         </div>
-                                        <div className='flex flex-wrap gap-4 pt-1'>
-                                        {additionalFeaturesList.map((feature) => (
-                                            <label key={feature.name} className='flex items-center'>
-                                            <input
-                                                type="checkbox"
-                                                name={feature.name}
-                                                checked={formData.additionalFeatures[feature.name]}
-                                                onChange={handleCheckboxChange}
-                                                className='mr-2 text-neutral-600'
-                                            />
-                                            {feature.label}
-                                            </label>
-                                        ))}
                                         </div>
-                                    </div> */}
+                                    </div>
+                                    <div>
+                                        <label className="block text-gray-700">Floor Image</label>
+                                        <input
+                                        type="file"
+                                        ref={fileInputRef2}
+                                        onChange={handleImageUpload2}
+                                        className="hidden"
+                                        />
+                                        <div className='flex flex-col gap-2 w-full items-center border py-4 mt-3 rounded-xl px-3 border-gray-300 cursor-pointer' onClick={triggerFileInput2}>
+                                        <img src="assets/upload.svg" style={{ width: "4em" }} alt="Upload Image" />
+                                        <div className='text-neutral-500'>
+                                            {selectedFile_Floor ? selectedFile_Floor.name : 'Upload image'}
+                                        </div>
+                                        </div>
+                                    </div>
                                     <div className="mt-8 flex gap-4">
-                                        <button type="submit" className="bg-green-500 text-white px-4 py-2 rounded-md">Submit</button>
+                                        <button type="submit" className="bg-green-500 text-white px-4 py-2 rounded-md">
+                                            {
+                                                editable ? "Update Property" : "Add Property"
+                                            }
+                                        </button>
                                         <button type="button" onClick={handleClear} className="border text-neutral-900 px-4 py-2 rounded-md">Clear</button>
                                     </div>
                                 </form>
@@ -353,7 +484,7 @@ function Property() {
                             </div>
                             <FilterComponent onSearch={handleSearch} />
                             <div className='flex flex-wrap w-full gap-4'>
-                                {properties.map((property) => (
+                                {filteredProperties.map((property) => (
                                     <PropertyCard key={property.id} property={property} verbose={true} edit={true} setEdit={setEdit} setDel={setDel}/>
                                 ))}
                             </div>

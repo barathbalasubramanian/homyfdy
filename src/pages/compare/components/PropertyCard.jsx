@@ -1,12 +1,13 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 function PropertyCard({ property }) {
-  console.log(property)
+  const Navigate = useNavigate();
   return (
     <div style={{minWidth:"25em",maxWidth:"25em"}}>
       <div className="flex flex-col w-[80%]" >
         <div className="flex relative flex-col grow items-end pb-48 rounded-xl aspect-[1.675] max-md:px-5 max-md:pb-24 max-md:mt-6">
-          <img loading="lazy" src="/assets/sample.svg" alt="DummyImage" className="object-cover absolute inset-0 size-full rounded-2xl" />
+          <img loading="lazy" src={property.MainImage} alt="DummyImage" className="object-cover absolute inset-0 size-full rounded-2xl" />
           <img loading="lazy" src="/assets/favi.svg" alt="" className="absolute top-2 right-2 object-contain w-6 aspect-square z-50" />
         </div>
         <div className="flex flex-col w-full mt-4 max-md:mt-2">
@@ -18,7 +19,7 @@ function PropertyCard({ property }) {
             </div>
           </div>
           <div className="flex gap-2 mt-6 w-full text-sm font-medium text-white max-md:flex-wrap">
-            <button className="flex-auto gap-2 self-stretch px-3 py-3.5 bg-green-600 rounded-lg min-h-[49px]">Book a Visit</button>
+            <button className="flex-auto gap-2 self-stretch px-3 py-3.5 bg-green-600 rounded-lg min-h-[49px]" onClick={()=>Navigate(`/propertydetails/${property.id}`)}>Book a Visit</button>
             <button className="flex-auto gap-2 self-stretch px-3 py-3.5 bg-green-600 rounded-lg min-h-[49px]">Call now</button>
           </div>
         </div>
