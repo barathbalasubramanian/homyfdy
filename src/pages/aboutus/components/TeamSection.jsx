@@ -12,7 +12,7 @@ function TeamSection() {
   return (
     <section className="flex py-6 px-20 max-md:px-3 flex-col mt-32 w-full max-md:mt-10 max-md:max-w-full">
       <div className="flex relative flex-col pr-64 w-full max-md:pr-5 max-md:max-w-full">
-        <h2 className="z-0 text-4xl text-white max-md:max-w-full">Meet the Homyfyd Team</h2>
+        <h2 className="averoxfont z-0 text-4xl text-white max-md:max-w-full">Meet the Homyfyd Team</h2>
         <p className="z-0 mt-2.5 text-base font-medium leading-6 text-neutral-400 max-md:max-w-full">
           At Homyfyd, our success is driven by the dedication and expertise of our team. Get to know the people behind our mission to make your real estate dreams a reality.
         </p>

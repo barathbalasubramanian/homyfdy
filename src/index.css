@@ -4,6 +4,17 @@
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+  font-family: 'Averox';
+  src: url('/public/fonts/averox.ttf') format('truetype');
+  font-weight: 600 !important;
+  font-style: normal;
+}
+
+.averoxfont {
+  font-family: 'Averox', sans-serif !important;
+}
+
 body {
   background-color: var(--bg);
   color: var(--white);
@@ -201,6 +212,6 @@ body {
     max-width: 21em;
   } 
   .searchbar{
-    height: 70vh;
+    height: 85vh;
   }
 }

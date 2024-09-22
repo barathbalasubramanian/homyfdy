@@ -166,12 +166,10 @@ function CustomForm({ SetBookingForm, property }) {
             </button>
           </div>
 
-          <div
-            onClick={closeLogin}
-            className="cursor-pointer absolute top-0 right-0 max-md:right-5"
-          >
-            <img src="assets/cancel.svg" alt="" className="w-6" />
+          <div onClick={closeLogin} className='z-30'>
+            <div className='cursor-pointer absolute top-0 right-0 max-md:right-5'> <img src="/assets/cancel.svg" alt="Close" className='w-5' /> </div>
           </div>
+  
         </div>
       </div>
     </div>

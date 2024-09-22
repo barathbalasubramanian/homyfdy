@@ -12,7 +12,7 @@ function ValuesSection() {
   return (
     <section className="flex py-16 px-20 max-md:px-3 flex-wrap gap-10 items-center mt-28 w-full max-md:mt-10 max-md:max-w-full">
       <div className="flex relative flex-col self-stretch my-auto min-w-[240px] w-[413px]">
-        <h2 className="z-0 text-4xl text-white">Our Values</h2>
+        <h2 className="averoxfont z-0 text-4xl text-white">Our Values</h2>
         <p className="z-0 mt-2.5 text-base font-medium leading-6 text-neutral-400">
           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
         </p>

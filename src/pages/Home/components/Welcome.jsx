@@ -11,12 +11,12 @@ function Welcome({ onFilter, filters, setFilters }) {
         <div className='welcome pb-20'>
             <div className='px-20 py-16 flex gap-6 items-center w-full justify-between max-md:flex-col-reverse max-md:gap-10 max-md:px-6 max-md:py-10'>
                 <div>
-                    <div className='text-7xl max-md:text-4xl text-white'>Uncover Your Dream Residence</div>
+                    <div className='averoxfont text-7xl max-md:text-4xl text-white'>Uncover Your Dream Residence</div>
                     <div className='text-lg py-1 text-white'>Now with</div>
-                    <div className='text-2xl py-1' style={{color:"#1FC827"}}>HOMYFYD GPT</div>
+                    <div className='averoxfont text-2xl py-1' style={{color:"#1FC827"}}>HOMYFYD GPT</div>
                     <div className='text-lg py-1 text-white'>Homyfyd Real Estate Virtual Assistant</div>
                 </div>
-                <div><img src="/assets/welimg.svg" alt="Building" /></div>
+                <div><img src="/assets/build.svg" alt="Building" /></div>
             </div>
             <div className='flex items-center justify-around w-[90%] max-lg:w-[100%] max-lg:flex-col max-lg:gap-3'>
                 <div className='home-input text-black flex max-md:flex-col max-md:items-start max-md:gap-4 justify-between w-[60%] max-md:w-[90%] max-md:ml-2 items-center ml-20 bg-white px-10 py-6 rounded-2xl'>

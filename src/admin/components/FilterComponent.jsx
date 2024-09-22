@@ -19,7 +19,7 @@ function FilterComponent({ onSearch }) {
     setFilters((prevFilters) => ({
       ...prevFilters,
       [name]: value,
-    }));
+    }));  
   };
 
   const handleSearch = () => {
@@ -51,7 +51,7 @@ function FilterComponent({ onSearch }) {
           required
           type="text"
           name="keyword"
-          placeholder="Keyword"
+          placeholder="Property Name"
           aria-label="Keyword"
           value={filters.keyword}
           onChange={handleInputChange}

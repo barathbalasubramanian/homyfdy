@@ -17,6 +17,7 @@ function Property() {
         { name: 'elevatorLift', label: 'Elevator/Lift' },
     ];
     const [AddPropert, setAddProperty] = useState(false);
+    const [loading, setLoading] = useState(true); // New loading state
     const [del, setDel] = useState(null)
     const [editable, setEdit] = useState(null)
     const [properties, setProperties] = useState([]);
@@ -73,14 +74,17 @@ function Property() {
     };
     const fetchProperties = async () => {
         try {
+            setLoading(true)
             const fetchedProperties = await getAllHouses();
             setProperties(fetchedProperties);
             setFilteredProperties(fetchedProperties); 
+            setLoading(false)
         } catch (error) {
             console.error("Error fetching properties: ", error);
         }
     };
     const handleSubmit = async (e) => {
+        setLoading(true)
         let MainImage = '';
         let FloorImage = '';
         e.preventDefault();
@@ -89,6 +93,7 @@ function Property() {
             if (!selectedFile_Main || !selectedFile_Floor || !selectedFiles) {
                 if (!editable) {
                     alert("Files Field Required"); 
+                    setLoading(false)
                     return 
                 }
             }
@@ -138,9 +143,10 @@ function Property() {
                     setSelectedFile_Floor(null)
                     setSelectedFile_Main(null)
                     fetchProperties()
+                    setLoading(false)
                     return
                 } catch (error) {
-                    alert("Error updating property: " + error.message);
+                    setLoading(false)
                 }
             }
 
@@ -182,9 +188,10 @@ function Property() {
                     setSelectedFile_Floor(null)
                     setSelectedFile_Main(null)
                     fetchProperties()
+                    setLoading(false)
                     return
                 } catch (error) {
-                    alert("Error updating property: " + error.message);
+                    setLoading(false)
                     return;
                 }
             }
@@ -198,8 +205,9 @@ function Property() {
             setSelectedFile_Floor(null)
             setSelectedFile_Main(null)
             setAddProperty(false);setEdit(null)
+            setLoading(false)
         } catch (error) {
-            alert("Error adding property: " + error.message);
+            // alert("Error adding property: " + error.message);
         }
         handleClear();
     };
@@ -267,34 +275,39 @@ function Property() {
         setFilteredProperties(filtered)
 
         if (filters.keyword !== "") {
-            console.log("F")
+            console.log("F",filters.keyword)
             filtered = filtered.filter((property) =>
               property.propertyName.toLowerCase().includes(filters.keyword.toLowerCase())
             );
             setFilteredProperties(filtered)
         }
         if (filters.region !== "") {
-            console.log("F")
-            filtered = filtered.filter((property) =>
-              property.region.toLowerCase().includes(filters.region.toLowerCase())
-            );
-            setFilteredProperties(filtered)
+            console.log("F", filters.region);
+            filtered = filtered.filter((property) => {
+                const formattedRegion = property.region.toLowerCase().replace(/\s+/g, '');
+                const formattedFilterRegion = filters.region.toLowerCase().replace(/\s+/g, '');
+                console.log(formattedRegion, formattedFilterRegion);
+                return formattedRegion.includes(formattedFilterRegion);
+            });
+            setFilteredProperties(filtered);
         }
         if (filters.type !== "") {
-            console.log("F")
+            console.log("F",filters.type)
             filtered = filtered.filter((property) =>
               property.propertyType.toLowerCase().includes(filters.type.toLowerCase())
             );
             setFilteredProperties(filtered)
         }
         if (filters.BHKType !== "") {
-            console.log("F")
+            console.log("F",filters.BHKType)
             filtered = filtered.filter((property) =>
+            //   console.log(property.propertyBHK.toLowerCase(),filters.BHKType.toLowerCase())
               property.propertyBHK.toLowerCase().includes(filters.BHKType.toLowerCase())
             );
             setFilteredProperties(filtered)
         }
         if (filters.propertyPrice !== "") {
+            console.log("F",filters.propertyPrice)
             filtered = filtered.filter((property) =>
                 matchPriceRange(property.propertyPrice, filters.propertyPrice)
             );
@@ -345,7 +358,7 @@ function Property() {
         }
     }, [editable]);
     useEffect ( ()=>{
-        const res = deleteHouse(del)
+        deleteHouse(del)
         fetchProperties()
     },[del])
     useEffect(() => {
@@ -354,6 +367,8 @@ function Property() {
 
     return (
         <main className="flex flex-col py-6 px-8 max-md:ml-0 max-md:w-full">
+            {
+            !loading ? 
             <div className="flex flex-col w-full max-md:mt-10 max-md:max-w-full">
                 <div className="flex flex-col gap-8 w-full max-md:mr-2.5 max-md:max-w-full">
                     <div className='flex items-center justify-between max-md:flex-col max-md:items-start gap-4'>
@@ -409,9 +424,9 @@ function Property() {
                                                     className='px-2 py-1 rounded-md outline-none'
                                                 >
                                                     <option value="">Select BHK</option>
-                                                    <option value="BH2">BHK2</option>
-                                                    <option value="BH4">BHK4</option>
-                                                    <option value="BH6">BHK6</option>
+                                                    <option value="BHK2">BHK2</option>
+                                                    <option value="BHK4">BHK4</option>
+                                                    <option value="BHK6">BHK6</option>
                                                 </select>
                                             </div>
                                             <div className='flex flex-col gap-2'>
@@ -571,7 +586,12 @@ function Property() {
                         </>
                     }
                 </div>
+            </div> 
+            : 
+            <div className="flex justify-center items-center h-96">
+                <div className="loader text-green-500">Loading...</div> {/* Custom loader component or CSS spinner */}
             </div>
+            }
         </main>
     )
 }

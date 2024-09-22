@@ -14,7 +14,7 @@ const ConnectSection = () => {
         />
         </div>
         <div className="flex relative flex-col w-4/5 max-md:w-full">
-          <h1 className="z-0 text-4xl text-white max-md:max-w-full">
+          <h1 className="averoxfont z-0 text-4xl text-white max-md:max-w-full">
             Let's Connect
           </h1>
           <p className="z-0 mt-2.5 text-base font-medium leading-6 text-neutral-400 max-md:max-w-full">

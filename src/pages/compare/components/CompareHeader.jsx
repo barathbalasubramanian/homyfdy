@@ -6,7 +6,7 @@ function CompareHeader() {
       <div>
         <img loading="lazy" src="assets/design.svg" alt="" className="object-contain pb-2 pl-2 aspect-[2.29] w-[55px]" />
         <div className="flex flex-wrap gap-5 justify-between items-start mt-1.5 ml-2.5 w-full text-white max-md:max-w-full">
-          <h1 className="text-4xl">Compare Properties</h1>
+          <h1 className="averoxfont text-4xl">Compare Properties</h1>
         </div>
         <div className="mb-0 ml-2.5 pt-1 text-base font-medium leading-6 text-neutral-400 max-md:mb-2.5">
           Effortlessly compare multiple properties side-by-side to make informed decisions. Our intuitive interface lets you evaluate key aspects such as price, location, amenities, and more, helping you find your perfect home with ease.

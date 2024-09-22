@@ -18,7 +18,7 @@ function HomyfydAdvantage() {
     setExpandedItemId(expandedItemId === id ? null : id); 
   };
   return (
-    <main className="flex flex-col py-16 px-20 rounded-none max-sm:px-10">
+    <main className="flex flex-col py-16 px-20 rounded-none max-sm:px-4">
       <header className="flex gap-5 justify-between w-full max-md:max-w-full">
         <Logo />
         <Title />
@@ -27,7 +27,7 @@ function HomyfydAdvantage() {
       <section className="flex flex-col font-semibold text-white w-full items-end justify-end">
         <div className="flex w-full items-center justify-end">
             <div 
-              className="absolute right-[8em] max-xl:right-[3em] max-lg:right-[2em] max-md:hidden text-8xl transform rotate-90 text-nowrap"
+              className="absolute right-[6em] max-xl:right-[3em] max-lg:right-[2em] max-md:hidden text-8xl transform rotate-90 text-nowrap"
               style={{ color: "transparent", WebkitTextStroke: "1px #1FC827" }}
             >
               Book Your home in 5 Clicks

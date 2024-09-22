@@ -7,7 +7,7 @@ function CommonContact() {
         <div className='flex gap-3 items-center'>
             <img src="/assets/profileimg.svg" style={{width:"4em",height:"4em",borderRadius:"50%"}} alt="Profile" />
             <div className='flex flex-col gap-1 items-start'>
-                <div className='text-xl'>
+                <div className='averoxfont text-xl'>
                     JANE COOPER
                 </div>
                 <div className='text-sm'>

@@ -12,7 +12,7 @@ function InquiryForm({property}) {
     return (
     <section className="flex relative flex-col py-16 w-full max-md:mt-10">
       <img loading="lazy" src="/assets/design.svg" alt="" style={{marginLeft:"-10px"}} className="pb-2 object-contain aspect-[2.29] w-[55px]" />
-      <h2 className="z-0 text-4xl text-white max-md:max-w-full">Inquire About Seaside Villa</h2>
+      <h2 className="averoxfont z-0 text-4xl text-white max-md:max-w-full">Inquire About Seaside Villa</h2>
       <p className="z-0 mt-2.5 text-base font-medium leading-6 text-neutral-400 max-md:max-w-full">
         Interested in this property? Fill out the form below, and our real estate experts will get back to you with more details, including scheduling a viewing and answering any questions you may have.
       </p>

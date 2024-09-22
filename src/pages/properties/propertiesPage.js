@@ -1,6 +1,6 @@
 import AbFooter from '../../components/AbFooter';
 import Footer from '../../components/Footer';
-import Header from '../..//components/Header';
+import Header from '../../components/Header';
 import React, { useEffect, useState } from 'react';
 import PropertyHeader from './components/PropertyHeader';
 import SearchBar from './components/SearchBar';
@@ -11,18 +11,19 @@ import { useLocation } from 'react-router-dom';
 
 function PropertiesPage() {
 
+  const [propertyNames, setPropertyNames] = useState([]);
+  const [loading, setLoading] = useState(true); // New loading state
   const location = useLocation();
   const bhkType = location.state?.bhkType || 'BHK Type'; 
-  console.log(bhkType)
 
-  useEffect(()=>{
+  useEffect(() => {
     if (bhkType !== 'BHK Type') {
       setFilters((prevFilters) => ({
         ...prevFilters,
         ['BHK Type']: bhkType
       }));
     }
-  },[])
+  }, []);
 
   const [properties, setProperties] = useState([]);
   const [filteredProperties, setFilteredProperties] = useState([]);
@@ -43,10 +44,14 @@ function PropertiesPage() {
     const fetchProperties = async () => {
       try {
         const fetchedProperties = await getAllHouses();
+        const propertyNames = fetchedProperties.map(property => property.propertyName);
+        setPropertyNames(propertyNames);
         setProperties(fetchedProperties);
         setFilteredProperties(fetchedProperties); // Initialize filtered properties
       } catch (error) {
         console.error("Error fetching properties: ", error);
+      } finally {
+        setLoading(false); // Set loading to false after fetching
       }
     };
     fetchProperties();
@@ -54,7 +59,6 @@ function PropertiesPage() {
 
   // Handle filter changes
   const handleFilterChange = (filterType, selectedValue) => {
-    console.log(filterType, selectedValue)
     setFilters((prevFilters) => ({
       ...prevFilters,
       [filterType]: selectedValue
@@ -110,10 +114,11 @@ function PropertiesPage() {
           );
         }
       } else if (filterValue && filterValue !== filterType) {
-        console.log(filterValue,filterType)
-        filtered = filtered.filter((property) =>
-          property[propertyKey]?.toString().toLowerCase().includes(filterValue.toLowerCase())
-        );
+        filtered = filtered.filter((property) => {
+          const formattedPropertyValue = property[propertyKey]?.toString().toLowerCase().replace(/\s+/g, ''); // remove spaces
+          const formattedFilterValue = filterValue.toLowerCase().replace(/\s+/g, ''); // remove spaces
+          return formattedPropertyValue.includes(formattedFilterValue);
+        });
       }
     });
     setFilteredProperties(filtered);
@@ -125,11 +130,20 @@ function PropertiesPage() {
       <Head />
       <div className="searchbar relative flex flex-col items-center px-20 w-full max-md:px-5 max-md:max-w-full">
         <div className='absolute -top-10 max-md:top-10 flex flex-col items-center w-4/5 max-md:w-full max-md:px-3'>
-          <SearchBar setpropertyName={setPropertyName} />
+          <SearchBar setpropertyName={setPropertyName} propertyNames={propertyNames} />
           <FilterOptions onFilterChange={handleFilterChange} />
         </div>
       </div>
-      <PropertyHeader properties={filteredProperties} />
+      
+      {/* Conditional Rendering for Loading Spinner */}
+      {loading ? (
+        <div className="flex justify-center items-center h-96">
+          <div className="loader">Loading...</div> {/* Custom loader component or CSS spinner */}
+        </div>
+      ) : (
+        <PropertyHeader properties={filteredProperties} />
+      )}
+      
       <AbFooter />
       <Footer />
     </div>

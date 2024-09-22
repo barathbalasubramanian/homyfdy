@@ -7,7 +7,7 @@ function AbFooter() {
         <div style={{position:"relative",overflow:"hidden"}} className='px-10 py-16 max-md:px-3'>
           <div className='flex max-md:flex-col max-md:items-start px-10 max-md:px-3 gap-10 items-center justify-between'>
             <div className=' w-4/5 flex flex-col gap-3 items-start text-start'style={{zIndex:"999"}}>
-              <div className='text-2xl'>START YOUR REAL ESTATE JOURNEY TODAY</div>
+              <div className='averoxfont text-2xl'>START YOUR REAL ESTATE JOURNEY TODAY</div>
               <div className='text-sm' style={{color:"grey"}}>Your dream property is just a click away. Whether you're looking for a new home, a strategic investment, or expert real estate advice, Estatein is here to assist you every step of the way. Take the first step towards your real estate goals and explore our available properties or get in touch with our team for personalized assistance.</div>
             </div>
             <div className='cursor-pointer min-w-fit bg-green-600 shadow-[0px_0px_21px_rgba(31,200,39,1)] flex items-center gap-3 px-2 py-1' style={{zIndex:"999",backgroundColor:"var(--green)",borderRadius:"5px"}}>
@@ -20,7 +20,7 @@ function AbFooter() {
 
         <div className='w-full  max-md:flex-col px-16 max-md:px-3 py-10 flex justify-between'>
           <div className='flex flex-col items-start'>
-            <div className='text-4xl py-3' style={{color:"green",fontWeight:"200"}}>HOMYFDY.AI</div>
+            <div className='averoxfont text-4xl py-3' style={{color:"green",fontWeight:"200"}}>HOMYFDY.AI</div>
             <div className='flex'>
               <div className='flex flex-col items-start gap-4 p-8 pl-0'>
                 <div style={{color:"grey"}}>Overview</div>

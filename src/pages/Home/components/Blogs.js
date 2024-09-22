@@ -39,7 +39,7 @@ function Blogs() {
       </div>
       <div className='px-16 py-6 flex items-center gap-8 justify-between text-start max-md:px-3 max-md:flex-col max-md:items-start'>
         <div>
-          <div className='text-3xl pb-2'>WHAT OUR CLIENTS SAY</div>
+          <div className='averoxfont text-3xl pb-2'>WHAT OUR CLIENTS SAY</div>
           <div style={{ color: 'grey' }} className='w-3/4'>
             Read the success stories and heartfelt testimonials from our valued clients. Discover why they chose Estatein for their real estate needs.
           </div>
