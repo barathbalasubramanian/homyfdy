@@ -6,8 +6,9 @@ import { createHouse, deleteHouse, getAllHouses, updateHouse } from '../../fireb
 import FileUpload from './UploadImages';
 import { storage } from "../../firebase/firebase";
 
-function Property() {
+function Property({managers}) {
 
+    const managerNames = managers.map(manager => manager.managerName); 
     const additionalFeaturesList = [
         { name: 'emergencyExit', label: 'Emergency Exit' },
         { name: 'CCTV', label: 'CCTV' },
@@ -137,13 +138,16 @@ function Property() {
                 }
                 try {
                     await updateHouse(editable ,{ ...formData, FloorImage:FloorImage, MainImage:MainImage });
-                    fileInputRef.current.value = null;
-                    fileInputRef1.current.value = null;
-                    fileInputRef2.current.value = null;
+                    alert("Updated Successfully")
                     setSelectedFile_Floor(null)
                     setSelectedFile_Main(null)
                     fetchProperties()
                     setLoading(false)
+                    setAddProperty(false)
+                    ;setEdit(null)
+                    fileInputRef.current.value = null;
+                    fileInputRef1.current.value = null;
+                    fileInputRef2.current.value = null;
                     return
                 } catch (error) {
                     setLoading(false)
@@ -182,13 +186,16 @@ function Property() {
             if (editable) {
                 try {
                     await updateHouse(editable ,{ ...formData, imageLinks: uploadedUrls  });
-                    fileInputRef.current.value = null;
-                    fileInputRef1.current.value = null;
-                    fileInputRef2.current.value = null;
+                    alert("Updated Successfully")
                     setSelectedFile_Floor(null)
                     setSelectedFile_Main(null)
                     fetchProperties()
                     setLoading(false)
+                    setAddProperty(false)
+                    ;setEdit(null)
+                    fileInputRef.current.value = null;
+                    fileInputRef1.current.value = null;
+                    fileInputRef2.current.value = null;
                     return
                 } catch (error) {
                     setLoading(false)
@@ -210,6 +217,7 @@ function Property() {
             // alert("Error adding property: " + error.message);
         }
         handleClear();
+        // setAddProperty(false)
     };
     const handleClear = () => {
         setFormData({
@@ -475,7 +483,21 @@ function Property() {
                                             </div>
                                             <div className='flex flex-col gap-2'>
                                                 <label htmlFor="manager" className='text-neutral-500'>Relationship Manager</label>
-                                                <input required name="manager" type="text" value={formData.manager} onChange={handleChange} style={{border:"1px solid #E5E5E5"}} className='px-2 py-1 rounded-md outline-none' />
+                                                <select
+                                                    required
+                                                    name="manager"
+                                                    value={formData.manager}
+                                                    onChange={handleChange}
+                                                    style={{border:"1px solid #E5E5E5"}}
+                                                    className='px-2 py-1 rounded-md outline-none'
+                                                >
+                                                    <option value="">Select a manager</option>
+                                                    {managerNames.map((managerName) => (
+                                                    <option key={managerName} value={managerName}>
+                                                        {managerName}
+                                                    </option>
+                                                    ))}
+                                                </select>
                                             </div>
                                             <div className='flex flex-col gap-2'>
                                                 <label htmlFor="contact" className='text-neutral-500'>Contact Number</label>
@@ -522,7 +544,7 @@ function Property() {
                                             <input required name="addressLink" type="text" value={formData.addressLink} onChange={handleChange} style={{border:"1px solid #E5E5E5"}} className='px-2 py-1 rounded-md outline-none' />
                                         </div>
                                     </div>
-                                    <div>
+                                    <div className='py-4'>
                                         <FileUpload 
                                             downloadURLs={downloadURLs}
                                             setDownloadURLs={setDownloadURLs}
@@ -531,8 +553,7 @@ function Property() {
                                             fileInputRef={fileInputRef}
                                         />
                                     </div>
-                                    <div>
-                                        <label className="block text-gray-700">Main Image</label>
+                                    <div className='pt-4'>
                                         <input
                                         type="file"
                                         ref={fileInputRef1}
@@ -545,9 +566,9 @@ function Property() {
                                             {selectedFile_Main ? selectedFile_Main.name : 'Upload image'}
                                         </div>
                                         </div>
+                                        <label className="block text-gray-700">Main Image</label>
                                     </div>
                                     <div>
-                                        <label className="block text-gray-700">Floor Image</label>
                                         <input
                                         type="file"
                                         ref={fileInputRef2}
@@ -560,6 +581,7 @@ function Property() {
                                             {selectedFile_Floor ? selectedFile_Floor.name : 'Upload image'}
                                         </div>
                                         </div>
+                                        <label className="block text-gray-700">Floor Image</label>
                                     </div>
                                     <div className="mt-8 flex gap-4">
                                         <button type="submit" className="bg-green-500 text-white px-4 py-2 rounded-md">

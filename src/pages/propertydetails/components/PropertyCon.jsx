@@ -8,7 +8,7 @@ import InquiryForm from "./InquiryForm";
 import MapView from "./MapView";
 import ProHeader from "./HeaderPro";
 
-function PropertyCon({property}) {
+function PropertyCon({property, managerDet}) {
   return (
     <main className="flex flex-col items-start px-16 py-16 w-full max-md:px-5 max-md:mt-10 max-md:max-w-full">
       <ProHeader property={property}/>
@@ -21,7 +21,7 @@ function PropertyCon({property}) {
             <div className="flex flex-col w-full max-md:max-w-full">
               <BookingButtons property={property}/>
               <Description property={property}/>
-              <ContactUs property={property} manager={property.manager} phoneNumber={property.contact} rankings={property.rankings}/>
+              <ContactUs managerDet={managerDet} property={property} manager={property.manager} phoneNumber={property.contact} rankings={property.rankings}/>
             </div>
           </div>
           <div className="flex flex-col ml-5 w-6/12 max-md:ml-0 max-md:w-full">

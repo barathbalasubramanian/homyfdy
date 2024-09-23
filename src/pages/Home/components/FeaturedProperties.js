@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import PropertyCard from '../../../components/PropertyCard';
 import { useNavigate } from 'react-router-dom';
 
-function FeaturedProperties({property, buttons, setbuttonValue}) {
+function FeaturedProperties({property, buttons, setbuttonValue, number}) {
 
   const [selectedButton, setSelectedButton] = useState(null);
   const Navigate = useNavigate();
@@ -15,10 +15,20 @@ function FeaturedProperties({property, buttons, setbuttonValue}) {
     <div className='py-10 px-16 max-md:px-3 max-md:py-6'>
         <div><img src="/assets/design.svg" alt="Design" /></div>
             <div className='py-6 flex items-center gap-8 justify-between text-start max-md:flex-col max-md:items-start max-md:pb-10'>
-              <div>
-                  <div className='averoxfont text-3xl pb-2'>FEATURED PROPERTIES</div>
-                  <div style={{color:"grey"}} className='w-3/4'>Read the success stories and heartfelt testimonials from our valued clients. Discover why they chose Estatein for their real estate needs.</div>
-              </div>
+              {
+                number === "two" && 
+                <div>
+                    <div className='averoxfont text-3xl pb-2 uppercase'>Exclusive Listings</div>
+                    <div style={{color:"grey"}} className='w-3/4'>Discover our handpicked selection of villas, apartments, and Plots. Each listing highlights premium homes and prime investment opportunities through Homyfyd. Click "View Details" to explore these exceptional properties.</div>
+                </div>
+              }
+              {
+                number === "three" && 
+                <div>
+                    <div className='averoxfont text-3xl pb-2 uppercase'>Similar properties for you</div>
+                    {/* <div style={{color:"grey"}} className='w-3/4'>Read the success stories and heartfelt testimonials from our valued clients. Discover why they chose Estatein for their real estate needs.</div> */}
+                </div>
+              }
               <div onClick={()=>Navigate('/properties')} className='cursor-pointer flex items-center gap-3 px-2 py-1' style={{textWrap:"nowrap",border:"1px solid #262626",backgroundColor:"var(--blackhd)",borderRadius:"5px"}}>
                   View All Properties
               </div>

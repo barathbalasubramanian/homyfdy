@@ -3,6 +3,7 @@ import React from 'react';
 const sidebarItems = [
   { icon: "/assets/dashboard.svg", text: "Dashboard" },
   { icon: "/assets/users.svg", text: "Users" },
+  { icon: "/assets/human.svg", text: "R Managers" },
   { icon: "/assets/responses.svg", text: "Responses" },
   { icon: "/assets/proicon.svg", text: "Property" },
   { icon: "/assets/bookings.svg", text: "Bookings" },

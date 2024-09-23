@@ -81,6 +81,7 @@ function ProHeader({ property }) {
           const currentUrl = window.location.href;      
           navigator.clipboard.writeText(currentUrl)
               .then(() => {
+                 alert("Link Copied")
               })
               .catch(err => {
                   console.error('Failed to copy URL: ', err);

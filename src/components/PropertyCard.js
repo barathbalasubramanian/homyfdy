@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { getUserDetails_, updateUser } from '../firebase/user';
 
 const PropertyCard = React.memo(({ property, verbose, fromComparePage, setCmpCnt, CmpCnt, edit, setEdit, setDel }) => {
+
   const navigate = useNavigate();
   const [compareImg, setCompareImg] = useState("/assets/compare.svg");
 
@@ -118,9 +119,11 @@ const PropertyCard = React.memo(({ property, verbose, fromComparePage, setCmpCnt
       <div>
         <div className='w-fit flex items-center justify-between'>
           <div className={`text-lg pr-2 ${!verbose ? 'text-white' : 'text-black'}`}>{property.propertyName}</div>
-          <div>( {property.propertyBHK} )</div>
         </div>
-        <div><span className='text-sm text-neutral-500'>{property.propertyType}</span></div>
+        <div>
+          <div className='text-sm text-neutral-500'>{property.propertyType}</div>
+          <div> {property.propertyBHK} </div>
+        </div>
         <div style={{ color: "grey" }}>
           <div className='truncate-text'>{property.description}</div>
           <span>Readmore</span>

@@ -5,8 +5,11 @@ import VisitsPropertyCard from "./VisitsPropertyCard";
 import Style from './container.module.css'
 import { updateUserDocument } from "../../../firebase/userprofile";
 import { getHouse } from "../../../firebase/house";
+import { updateUser } from "../../../firebase/user";
 
-function MainContainer({likes, booksCnt, viewCnt}) {
+function MainContainer({likes, booksCnt, viewCnt, name, email, number, city, id}) {
+
+  console.log(name,number,email)
   const [selected, setSelected] = useState("Dashboard");
   const [selected_, setSelected_] = useState("Completed");
   const [activeStatus, setActiveStatus] = useState("Watched");
@@ -123,12 +126,22 @@ function MainContainer({likes, booksCnt, viewCnt}) {
   ];
 
   const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    number: "",
+    name: name || "",
+    email: email || "",
+    number: number || "",
     pincode: "",
-    city: "",
+    city: city || "",
   });
+
+  useEffect(() => {
+    setFormData({
+      name: name || "",
+      email: email || "",
+      number: number || "",
+      pincode: "",
+      city: city || "",
+    });
+  }, [name, email, number, city]);
 
   const handleChange = (e) => {
     setFormData({
@@ -139,17 +152,15 @@ function MainContainer({likes, booksCnt, viewCnt}) {
 
   const handleClick = async() => {
     console.log(formData);
-    const phoneNumber = Cookies.get("number")
     try {
-      await updateUserDocument(phoneNumber, formData);
+      console.log(id)
+      await updateUser(id, formData);
       alert('User document updated successfully.');
-      setFormData({
-        name: "",
-        email: "",
-        number: "",
-        pincode: "",
-        city: "",
-      });
+      Cookies.set('name', formData.name, { expires: 7 });
+      Cookies.set('number', formData.number, { expires: 7 });
+      Cookies.set('email', formData.email, { expires: 7 });
+      Cookies.set('city', formData.city, { expires: 7 });
+
     } catch (error) {
       console.error('Error updating user document:', error);
       alert('Failed to update user document.');

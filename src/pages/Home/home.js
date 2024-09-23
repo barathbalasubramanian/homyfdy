@@ -119,9 +119,9 @@ function Home() {
     <div>
       <Header />
       <Welcome onFilter={handleFilter} filters={filters} setFilters={setFilters} />
-      <FeaturedProperties1 property={buttonValue1FilterProperty} buttons1={buttons1} setbuttonValue1={setbuttonValue1}/>
+      <FeaturedProperties1 number={"one"} property={buttonValue1FilterProperty} buttons1={buttons1} setbuttonValue1={setbuttonValue1}/>
       <Partners />
-      <FeaturedProperties property={buttonValueFilterProperty} buttons={buttons} setbuttonValue={setbuttonValue}/>
+      <FeaturedProperties number={"two"} property={buttonValueFilterProperty} buttons={buttons} setbuttonValue={setbuttonValue}/>
       <HomyfydAdvantage />
       <Options />
       <Clients />

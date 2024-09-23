@@ -1,10 +1,9 @@
 import React, { useState } from "react";
 import CustomForm from "./BookingForm";
 
-function ContactUs({ property, manager, phoneNumber, rankings }) {
+function ContactUs({ property, manager, phoneNumber, rankings, managerDet }) {
 
   const [BookingForm, SetBookingForm] = useState(true);
-
   const handleBookVisitClick = () => {
     SetBookingForm(false);
   };
@@ -33,7 +32,9 @@ function ContactUs({ property, manager, phoneNumber, rankings }) {
             </div>
           </div>
           <div className="flex gap-5 my-auto text-sm font-semibold text-white">
-            <img loading="lazy" src="/assets/call1.svg" alt="" className="object-contain shrink-0 my-auto w-10 rounded-full aspect-square" />
+            <a href={`tel:${managerDet[0].contactInfo}`}>
+              <img loading="lazy" src="/assets/call1.svg" alt="" className="object-contain shrink-0 my-auto w-10 rounded-full aspect-square cursor-pointer" />
+            </a>
             <button onClick={handleBookVisitClick} className="gap-2 self-stretch px-5 py-3 outline-none bg-green-600 rounded-lg min-h-[44px] shadow-[0px_0px_20px_rgba(31,200,39,1)]">
               Book a Visit
             </button>

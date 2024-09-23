@@ -7,17 +7,22 @@ import FeaturedProperties from '../Home/components/FeaturedProperties';
 import PropertyCon from './components/PropertyCon';
 import { useParams } from 'react-router-dom';
 import { getAllHouses, getHouse } from '../../firebase/house';
+import { getManagerDataByName } from '../../firebase/RelationshipManagers';
 
 function PropertyDetails() {
 
   const { id } = useParams();
   const [property, setProperty] = useState(null);
   const [properties, setProperties] = useState([]);
+  const [managerDet, setmanagerDet] = useState([]);
 
   useEffect(() => {
     const fetchProperty = async () => {
       try {
         const pro = await getHouse(id);
+        const managername = pro.manager
+        const managerDetails = await getManagerDataByName(managername);
+        setmanagerDet(managerDetails)
         setProperty(pro);
       } catch (error) {
         console.error("Error fetching property: ", error);
@@ -31,7 +36,6 @@ function PropertyDetails() {
     const fetchProperties = async () => {
       try {
         const fetchedProperties = await getAllHouses();
-        console.log(fetchedProperties)
         setProperties(fetchedProperties);
       } catch (error) {
         console.error("Error fetching properties: ", error);
@@ -45,10 +49,10 @@ function PropertyDetails() {
     <div>
       <Header />
       {
-        property && <PropertyCon property={property} />
+        property && <PropertyCon property={property} managerDet={managerDet}/>
       }
       <div>
-        <FeaturedProperties buttons={[]} property={properties} /> 
+        <FeaturedProperties number={"three"} buttons={[]} property={properties} /> 
       </div>
       <Ques />
       <AbFooter />
