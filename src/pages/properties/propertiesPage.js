@@ -12,15 +12,40 @@ import { useLocation } from 'react-router-dom';
 function PropertiesPage() {
 
   const [propertyNames, setPropertyNames] = useState([]);
-  const [loading, setLoading] = useState(true); // New loading state
+  const [loading, setLoading] = useState(true);
   const location = useLocation();
   const bhkType = location.state?.bhkType || 'BHK Type'; 
+  const Location = location.state?.location || ''; 
+  const propertyType = location.state?.propertyType || ''; 
+  const priceRange = location.state?.priceRange || ''; 
 
   useEffect(() => {
+
     if (bhkType !== 'BHK Type') {
       setFilters((prevFilters) => ({
         ...prevFilters,
         ['BHK Type']: bhkType
+      }));
+    }
+    if (Location !== '') {
+       console.log("Location1")
+      setFilters((prevFilters) => ({
+        ...prevFilters,
+        ['Location']: Location
+      }));
+    }
+    if (propertyType !== '') {
+       console.log("Location2")
+      setFilters((prevFilters) => ({
+        ...prevFilters,
+        ['Property Type']: propertyType
+      }));
+    }
+    if (priceRange !== '') {
+      console.log("Location3")      
+      setFilters((prevFilters) => ({
+        ...prevFilters,
+        ['Pricing Range']: priceRange
       }));
     }
   }, []);
@@ -39,7 +64,6 @@ function PropertiesPage() {
     "BHK Type": "propertyBHK"
   };
 
-  // Fetch all properties when the component mounts
   useEffect(() => {
     const fetchProperties = async () => {
       try {
@@ -131,7 +155,7 @@ function PropertiesPage() {
       <div className="searchbar relative flex flex-col items-center px-20 w-full max-md:px-5 max-md:max-w-full">
         <div className='absolute -top-10 max-md:top-10 flex flex-col items-center w-4/5 max-md:w-full max-md:px-3'>
           <SearchBar setpropertyName={setPropertyName} propertyNames={propertyNames} />
-          <FilterOptions onFilterChange={handleFilterChange} />
+          <FilterOptions onFilterChange={handleFilterChange} bhkType={bhkType} Location={Location} propertyType={propertyType} priceRange={priceRange}/>
         </div>
       </div>
       

@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import Select from 'react-select'
 import Noti from './Noti';
 import FilterComponent from './FilterComponent';
 import PropertyCard from '../../components/PropertyCard';
@@ -8,6 +9,11 @@ import { storage } from "../../firebase/firebase";
 
 function Property({managers}) {
 
+    const options = [
+        { value: 'HomyfydReliable', label: 'Homyfyd Reliable' },
+        { value: 'HotProjects', label: 'Hot Projects' },
+        { value: 'NewlyLaunched', label: 'Newly Launched' }
+    ]
     const managerNames = managers.map(manager => manager.managerName); 
     const additionalFeaturesList = [
         { name: 'emergencyExit', label: 'Emergency Exit' },
@@ -18,7 +24,8 @@ function Property({managers}) {
         { name: 'elevatorLift', label: 'Elevator/Lift' },
     ];
     const [AddPropert, setAddProperty] = useState(false);
-    const [loading, setLoading] = useState(true); // New loading state
+    const [loading, setLoading] = useState(true);
+    const [selectedOptions, setSelectedOptions] = useState([]);
     const [del, setDel] = useState(null)
     const [editable, setEdit] = useState(null)
     const [properties, setProperties] = useState([]);
@@ -27,6 +34,8 @@ function Property({managers}) {
     const fileInputRef = useRef(null)
     const fileInputRef1 = useRef(null);
     const fileInputRef2 = useRef(null);
+    const fileInputRef3 = useRef(null);
+    const [selectedFile_PDF, setSelectedFile_PDF] = useState(null);
     const [selectedFile_Main, setSelectedFile_Main] = useState(null);
     const [selectedFile_Floor, setSelectedFile_Floor] = useState(null);
     const [editingProperty, SeteditingProperty] = useState([]);
@@ -51,14 +60,24 @@ function Property({managers}) {
         addressLink: '',
         MainImage: '',
         FloorImage: '',
-        propertyReliable: '',
+        propertyReliable: [],
         imageLinks: [], 
+        brochurelink: '',
         additionalFeatures: additionalFeaturesList.reduce((acc, feature) => {
             acc[feature.name] = false;
             return acc;
         }, {})
     });
 
+    const handleChange_Mult = (selectedOptions) => {
+        setSelectedOptions(selectedOptions);
+        console.log("Selected options:", selectedOptions);
+        setFormData((prevData) => ({
+            ...prevData,
+            ["propertyReliable"]: selectedOptions,
+          }));
+        console.log(formData)
+    }
     const handleChange = (e) => {
         const { name, value, type, checked } = e.target;
         if (type === 'checkbox') {
@@ -73,6 +92,15 @@ function Property({managers}) {
             setFormData({ ...formData, [name]: value });
         }
     };
+    const handleImageUpload3 = async (event) => {
+        const selectedFile_PDF_ = event.target.files[0];
+        setSelectedFile_PDF(event.target.files[0])
+        if (!selectedFile_PDF_ || selectedFile_PDF_.type !== "application/pdf") {
+          alert("Please upload a valid PDF file.");
+          return;
+        }
+    };
+
     const fetchProperties = async () => {
         try {
             setLoading(true)
@@ -88,14 +116,37 @@ function Property({managers}) {
         setLoading(true)
         let MainImage = '';
         let FloorImage = '';
+        let PdfLink = '';
         e.preventDefault();
         try {
             console.log(editable)
-            if (!selectedFile_Main || !selectedFile_Floor || !selectedFiles) {
+            if (!selectedFile_Main || !selectedFile_Floor || !selectedFiles || !selectedFile_PDF) {
                 if (!editable) {
                     alert("Files Field Required"); 
                     setLoading(false)
                     return 
+                }
+            }
+            console.log(selectedFile_PDF)
+            if (selectedFile_PDF) {
+                try {
+                    const storageRef = storage.ref()
+                    const uploadTask = storageRef.child(`pdf/${selectedFile_PDF.name}`).put(selectedFile_PDF)
+                    await new Promise((resolve, reject) => {
+                      uploadTask.on(
+                        'state_changed',
+                        null,
+                        (error) => reject(error),
+                        async () => {
+                          const downloadURL = await uploadTask.snapshot.ref.getDownloadURL();
+                          console.log("PDF available at:", downloadURL);
+                          PdfLink = downloadURL
+                          resolve(); 
+                        }
+                      );
+                });
+                } catch (error) {
+                    console.error("Error uploading PDF: ", error);
                 }
             }
             if (selectedFile_Main) {
@@ -115,7 +166,7 @@ function Property({managers}) {
                     });
             } else { MainImage = editingProperty.MainImage;console.log("When Editing Main Image Not Selected ..") }
             if (selectedFile_Floor) {
-                const storageRef = storage.ref();
+                    const storageRef = storage.ref();
                     const uploadTask = storageRef.child(`images/${selectedFile_Floor.name}`).put(selectedFile_Floor);
                     await new Promise((resolve, reject) => {
                         uploadTask.on(
@@ -130,14 +181,15 @@ function Property({managers}) {
                         );
                     }); 
             } else { FloorImage = editingProperty.FloorImage;console.log("When Editing Floor Image Not Selected ..") }
-
             if (!selectedFiles || selectedFiles.length === 0) {
                 if (!editable) {
                     alert("Select Property Images")
                     return
                 }
                 try {
-                    await updateHouse(editable ,{ ...formData, FloorImage:FloorImage, MainImage:MainImage });
+
+                    console.log(PdfLink)
+                    await updateHouse(editable ,{ ...formData, FloorImage:FloorImage, MainImage:MainImage, brochurelink:PdfLink });
                     alert("Updated Successfully")
                     setSelectedFile_Floor(null)
                     setSelectedFile_Main(null)
@@ -148,6 +200,7 @@ function Property({managers}) {
                     fileInputRef.current.value = null;
                     fileInputRef1.current.value = null;
                     fileInputRef2.current.value = null;
+                    fileInputRef3.current.value = null;
                     return
                 } catch (error) {
                     setLoading(false)
@@ -192,27 +245,30 @@ function Property({managers}) {
                     fetchProperties()
                     setLoading(false)
                     setAddProperty(false)
-                    ;setEdit(null)
+                    setEdit(null)
                     fileInputRef.current.value = null;
                     fileInputRef1.current.value = null;
                     fileInputRef2.current.value = null;
+                    fileInputRef3.current.value = null;
                     return
                 } catch (error) {
                     setLoading(false)
                     return;
                 }
-            }
+            } 
+
             await createHouse({ ...formData, imageLinks: uploadedUrls, FloorImage:FloorImage, MainImage:MainImage });
             setSelectedFiles(null); 
             fetchProperties()
             alert("Added Successfully!");
-            fileInputRef.current.value = null;
-            fileInputRef1.current.value = null;
-            fileInputRef2.current.value = null;
             setSelectedFile_Floor(null)
             setSelectedFile_Main(null)
             setAddProperty(false);setEdit(null)
             setLoading(false)
+            fileInputRef.current.value = null;
+            fileInputRef1.current.value = null;
+            fileInputRef2.current.value = null;
+            fileInputRef3.current.value = null;
         } catch (error) {
             // alert("Error adding property: " + error.message);
         }
@@ -241,7 +297,8 @@ function Property({managers}) {
             MainImage: '',
             FloorImage: '',
             imageLinks: [],
-            propertyReliable: '',
+            propertyReliable: [],
+            brochurelink: '',
             additionalFeatures: {
                 emergencyExit: false,
                 CCTV: false,
@@ -251,6 +308,7 @@ function Property({managers}) {
                 elevatorLift: false,
             }
         });
+        setSelectedOptions([])
     }
     const handleImageUpload1 = (e) => {
         setSelectedFile_Main(e.target.files[0]);
@@ -263,6 +321,9 @@ function Property({managers}) {
     };
     const triggerFileInput2 = () => {
         fileInputRef2.current.click();
+    };
+    const triggerFileInput3 = () => {
+        fileInputRef3.current.click();
     };
 
     const matchPriceRange = (price, range) => {
@@ -330,6 +391,7 @@ function Property({managers}) {
             SeteditingProperty(PropertyToedit)
             setAddProperty(true)
             if (PropertyToedit) {
+                setSelectedOptions(PropertyToedit.propertyReliable)
                 setFormData((prevFormData) => ({
                     ...prevFormData,
                     propertyName: PropertyToedit.propertyName || '',
@@ -350,7 +412,8 @@ function Property({managers}) {
                     addressLink: PropertyToedit.addressLink || '',
                     imageLinks: PropertyToedit.imageLinks || [],
                     buildYear: PropertyToedit.buildYear || '',
-                    propertyReliable: PropertyToedit.propertyReliable || '',
+                    brochurelink: PropertyToedit.brochurelink || '',
+                    propertyReliable: Array.isArray(PropertyToedit.propertyReliable) ? PropertyToedit.propertyReliable: [],
                     additionalFeatures: {
                         ...prevFormData.additionalFeatures,
                         ...Object.keys(prevFormData.additionalFeatures).reduce((acc, featureName) => {
@@ -503,9 +566,10 @@ function Property({managers}) {
                                                 <label htmlFor="contact" className='text-neutral-500'>Contact Number</label>
                                                 <input required name="contact" type="tel" value={formData.contact} onChange={handleChange} style={{border:"1px solid #E5E5E5"}} className='px-2 py-1 rounded-md outline-none' />
                                             </div>
-                                            <div className='flex flex-col gap-2'>
+                                            {/* <div className='flex flex-col gap-2'>
                                                 <label htmlFor="propertyReliable" className='text-neutral-500'>Property Reliable</label>
                                                 <select
+                                                    multiple
                                                     name="propertyReliable"
                                                     value={formData.propertyReliable}
                                                     onChange={handleChange}
@@ -517,12 +581,37 @@ function Property({managers}) {
                                                     <option value="Hot Projects">Hot Projects</option>
                                                     <option value="Newly Launched">Newly Launched</option>
                                                 </select>
-                                            </div>
+                                            </div> */}
                                             <div className='flex flex-col gap-2'>
                                                 <label htmlFor="rankings" className='text-neutral-500'>Total Rankings</label>
                                                 <input required name="rankings" type="number" value={formData.rankings} onChange={handleChange} style={{border:"1px solid #E5E5E5"}} className='px-2 py-1 rounded-md outline-none' />
                                             </div>
+                                            <div className=''>
+                                                <label className="block text-neutral-500 pb-2">Brochure Pdf</label>
+                                                <input
+                                                    type="file"
+                                                    ref={fileInputRef3}
+                                                    // accept=".pdf"  
+                                                    onChange={handleImageUpload3}
+                                                    className="hidden"
+                                                />
+                                                <div className='flex gap-2 w-full justify-between items-center border py-1 rounded-sm px-3 border-gray-300 cursor-pointer' onClick={triggerFileInput3}>
+                                                    <div className='text-neutral-500 text-sm'>
+                                                        {selectedFile_PDF ? selectedFile_PDF.name : 'Upload PDF'}
+                                                    </div>
+                                                    <img src="assets/upload.svg" style={{ width: "1em" }} alt="Upload PDF" />
+                                                </div>
+                                            </div>
                                         </div>
+                                    </div>
+                                    <div className='min-w-fit'>
+                                                <div className='pb-2'>Select Reliability</div>
+                                                <Select
+                                                    options={options}
+                                                    isMulti
+                                                    value={selectedOptions}
+                                                    onChange={handleChange_Mult}
+                                                />
                                     </div>
                                     <div className='pt-2 grid grid-cols-1 gap-4 lg:grid-cols-2'>
                                         <div className='flex flex-col gap-2'>

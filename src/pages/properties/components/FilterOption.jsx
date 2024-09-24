@@ -1,9 +1,30 @@
 import React from "react";
 
-function FilterOption({ icon, label, options, onFilterChange }) {
+// Hardcoded map for Location values
+const locationMapping = {
+  bangalorenorth: "Bangalore North",
+  bangaloresouth: "Bangalore South",
+  bangaloreeast: "Bangalore East",
+  bangalorewest: "Bangalore West",
+};
+
+// Function to capitalize propertyType
+const capitalizePropertyType = (str) => {
+  return str ? str.charAt(0).toUpperCase() + str.slice(1).toLowerCase() : "";
+};
+
+function FilterOption({ icon, label, options, onFilterChange, bhkType, Location, propertyType, priceRange }) {
   const handleSelectChange = (e) => {
-    onFilterChange(label, e.target.value); 
+    onFilterChange(label, e.target.value);
   };
+
+  // Apply the hardcoded location mapping and capitalize propertyType
+  const preselectedValue = 
+    (label === "BHK Type" && bhkType) ||
+    (label === "Location" && Location ? locationMapping[Location.toLowerCase()] : undefined) ||
+    (label === "Property Type" && propertyType ? capitalizePropertyType(propertyType) : undefined) ||
+    (label === "Pricing Range" && priceRange) ||
+    undefined;
 
   return (
     <div className="flex flex-col flex-1 gap-4 shrink basis-0 min-w-[240px] border-neutral-800">
@@ -30,6 +51,7 @@ function FilterOption({ icon, label, options, onFilterChange }) {
               style={{ backgroundColor: "#141414" }}
               className="flex outline-none border-none gap-3 items-center px-5 py-2 pl-2 w-full text-sm font-medium leading-none rounded-md border text-stone-500 appearance-none"
               onChange={handleSelectChange}
+              value={preselectedValue} // Preselect the value based on the label and hardcoded mapping
             >
               {options.map((option, index) => (
                 <option key={index} value={option}>

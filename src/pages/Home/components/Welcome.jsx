@@ -1,12 +1,17 @@
 import React, { useState } from 'react'
+import { useNavigate } from 'react-router-dom';
 
 function Welcome({ onFilter, filters, setFilters }) {
-  const handleSearch = () => {
-    // Pass the current filters to the parent (Home component)
-    onFilter(filters.location, filters.propertyType, filters.priceRange);
-  };
 
-  return (
+    const navigate = useNavigate();
+    const handleSearch = () => {
+        if (filters.location  !== '' || filters.propertyType !== '' || filters.priceRange !== '') {
+            onFilter(filters.location, filters.propertyType, filters.priceRange);
+            navigate('/properties', { state: { location: filters.location , propertyType: filters.propertyType , priceRange: filters.priceRange  } });
+        }
+    };
+
+    return (
     <div className=''> 
         <div className='welcome pb-20'>
             <div className='px-20 py-16 flex gap-6 items-center w-full justify-between max-md:flex-col-reverse max-md:gap-10 max-md:px-6 max-md:py-10'>
@@ -48,7 +53,6 @@ function Welcome({ onFilter, filters, setFilters }) {
                             <option value="0-100k">0 - 100k</option>
                             <option value="100k-500k">100k - 500k</option>
                             <option value="500k-1M">500k - 1M</option>
-                            <option value="1M+">1M+</option>
                         </select>
                     </div>
 

@@ -1,14 +1,14 @@
 import React from "react";
 import FilterOption from "./FilterOption";
 
-function FilterOptions({ onFilterChange }) {
+function FilterOptions({ onFilterChange, bhkType, propertyType, Location, priceRange }) {
 
   const LocationTypes = [
     "Location", "Bangalore North", "Bangalore South", "Bangalore West", "Bangalore East"
   ];
-  const PropertyTypes = ["Property Type","Plots", "Apartments", "Vilas"];
+  const PropertyTypes = ["Property Type","Plots", "Apartments", "Villas"];
   const PriceRanges = ["Price Range", "0-100k", "100k-500k", "500k-1M"];
-  const PropertySizes = ["Property Size", "0-1000", "1000-5000", "5000-10000"];
+  const PropertySizes = ["Property Size", "0-100k", "100k-500k", "500k-1M"];
   const BuildYears = ["Build Year", "2020", "2021", "2022"];
   const BHKType = ["BHK Type","BHK2", "BHK4","BHK6", "BHK8"]
 
@@ -30,6 +30,10 @@ function FilterOptions({ onFilterChange }) {
           label={option.label}
           options={option.options}
           onFilterChange={onFilterChange}
+          bhkType={bhkType}
+          Location={Location}
+          propertyType={propertyType}
+          priceRange={priceRange}
         />
       ))}
     </section>

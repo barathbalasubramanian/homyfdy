@@ -8,7 +8,9 @@ function Options() {
       title: 'Flats by bedrooms in Bangalore',
       items: [
         '1 BHK apartments in Bangalore',
-        '2 BHK apartments in Bangalore'
+        '2 BHK apartments in Bangalore',
+        '3 BHK apartments in Bangalore',
+        '4 BHK apartments in Bangalore'
       ]
     },
     {

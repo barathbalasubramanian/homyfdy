@@ -79,23 +79,28 @@ function Home() {
 
   useEffect(() => {
     const fetchProperties = async () => {
-      console.log(filteredProperties)
       try {
         const fetchedProperties_ = filteredProperties.filter(property => {
-          console.log(property.propertyReliable.toLowerCase().trim() , butonValue1.toLowerCase().trim())
-          const matchType = property.propertyReliable.toLowerCase().trim() === butonValue1.toLowerCase().trim();
+          const reliableValues = Array.isArray(property.propertyReliable)
+            ? property.propertyReliable.map(rel => rel.label.toLowerCase().trim())
+            : [];
+  
+          const matchType = reliableValues.includes(butonValue1.toLowerCase().trim());
+  
           return matchType;
         });
+  
         setbutton1ValueFilterProperty(fetchedProperties_);
       } catch (error) {
         console.error("Error fetching properties: ", error);
       }
     };
+  
     if (butonValue1) {
       fetchProperties();
     }
-  }, [butonValue1]);
-
+  }, [butonValue1, ]);
+  
   useEffect(() => {
     const fetchProperties = async () => {
       console.log(filteredProperties)
