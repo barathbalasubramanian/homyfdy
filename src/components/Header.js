@@ -5,6 +5,7 @@ import axios from 'axios';
 import Cookies from 'js-cookie';
 import CompareDiv from './CompareDiv';
 import ComparePage from './ComparePage';
+import LoginDiv from './LoginDivCon';
 import { getUserDetails_ } from '../firebase/user';
 import { getAllHouses } from '../firebase/house';
 
@@ -17,6 +18,9 @@ function Header() {
   const [CmpPage,setCmpPage] = useState(false)
   const [CmpCnt,setCmpCnt] = useState(0);
   const [properties, setProperties] = useState([]);
+  const [LoginDivv, setLoginDiv] = useState(false);
+  const [AuthStatus, setAuthStatus] = useState("");
+ 
   useEffect(() => {
         const fetchProperties = async () => {
             try {
@@ -34,7 +38,7 @@ function Header() {
       try {
         const token = Cookies.get('token');
         if (!token) {
-          setIsLoginOpen(true);
+          // setIsLoginOpen(true);
           return;
         }
         const response = await axios.get('https://homyfdy-backend-1.onrender.com/protected', {
@@ -48,10 +52,6 @@ function Header() {
           setIsLoginOpen(true);
         } 
       } catch (error) {
-        const allCookies = Cookies.get();
-          for (const cookie in allCookies) {
-            Cookies.remove(cookie);
-          }
         console.error('Error fetching protected data:', error);
         // Need to change when production
         setIsLoginOpen(true);
@@ -73,6 +73,14 @@ function Header() {
   const closeLogin = () => {
     setIsLoginOpen(false);
   };
+
+  const handleAuth = () => {
+      const token = Cookies.get("token")
+      if (token == undefined) {
+          setLoginDiv(true)
+      }
+      else {navigate('/profile');return}
+  } 
 
   const navigate = useNavigate();
   const [MobileNav, SetMobileNav] = useState(false)
@@ -100,7 +108,7 @@ function Header() {
                 <div className='cursor-pointer bg-green-600 text-white flex items-center gap-3 px-4 py-1' style={{borderRadius: '5px' }}  onClick={()=>{SetMobileNav(false);SetCmpBtn(!CmpBtn)}}>
                   <div className='text-sm' >Compare</div>
                 </div>
-                <div className='cursor-pointer bg-neutral-700 text-white flex items-center gap-3 px-4 py-1' style={{borderRadius: '5px' }}  onClick={()=>{navigate('/profile') }}>
+                <div className='cursor-pointer bg-neutral-700 text-white flex items-center gap-3 px-4 py-1' style={{borderRadius: '5px' }} onClick={handleAuth}>
                   <div className='text-sm' >Profile</div>
                 </div>
               </div>
@@ -131,8 +139,7 @@ function Header() {
             </div>
           }
           <div className='cursor-pointer' 
-            // onClick={handleUserClick}
-            onClick={()=>navigate('/profile')}
+            onClick={handleAuth}
             >
             <img src="/assets/user.svg" alt="User" width={35} />
           </div>
@@ -151,7 +158,8 @@ function Header() {
         </div>
       }
 
-      {isLoginOpen && <Login closeLogin={closeLogin} />}
+      {isLoginOpen && <Login closeLogin={closeLogin} AuthStatus={AuthStatus} />}
+      {LoginDivv && <LoginDiv setAuthStatus={setAuthStatus} setIsLoginOpen={setIsLoginOpen} setLoginDiv={setLoginDiv} /> }
     </div>
   );
 }

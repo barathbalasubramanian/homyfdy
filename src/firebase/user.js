@@ -56,6 +56,24 @@ async function getUserDetails_(name, email) {
 }
 
 
+async function getUserByNumber(phnum) {
+  try {
+    const userRef = await usersCollection
+      .where("number", "==", phnum)
+      .get();
+
+    if (userRef.empty) {
+      console.log("No user found with the given name and email.");
+      return false;
+    }
+    const userDoc = userRef.docs[0];
+    const userDetails = userDoc.data();
+    return { id: userDoc.id, data: userDetails };
+  } catch (error) {
+    console.error("Error getting user details: ", error);
+  }
+}
+
 // Get a user by ID
 async function getUser(userId) {
   try {
@@ -174,11 +192,10 @@ module.exports = {
   getUser,
   updateUser,
   deleteUser,
-  // addWatchedHistory,
-  // addFavorite,
   getAllFavoritesWithDetails,
   getFavoritesWithDetails,
   getallUsers,
   getUserDetails,
-  getUserDetails_
+  getUserDetails_,
+  getUserByNumber
 };
