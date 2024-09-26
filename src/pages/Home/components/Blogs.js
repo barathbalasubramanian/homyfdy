@@ -43,17 +43,7 @@ function Blogs() {
           <div style={{ color: 'grey' }} className='w-3/4'>
             Read the success stories and heartfelt testimonials from our valued clients. Discover why they chose Estatein for their real estate needs.          </div>
         </div>
-        <div
-          className='cursor-pointer flex items-center gap-3 px-2 py-1'
-          style={{
-            textWrap: 'nowrap',
-            border: '1px solid #262626',
-            backgroundColor: 'var(--blackhd)',
-            borderRadius: '5px',
-          }}
-        >
-          View All Testimonials
-        </div>
+      
       </div>
       <div className='flex w-full px-16 gap-8 overflow-scroll py-10 max-md:px-3' style={{ borderBottom: '1px solid #262626' }}>
         {blogs.map((blog) => (

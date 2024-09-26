@@ -115,7 +115,7 @@ function ProHeader({ property }) {
         ))}
         <div className="flex flex-col self-stretch">
           <div className="text-sm font-medium text-neutral-400">Price</div>
-          <div className="text-xl font-semibold text-white">${property.propertyPrice}</div>
+          <div className="text-xl font-semibold text-white">₹{property.propertyPrice} k</div>
         </div>
       </div>
     </section>
