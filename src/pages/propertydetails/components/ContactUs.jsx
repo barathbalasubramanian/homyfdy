@@ -17,7 +17,7 @@ function ContactUs({ property, manager, phoneNumber, rankings, managerDet }) {
         </p>
         <div className="flex flex-wrap gap-9 mt-7 w-full max-md:max-w-full">
           <div className="flex flex-auto gap-3.5">
-            <img loading="lazy" src="/assets/owner.svg" alt="Brooklyn Simmons" className="object-contain shrink-0 rounded-lg aspect-[1.06] w-[95px]" />
+            <img loading="lazy" style={{width:"4em",height:"4em"}} src={managerDet[0].managerImage} alt="Brooklyn Simmons" className=" shrink-0 rounded-full" />
             <div className="flex flex-col items-start my-auto">
               <div className="self-stretch text-xl font-semibold text-white">{manager}</div>
               <div className="text-xs text-neutral-400">Relationship manager</div>

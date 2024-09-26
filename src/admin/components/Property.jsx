@@ -257,7 +257,7 @@ function Property({managers}) {
                 }
             } 
 
-            await createHouse({ ...formData, imageLinks: uploadedUrls, FloorImage:FloorImage, MainImage:MainImage });
+            await createHouse({ ...formData, imageLinks: uploadedUrls, FloorImage:FloorImage, MainImage:MainImage, brochurelink:PdfLink });
             setSelectedFiles(null); 
             fetchProperties()
             alert("Added Successfully!");

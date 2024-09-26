@@ -6,7 +6,7 @@ function VisitsPropertyCard({property}) {
   const Navigate = useNavigate();
   return (
     <div className='prop-con-pro flex gap-2 max-md:flex-col'> 
-      <div><img src="/assets/property.svg" alt="Property" /></div>
+      <div><img src={property.MainImage} alt="Property" /></div>
       <div className='flex flex-col gap-4'>
         <div>
             <div className='text-lg'>{property.propertyName}</div>

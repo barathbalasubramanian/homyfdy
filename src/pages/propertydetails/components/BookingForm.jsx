@@ -102,7 +102,7 @@ function CustomForm({ SetBookingForm, property }) {
             style={{ width: "30em", height: "30em", objectFit: "contain" }}
           />
         </div>
-        <div className="p-8 w-[60%] flex flex-col gap-4">
+        <div className="p-8 w-[60%] max-md:w-[100%] flex flex-col gap-4">
           <div className="flex w-full flex-col gap-4 p-8 rounded-md shadow-lg">
             <div className="w-full text-3xl" style={{ color: "green" }}>
               HOMYFYD

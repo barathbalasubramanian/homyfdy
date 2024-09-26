@@ -119,12 +119,13 @@ function MainContainer({likes, booksCnt, viewCnt, name, email, number, city, id}
   }, [likedProperties,bookedProperties,viewedProperties,upcomingProperties,completedProperties]); 
 
   const menuItems = [
-    { label: "Watched", count: viewCnt.length | 0 },
-    { label: "Favourite", count: likes.length | 0},
-    { label: "Site Visits", count: completedProperties.length | 0 },
-    { label: "Bookings", count: booksCnt.length | 0},
+    { label: "Watched", count: viewCnt.length || 0 },
+    { label: "Favourite", count: likes.length || 0},
+    { label: "Site Visits", count: completedProperties.length || 0 },
+    { label: "Bookings", count: booksCnt.length || 0},
   ];
 
+  
   const [formData, setFormData] = useState({
     name: name || "",
     email: email || "",

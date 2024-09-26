@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 // Hardcoded map for Location values
 const locationMapping = {
@@ -14,17 +14,24 @@ const capitalizePropertyType = (str) => {
 };
 
 function FilterOption({ icon, label, options, onFilterChange, bhkType, Location, propertyType, priceRange }) {
-  const handleSelectChange = (e) => {
-    onFilterChange(label, e.target.value);
-  };
+  // Local state to track selected values
+  const [selectedValue, setSelectedValue] = useState(() => {
+    return (
+      (label === "BHK Type" && (bhkType !== "BHK Type" ? bhkType : '')) ||
+      (label === "Location" && Location ? locationMapping[Location.toLowerCase()] : undefined) ||
+      (label === "Property Type" && propertyType ? capitalizePropertyType(propertyType) : undefined) ||
+      (label === "Pricing Range" && priceRange) ||
+      undefined
+    );
+  });
 
-  // Apply the hardcoded location mapping and capitalize propertyType
-  const preselectedValue = 
-    (label === "BHK Type" && bhkType) ||
-    (label === "Location" && Location ? locationMapping[Location.toLowerCase()] : undefined) ||
-    (label === "Property Type" && propertyType ? capitalizePropertyType(propertyType) : undefined) ||
-    (label === "Pricing Range" && priceRange) ||
-    undefined;
+  const handleSelectChange = (e) => {
+    const newValue = e.target.value;
+    setSelectedValue(newValue); // Update local state
+
+    // Pass the updated value back to parent via the onFilterChange callback
+    onFilterChange(label, newValue);
+  };
 
   return (
     <div className="flex flex-col flex-1 gap-4 shrink basis-0 min-w-[240px] border-neutral-800">
@@ -51,7 +58,7 @@ function FilterOption({ icon, label, options, onFilterChange, bhkType, Location,
               style={{ backgroundColor: "#141414" }}
               className="flex outline-none border-none gap-3 items-center px-5 py-2 pl-2 w-full text-sm font-medium leading-none rounded-md border text-stone-500 appearance-none"
               onChange={handleSelectChange}
-              value={preselectedValue} // Preselect the value based on the label and hardcoded mapping
+              value={selectedValue} // Controlled value from state
             >
               {options.map((option, index) => (
                 <option key={index} value={option}>

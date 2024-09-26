@@ -145,7 +145,7 @@ const PropertyCard = React.memo(({ property, verbose, fromComparePage, setCmpCnt
       <div className='flex items-center justify-between'>
         <div>
           <div style={{ color: "grey", fontSize: "12px" }}>Price</div>
-          <div className={`${!verbose ? 'text-white' : 'text-black'}`}>${property.propertyPrice}</div>
+          <div className={`${!verbose ? 'text-white' : 'text-black'}`}>₹ {property.propertyPrice} k</div>
         </div>
         {
           edit &&

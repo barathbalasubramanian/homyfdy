@@ -36,7 +36,8 @@ function PropertyDetails() {
     const fetchProperties = async () => {
       try {
         const fetchedProperties = await getAllHouses();
-        setProperties(fetchedProperties);
+        const filteredProperties = fetchedProperties.filter(property => property.id !== id);
+        setProperties(filteredProperties);
       } catch (error) {
         console.error("Error fetching properties: ", error);
       }
