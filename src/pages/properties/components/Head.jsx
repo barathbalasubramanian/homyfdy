@@ -11,7 +11,7 @@ function Head() {
             className='pb-2'
         />
         </div>
-        <div className="flex relative flex-col w-4/5 max-md:w-full">
+        <div className="flex -z-50 relative flex-col w-4/5 max-md:w-full">
           <h1 className="z-0 text-4xl text-white max-md:max-w-full">
             FIND YOUR DREAM PROPERTY
           </h1>

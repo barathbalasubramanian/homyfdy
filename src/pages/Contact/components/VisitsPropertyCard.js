@@ -30,7 +30,7 @@ function VisitsPropertyCard({property}) {
         <div className='flex items-center justify-between'>
             <div>
                 <div style={{color:"grey",fontSize:"12px"}}>Price</div>
-                <div className='text-xl'>${property.propertyPrice}</div>
+                <div className='text-xl'>₹ {property.propertyPrice}k</div>
             </div>
             <div onClick={()=>{Navigate(`/propertydetails/${property.id}`)}} className='cursor-pointer flex text-white items-center w-fit gap-3 px-2 py-2' style={{fontSize:"13px",textWrap:"nowrap",backgroundColor:"var(--green)",borderRadius:"5px"}}>
                 <img src="/assets/vila.svg" alt="Bed" /> View Property Details

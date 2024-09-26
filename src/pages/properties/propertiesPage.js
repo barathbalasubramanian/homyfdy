@@ -152,7 +152,7 @@ function PropertiesPage() {
     <div>
       <Header />
       <Head />
-      <div className="searchbar relative flex flex-col items-center px-20 w-full max-md:px-5 max-md:max-w-full">
+      <div className="searchbar -z-30 relative flex flex-col items-center px-20 w-full max-md:px-5 max-md:max-w-full">
         <div className='absolute -top-10 max-md:top-10 flex flex-col items-center w-4/5 max-md:w-full max-md:px-3'>
           <SearchBar setpropertyName={setPropertyName} propertyNames={propertyNames} />
           <FilterOptions onFilterChange={handleFilterChange} bhkType={bhkType} Location={Location} propertyType={propertyType} priceRange={priceRange}/>
