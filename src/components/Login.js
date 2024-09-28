@@ -140,7 +140,7 @@ function Login({ closeLogin, AuthStatus }) {
           <img src="/assets/login.svg" alt="Login" style={{ width: '33em', height: '33em', objectFit: 'contain' }} />
         </div>
 
-        <div className='p-8 flex flex-col gap-4'>
+        <div className='p-8 flex flex-col gap-3'>
           {/* OTP Verification Section */}
           {otpDiv ? (
             <div className='flex flex-col gap-3'>
