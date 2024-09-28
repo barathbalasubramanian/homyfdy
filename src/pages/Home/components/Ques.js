@@ -22,7 +22,7 @@ function Ques() {
       <div className='px-16 py-6 max-md:px-3 flex items-center gap-8 justify-between text-start max-md:flex-col max-md:items-start'>
         <div>
           <div className='averoxfont text-3xl pb-2'>FREQUENTLY ASKED QUESTIONS</div>
-          <div style={{color: "grey"}} className='w-3/4'>
+          <div style={{color: "grey"}} className='w-3/4 max-md:w-full'>
             Find answers to common questions about Estatein's services, property listings, and the real estate process. We're here to provide clarity and assist you every step of the way.
           </div>
         </div>

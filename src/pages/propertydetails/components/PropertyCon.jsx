@@ -32,7 +32,7 @@ function PropertyCon({property, managerDet}) {
         </div>
       </section>
       <InquiryForm property={property}/>
-      <MapView />
+      <MapView map={property.addressLink}/>
     </main>
   );
 }

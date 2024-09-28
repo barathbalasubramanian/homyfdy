@@ -14,7 +14,7 @@ const capitalizePropertyType = (str) => {
 };
 
 function FilterOption({ icon, label, options, onFilterChange, bhkType, Location, propertyType, priceRange }) {
-  // Local state to track selected values
+
   const [selectedValue, setSelectedValue] = useState(() => {
     return (
       (label === "BHK Type" && (bhkType !== "BHK Type" ? bhkType : '')) ||
@@ -27,9 +27,7 @@ function FilterOption({ icon, label, options, onFilterChange, bhkType, Location,
 
   const handleSelectChange = (e) => {
     const newValue = e.target.value;
-    setSelectedValue(newValue); // Update local state
-
-    // Pass the updated value back to parent via the onFilterChange callback
+    setSelectedValue(newValue); 
     onFilterChange(label, newValue);
   };
 

@@ -8,7 +8,7 @@ function KeyFeatures({features}) {
   .filter(feature => feature.length > 0); 
 
   return (
-    <section className="flex flex-col px-10 py-10 rounded-xl border border-solid border-neutral-800 min-h-[678px] max-md:px-5 max-md:mt-10 max-md:max-w-full">
+    <section className="flex flex-col px-10 py-10 rounded-xl border border-solid border-neutral-800 min-h-fit max-md:px-5 max-md:mt-10 max-md:max-w-full">
       <h2 className="text-xl font-semibold text-white max-md:max-w-full">Key Features and Amenities</h2>
       <div className="flex flex-col mt-10 w-full text-base font-medium text-neutral-400 max-md:max-w-full">
         {features_.map((feature, index) => (

@@ -152,14 +152,13 @@ function PropertiesPage() {
     <div>
       <Header />
       <Head />
-      <div className="searchbar -z-30 relative flex flex-col items-center px-20 w-full max-md:px-5 max-md:max-w-full">
-        <div className='absolute -top-10 max-md:top-10 flex flex-col items-center w-4/5 max-md:w-full max-md:px-3'>
+      <div className="searchbar -z-30 flex flex-col items-center px-20 w-full max-md:px-5 max-md:max-w-full">
+        <div className='-top-10 max-md:top-10 flex flex-col items-center w-4/5 max-md:w-full max-md:px-3'>
           <SearchBar setpropertyName={setPropertyName} propertyNames={propertyNames} />
           <FilterOptions onFilterChange={handleFilterChange} bhkType={bhkType} Location={Location} propertyType={propertyType} priceRange={priceRange}/>
         </div>
       </div>
       
-      {/* Conditional Rendering for Loading Spinner */}
       {loading ? (
         <div className="flex justify-center items-center h-96">
           <div className="loader">Loading...</div> {/* Custom loader component or CSS spinner */}

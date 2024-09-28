@@ -93,9 +93,9 @@ function ProHeader({ property }) {
   };
 
   return (
-    <section className="flex flex-wrap gap-5 justify-between self-stretch ml-3.5 w-full max-md:max-w-full">
-      <div className="flex gap-5 my-auto text-white">
-        <h1 className="grow text-2xl font-semibold capitalize">{property.propertyName}</h1>
+    <section className="flex flex-wrap gap-5 justify-between self-stretch ml-3.5 max-md:ml-0 w-full max-md:max-w-full">
+      <div className="flex flex-wrap gap-5 my-auto text-white">
+        <h1 className="grow text-2xl max-md:text-xl font-semibold capitalize">{property.propertyName}</h1>
         <div className="flex flex-col text-sm font-medium whitespace-nowrap">
           {locationBadges.map((badge, index) => (
             <div key={index}>
