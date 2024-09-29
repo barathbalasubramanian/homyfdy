@@ -13,8 +13,13 @@ import Welcome from './components/Welcome'
 import { getAllHouses } from '../../firebase/house'
 import Blogs from './components/Blogs'
 import FeaturedProperties1 from './components/FeaturedProperties1'
+import { useLocation } from 'react-router-dom'
 
 function Home() {
+
+  const location = useLocation();
+  const isAuthenticated = location.state?.authenticated;
+
   const [properties, setProperties] = useState([]);
   const [filteredProperties, setFilteredProperties] = useState([]);
   const [buttonValue, setbuttonValue] = useState(null)
@@ -122,7 +127,7 @@ function Home() {
 
   return (
     <div>
-      <Header />
+      <Header isAuthenticated={isAuthenticated}/>
       <Welcome onFilter={handleFilter} filters={filters} setFilters={setFilters} />
       <FeaturedProperties1 number={"one"} property={buttonValue1FilterProperty} buttons1={buttons1} setbuttonValue1={setbuttonValue1}/>
       <Partners />

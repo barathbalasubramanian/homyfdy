@@ -9,11 +9,12 @@ import LoginDiv from './LoginDivCon';
 import { getUserDetails_ } from '../firebase/user';
 import { getAllHouses } from '../firebase/house';
 
-function Header() {
+function Header({isAuthenticated}) {
 
+  console.log(isAuthenticated)
   const location = useLocation();
   const isComparePage = location.pathname === '/compare';
-  const [isLoginOpen, setIsLoginOpen] = useState(null);
+  const [isLoginOpen, setIsLoginOpen] = useState(isAuthenticated === undefined ? null : !isAuthenticated);
   const [CmpBtn,SetCmpBtn] = useState(false);
   const [CmpPage,setCmpPage] = useState(false)
   const [CmpCnt,setCmpCnt] = useState(0);
@@ -77,7 +78,7 @@ function Header() {
   const handleAuth = () => {
       const token = Cookies.get("token")
       if (token == undefined) {
-          setLoginDiv(true)
+          setLoginDiv(!LoginDivv)
       }
       else {navigate('/profile');return}
   } 

@@ -26,39 +26,49 @@ const router = createBrowserRouter([
   {
     path: "/profile",
     element: (
-      <Profile/>
+      <ProtectedRoute>
+        <Profile/>
+      </ProtectedRoute>
     ),
   },
   {
     path: "/properties",
     element: (
-      <PropertiesPage/>
+      <ProtectedRoute>
+        <PropertiesPage/>
+      </ProtectedRoute>
     ),
   },
   {
     path: "/about",
     element: (
-      <About/>
+      <ProtectedRoute>
+        <About/>
+      </ProtectedRoute>
     ),
   },
   {
     path: "/compare",
     element: (
-      <ComparePage/>
+      <ProtectedRoute>
+        <ComparePage/>
+      </ProtectedRoute>
     ),
   },
   {
     path: "/connect",
     element: (
-      <Connect/>
+      <ProtectedRoute>
+        <Connect/>
+      </ProtectedRoute>
     ),
   },
   {
     path: "/propertydetails/:id",
     element: (
-      // <ProtectedRoute>
+      <ProtectedRoute>
         <PropertyDetails/>
-      // </ProtectedRoute>
+      </ProtectedRoute>
     ),
   },
   {
