@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { getAllBlogs } from '../../../firebase/Blogs'; 
+import { useNavigate } from 'react-router-dom';
 
 function Blogs() {
+  const navi = useNavigate()
   const [blogs, setBlogs] = useState([]);
   const [selectedBlog, setSelectedBlog] = useState(null); // State to track which blog is selected
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -41,13 +43,17 @@ function Blogs() {
         <div>
           <div className='averoxfont text-3xl pb-2'>READ OUR BLOGS</div>
           <div style={{ color: 'grey' }} className='w-3/4 max-md:w-full'>
-            Read the success stories and heartfelt testimonials from our valued clients. Discover why they chose Estatein for their real estate needs.          </div>
+          Read the success stories and heartfelt blog
+          </div>
+        </div>
+        <div onClick={()=>{navi('/blogs')}} className='cursor-pointer flex items-center gap-3 px-2 py-1' style={{textWrap:"nowrap",border:"1px solid #262626",backgroundColor:"var(--blackhd)",borderRadius:"5px"}}>
+            View All Blogs
         </div>
       
       </div>
       <div className='flex w-full px-16 gap-8 overflow-scroll py-10 max-md:px-3' style={{ borderBottom: '1px solid #262626' }}>
         {blogs.map((blog) => (
-          <div className='ques-con cursor-pointer' key={blog.id} onClick={() => handleOpenModal(blog)}>
+          <div className='ques-con cursor-pointer' key={blog.id} onClick={() => navi(`blogs/${blog.id}`)}>
             <div className='pb-1'>{blog.blogName}</div>
             <div>
                 <img

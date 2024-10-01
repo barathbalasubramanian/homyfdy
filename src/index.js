@@ -14,6 +14,8 @@ import Connect from "./pages/Contect/Connect";
 import PropertyDetails from "./pages/propertydetails/PropertyDetails";
 import Admin from "./admin/Admin";
 import ProtectedRoute from "./ProtectRoute";
+import Blogs from "./pages/blogs/blogs";
+import AllBlogs from "./pages/allBlogs/AllBlogs";
 
 const router = createBrowserRouter([
   
@@ -69,6 +71,18 @@ const router = createBrowserRouter([
       <ProtectedRoute>
         <PropertyDetails/>
       </ProtectedRoute>
+    ),
+  },
+  {
+    path: "/blogs",
+    element: (
+      <AllBlogs/>
+    ),
+  },
+  {
+    path: "/blogs/:id",
+    element: (
+      <Blogs/>
     ),
   },
   {
