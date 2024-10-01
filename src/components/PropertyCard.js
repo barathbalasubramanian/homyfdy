@@ -1,6 +1,6 @@
 import Cookies from 'js-cookie';
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
 import { getUserDetails_, updateUser } from '../firebase/user';
 
 const PropertyCard = React.memo(({ property, verbose, fromComparePage, setCmpCnt, CmpCnt, edit, setEdit, setDel }) => {
@@ -37,8 +37,7 @@ const PropertyCard = React.memo(({ property, verbose, fromComparePage, setCmpCnt
     const email = Cookies.get("email");
     console.log(name,email)
     if (name == undefined || email == undefined ) {
-      navigate("/");
-      return;
+      alert("Login to continue")
     }
     const userDoc = await getUserDetails_(name, email);
 
