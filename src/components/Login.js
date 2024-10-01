@@ -134,7 +134,7 @@ function Login({ closeLogin, AuthStatus }) {
   };
 
   return (
-    <div style={{ position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', backgroundColor: 'rgba(0, 0, 0, 0.8)', backdropFilter: 'blur(10px)', zIndex: 1000, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+    <div className='md:items-center max-md:pt-32' style={{ position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', backgroundColor: 'rgba(0, 0, 0, 0.8)', backdropFilter: 'blur(10px)', zIndex: 1000, display: 'flex', justifyContent: 'center' }}>
       <div className='login-con'>
         <div className='max-md:hidden'>
           <img src="/assets/login.svg" alt="Login" style={{ width: '33em', height: '33em', objectFit: 'contain' }} />

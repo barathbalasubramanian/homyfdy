@@ -35,6 +35,11 @@ const PropertyCard = React.memo(({ property, verbose, fromComparePage, setCmpCnt
   const handleViewDetails = async () => {
     const name = Cookies.get("name");
     const email = Cookies.get("email");
+    console.log(name,email)
+    if (name == undefined || email == undefined ) {
+      navigate("/");
+      return;
+    }
     const userDoc = await getUserDetails_(name, email);
 
     const currentVisit = {
