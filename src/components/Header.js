@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Login from './Login';
 import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
@@ -159,7 +159,9 @@ function Header({isAuthenticated}) {
         </div>
       }
 
-      {isLoginOpen && <Login closeLogin={closeLogin} AuthStatus={AuthStatus} />}
+      {isLoginOpen && 
+          <LoginDiv setAuthStatus={setAuthStatus} setIsLoginOpen={setIsLoginOpen} setLoginDiv={setLoginDiv} />
+      }
       {LoginDivv && <LoginDiv setAuthStatus={setAuthStatus} setIsLoginOpen={setIsLoginOpen} setLoginDiv={setLoginDiv} /> }
     </div>
   );

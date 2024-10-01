@@ -1,6 +1,6 @@
 import Cookies from 'js-cookie';
 import React, { useEffect, useState } from 'react';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { getUserDetails_, updateUser } from '../firebase/user';
 
 const PropertyCard = React.memo(({ property, verbose, fromComparePage, setCmpCnt, CmpCnt, edit, setEdit, setDel }) => {
@@ -63,7 +63,6 @@ const PropertyCard = React.memo(({ property, verbose, fromComparePage, setCmpCnt
     }
 
     await updateUser(userDoc.id, updatedData);
-    // navigate('/propertydetails', { state: { property } });
     navigate(`/propertydetails/${property.id}`);
   };
 
