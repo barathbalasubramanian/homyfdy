@@ -38,6 +38,7 @@ const PropertyCard = React.memo(({ property, verbose, fromComparePage, setCmpCnt
     console.log(name,email)
     if (name == undefined || email == undefined ) {
       alert("Login to continue")
+      return
     }
     const userDoc = await getUserDetails_(name, email);
 

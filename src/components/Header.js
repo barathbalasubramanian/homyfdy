@@ -8,20 +8,33 @@ import ComparePage from './ComparePage';
 import LoginDiv from './LoginDivCon';
 import { getUserDetails_ } from '../firebase/user';
 import { getAllHouses } from '../firebase/house';
+import { Refresh } from '@mui/icons-material';
 
 function Header({isAuthenticated}) {
 
-  console.log(isAuthenticated)
   const location = useLocation();
+  const navigate = useNavigate();
   const isComparePage = location.pathname === '/compare';
   const [isLoginOpen, setIsLoginOpen] = useState(isAuthenticated === undefined ? null : !isAuthenticated);
   const [CmpBtn,SetCmpBtn] = useState(false);
   const [CmpPage,setCmpPage] = useState(false)
+  const [MobileNav, SetMobileNav] = useState(false)
   const [CmpCnt,setCmpCnt] = useState(0);
   const [properties, setProperties] = useState([]);
   const [LoginDivv, setLoginDiv] = useState(false);
   const [AuthStatus, setAuthStatus] = useState("");
- 
+  const [Logout, SetLogout] = useState(false);
+
+  useEffect(() => {
+    const token = Cookies.get("token")
+    if (token == undefined) {
+        SetLogout(false)
+    }
+    else {
+      SetLogout(true)
+    }
+  },[])
+  
   useEffect(() => {
         const fetchProperties = async () => {
             try {
@@ -51,6 +64,11 @@ function Header({isAuthenticated}) {
           setIsLoginOpen(false);
         } else {
           setIsLoginOpen(true);
+          Cookies.remove('token');
+          Cookies.remove('name');
+          Cookies.remove('email');
+          Cookies.remove('city');
+          Cookies.remove('number');
         } 
       } catch (error) {
         console.error('Error fetching protected data:', error);
@@ -82,9 +100,25 @@ function Header({isAuthenticated}) {
       }
       else {navigate('/profile');return}
   } 
+  
+  const HandleLogout = () => {
+    const confirmLogout = window.confirm("Are you sure you want to logout?");
+    
+    if (confirmLogout) {
+      console.log("Logging Out");
+      Cookies.remove('token');
+      Cookies.remove('name');
+      Cookies.remove('email');
+      Cookies.remove('city');
+      Cookies.remove('number');
+      alert("Logout Successfully");
+      SetLogout(false)
+    } else {
+      SetLogout(true)
+      console.log("Logout cancelled");
+    }
+  };  
 
-  const navigate = useNavigate();
-  const [MobileNav, SetMobileNav] = useState(false)
   return (
     <div style={{ backgroundColor: 'var(--blackhd)' }}>
       <div className='w-full flex px-8 items-center justify-between py-4 max-md:px-3'>
@@ -106,7 +140,22 @@ function Header({isAuthenticated}) {
                 <div onClick={() => navigate('/')}>Home</div>
                 <div onClick={() => navigate('/about')}>About Us</div>
                 <div onClick={() => navigate('/properties')}>Properties</div>
-                <div className='cursor-pointer bg-green-600 text-white flex items-center gap-3 px-4 py-1' style={{borderRadius: '5px' }}  onClick={()=>{SetMobileNav(false);SetCmpBtn(!CmpBtn)}}>
+                <div className='cursor-pointer bg-green-600 text-white flex items-center gap-3 px-4 py-1' style={{borderRadius: '5px' }}  
+                
+                  onClick={
+                    () => 
+                      {
+                        SetMobileNav(false);
+                        const name = Cookies.get("name");
+                        const email = Cookies.get("email");
+                        console.log(name,email)
+                        if (name == undefined || email == undefined ) {
+                          alert("Login to continue")
+                          return
+                        } else {
+                          SetCmpBtn(!CmpBtn)
+                        }
+                    }}>
                   <div className='text-sm' >Compare</div>
                 </div>
                 <div className='cursor-pointer bg-neutral-700 text-white flex items-center gap-3 px-4 py-1' style={{borderRadius: '5px' }} onClick={handleAuth}>
@@ -127,9 +176,17 @@ function Header({isAuthenticated}) {
             <div
               className='cursor-pointer bg-green-600 shadow-[0px_0px_21px_rgba(31,200,39,1)] flex items-center gap-3 px-2 py-1'
               style={{borderRadius: '5px' }} 
-              onClick={
+              onClick=
+              {
                 ()=>{
-                  SetCmpBtn(!CmpBtn)
+                      const name = Cookies.get("name");
+                      const email = Cookies.get("email");
+                      console.log(name,email)
+                      if (name == undefined || email == undefined ) {
+                        alert("Login to continue")
+                        return
+                      }
+                      SetCmpBtn(!CmpBtn)
                 }
               }
             >
@@ -144,24 +201,28 @@ function Header({isAuthenticated}) {
             >
             <img src="/assets/user.svg" alt="User" width={35} />
           </div>
+          {
+            Logout && 
+            <div onClick={HandleLogout}>
+              <img src="/assets/logouticon.svg" alt="Search" width={25} />
+            </div>
+          }
         </div>
       </div>
       {
         CmpBtn && 
-          <div className='absolute top-16 right-3 max-md:top-20'>
+          <div className='absolute top-16 right-3 max-md:top-20 z-50'>
             <CompareDiv setCmpPage={setCmpPage} CmpCnt={CmpCnt} SetCmpBtn={SetCmpBtn}/>
           </div>
       }
       {
         CmpPage && 
         <div className='absolute top-16 right-3'>
-          <ComparePage property={properties} setCmpPage={setCmpPage} setCmpCnt={setCmpCnt} CmpCnt={CmpCnt}/>
+          <ComparePage property={properties} setCmpPage={setCmpPage} setCmpCnt={setCmpCnt} CmpCnt={CmpCnt} SetCmpBtn={SetCmpBtn}/>
         </div>
       }
 
-      {isLoginOpen && 
-          <LoginDiv setAuthStatus={setAuthStatus} setIsLoginOpen={setIsLoginOpen} setLoginDiv={setLoginDiv} />
-      }
+      {isLoginOpen && <Login closeLogin={closeLogin} AuthStatus={AuthStatus} SetLogout={SetLogout}/>}
       {LoginDivv && <LoginDiv setAuthStatus={setAuthStatus} setIsLoginOpen={setIsLoginOpen} setLoginDiv={setLoginDiv} /> }
     </div>
   );

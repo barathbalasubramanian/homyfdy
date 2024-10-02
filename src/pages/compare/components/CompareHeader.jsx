@@ -12,11 +12,6 @@ function CompareHeader() {
           Effortlessly compare multiple properties side-by-side to make informed decisions. Our intuitive interface lets you evaluate key aspects such as price, location, amenities, and more, helping you find your perfect home with ease.
         </div>
       </div>
-      <div className='text-nowrap pl-2  '>
-        <button className="gap-2 self-stretch px-5 py-3.5 text-sm font-medium bg-green-600 rounded-lg min-h-[49px] shadow-[0px_0px_19px_rgba(31,200,39,1)]">
-            Add Property
-        </button>
-      </div>
     </section>
   );
 }

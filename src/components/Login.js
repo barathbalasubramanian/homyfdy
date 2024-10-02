@@ -3,8 +3,9 @@ import OtpInput from 'react-otp-input';
 import { createUser, getUserByNumber } from '../firebase/user';
 import Cookies from 'js-cookie';
 import axios from 'axios';
+import { Refresh } from '@mui/icons-material';
 
-function Login({ closeLogin, AuthStatus }) {
+function Login({ closeLogin, AuthStatus, SetLogout }) {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -128,7 +129,9 @@ function Login({ closeLogin, AuthStatus }) {
       Cookies.set('city', formData.city, { expires: 7 });
 
       closeLogin();
-    } else {
+      SetLogout(true);
+
+     } else {
       alert('Incorrect OTP. Please try again.');
     }
   };

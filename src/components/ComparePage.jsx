@@ -1,12 +1,14 @@
 import PropertyCard from './PropertyCard'
 
-function ComparePage({property,setCmpPage,setCmpCnt,CmpCnt}) {
+function ComparePage({property,setCmpPage,setCmpCnt,CmpCnt,SetCmpBtn}) {
 
     return (
     <div style={{ position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', backgroundColor: 'rgba(0, 0, 0, 0.8)', backdropFilter: 'blur(10px)', zIndex: 1000, display: 'flex', justifyContent: 'center', alignItems: 'center', }}> 
         <div onClick={()=>{
             setCmpPage(false);
+            SetCmpBtn(false)
             window.location.reload();
+            alert("Property Updated Successfully")
             }} className='z-30'>
             <div className='cursor-pointer absolute top-10 right-20 max-md:right-5'> <img src="/assets/close.svg" alt="Clos" /> </div>
         </div>
@@ -20,3 +22,4 @@ function ComparePage({property,setCmpPage,setCmpCnt,CmpCnt}) {
 }
 
 export default ComparePage
+    
