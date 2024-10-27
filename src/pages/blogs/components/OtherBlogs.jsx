@@ -10,7 +10,7 @@ function OtherBlogs({blogs}) {
       <div className='flex w-full px-16 gap-8 overflow-scroll py-10 max-md:px-3' style={{ borderBottom: '1px solid #262626' }}>
         {blogs.map((blog) => (
           <div className='ques-con cursor-pointer' key={blog.id} onClick={() => navi(`/blogs/${blog.id}`)}>
-            <div className='pb-1'>{blog.blogName}</div>
+            <div className='pb-1'>{blog.blogName}</div> 
             <div>
                 <img
                   src={blog.blogImage || '/assets/profile.svg'} 

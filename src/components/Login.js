@@ -46,7 +46,7 @@ function Login({ closeLogin, AuthStatus, SetLogout }) {
   const sendOtp = async (number, otp) => {
 
     console.log(number,otp)
-    const apiURL = `https://trans.smsfresh.co/api/sendmsg.php?user=Anthill%20Networks&pass=123456&sender=Sender%20ID&phone=${number}&text=realtyotp&priority=wa&stype=auth&Params=${otp}`;
+    const apiURL = `http://trans.smsfresh.co/api/sendmsg.php?user=Anthill%20Networks&pass=123456&sender=Sender%20ID&phone=${number}&text=realtyotp&priority=wa&stype=auth&Params=${otp}`;
     
     try {
       await fetch(apiURL); 
