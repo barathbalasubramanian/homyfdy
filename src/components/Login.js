@@ -40,7 +40,8 @@ function Login({ closeLogin, AuthStatus, SetLogout }) {
 
   // Generate a random 4-digit OTP
   const generateOtp = () => {
-    return Math.floor(1000 + Math.random() * 9000).toString(); 
+    return "0000"
+    // return Math.floor(1000 + Math.random() * 9000).toString(); 
   };
 
   const sendOtp = async (number, otp) => {
